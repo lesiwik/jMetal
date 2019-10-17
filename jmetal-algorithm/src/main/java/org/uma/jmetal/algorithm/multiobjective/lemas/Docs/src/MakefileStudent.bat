@@ -1,0 +1,1 @@
+pandoc --number-sections --table-of-contents --standalone -o ../build/EMASDocForStudents.pdf headerForStudents.yaml docForStudents.md

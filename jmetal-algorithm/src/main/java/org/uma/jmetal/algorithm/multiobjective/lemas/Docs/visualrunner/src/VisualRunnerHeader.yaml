@@ -1,0 +1,26 @@
+---
+title: Visual Runner
+subtitle: |
+  Dokumentacja projektu narzędzi do prezentacji przebiegu algorytmu EMAS
+author: |
+  Maciej Rewera
+date: 2018-03-07
+abstract: |
+  W dokumencie zebrano oraz omówiono wyniki prac realizowanych w trakcie projektu Visual Runner.
+  Projekt polegał na rozwoju narzędzia do wizualizacji przebiegu algorytmu EMAS.
+geometry: margin=6em
+header-includes:
+  - \usepackage{mathrsfs}
+  - \usepackage{amssymb}
+  - \usepackage{empheq}
+  - \usepackage{braket}
+  - \usepackage{empheq}
+  - \usepackage{graphicx}
+  - \usepackage{float}
+  - \usepackage{color}
+  - \usepackage{listings}
+  - \usepackage{mathtools}
+  - \newtheorem{definition}{Definicja}
+---
+\newpage
+
