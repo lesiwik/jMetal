@@ -2,10 +2,10 @@ package org.uma.jmetal.algorithm.multiobjective.EMAS;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AlphaDominanceComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5AgentBuilder;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.agents.BaseAgent;
+import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.AlphaDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.agents.AgentBuilder;
+import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
 import org.uma.jmetal.util.point.PointSolution;
 import org.uma.jmetal.util.point.impl.ArrayPoint;
 
@@ -14,17 +14,17 @@ import static org.junit.Assert.assertEquals;
 
 public class AlphaDominanceComparatorTest {
 
-    private JMetal5AgentBuilder builder;
+    private AgentBuilder builder;
 
     @Before
     public void setup(){
-        builder = new JMetal5AgentBuilder();
+        builder = new AgentBuilder();
     }
 
     @Test
     public void shouldDominateSolutionsWithEveryObjectiveWorse(){
-        JMetal5Agent agent1 = agent(new double[]{10, 20});
-        JMetal5Agent agent2 = agent(new double[]{1, 1});
+        BaseAgent agent1 = agent(new double[]{10, 20});
+        BaseAgent agent2 = agent(new double[]{1, 1});
 
         AlphaDominanceComparator comparator = new AlphaDominanceComparator(Constants.ALPHA_VALUES);
 
@@ -35,8 +35,8 @@ public class AlphaDominanceComparatorTest {
 
     @Test
     public void shouldDominateSolutionsWithOnlyOneWorseObjective(){
-        JMetal5Agent agent1 = agent(new double[]{0.9, 20});
-        JMetal5Agent agent2 = agent(new double[]{1, 1});
+        BaseAgent agent1 = agent(new double[]{0.9, 20});
+        BaseAgent agent2 = agent(new double[]{1, 1});
 
         AlphaDominanceComparator comparator = new AlphaDominanceComparator(Constants.ALPHA_VALUES);
 
@@ -47,8 +47,8 @@ public class AlphaDominanceComparatorTest {
 
     @Test
     public void shouldNotDominateExactSolution(){
-        JMetal5Agent agent1 = agent(new double[]{1, 1});
-        JMetal5Agent agent2 = agent(new double[]{1, 1});
+        BaseAgent agent1 = agent(new double[]{1, 1});
+        BaseAgent agent2 = agent(new double[]{1, 1});
 
         AlphaDominanceComparator comparator = new AlphaDominanceComparator(Constants.ALPHA_VALUES);
 
@@ -59,8 +59,8 @@ public class AlphaDominanceComparatorTest {
 
     @Test
     public void shouldNotDominateVeryCloseSolution(){
-        JMetal5Agent agent1 = agent(new double[]{1.1, 1});
-        JMetal5Agent agent2 = agent(new double[]{1, 1.11});
+        BaseAgent agent1 = agent(new double[]{1.1, 1});
+        BaseAgent agent2 = agent(new double[]{1, 1.11});
 
         AlphaDominanceComparator comparator = new AlphaDominanceComparator(Constants.ALPHA_VALUES);
 
@@ -69,7 +69,7 @@ public class AlphaDominanceComparatorTest {
         assertEquals(compareResult, 0);
     }
 
-    private JMetal5Agent agent(double[] objectivesValues){
+    private BaseAgent agent(double[] objectivesValues){
         PointSolution solution = new PointSolution(new ArrayPoint(objectivesValues));
         return builder.withGenotype(solution).build();
     }

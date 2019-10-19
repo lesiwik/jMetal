@@ -2,12 +2,12 @@ package org.uma.jmetal.runner.multiobjective.rewera;/*
 package org.uma.jmetal.runner.multiobjective.rewera;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5ProgressiveEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlDistanceToClosesNeighbourComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.ProgressiveEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.AreaUnderControlComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.AreaUnderControlDistanceToClosesNeighbourComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
 import org.uma.jmetal.measure.Measurable;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.runner.multiobjective.rewera.visualization.MultiTabFrame;
@@ -19,8 +19,8 @@ import org.uma.jmetal.util.JMetalException;
 
 import java.util.*;
 
-import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.ALWAYS;
-import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.IF_BETTER;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.ALWAYS;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.IF_BETTER;
 
 public class JMetal5EMASMultiProblemExperimentVisualRunner extends AbstractAlgorithmRunner {
 
@@ -54,23 +54,23 @@ public class JMetal5EMASMultiProblemExperimentVisualRunner extends AbstractAlgor
 
     private List<Algorithm> createAlgorithmsFor(Problem<DoubleSolution> problem) {
         List<Algorithm> algorithms = new ArrayList<>();
-        algorithms.add(new JMetal5BaseEMAS<>(problem,  "BaseEMAS",
+        algorithms.add(new BaseEMAS<>(problem,  "BaseEMAS",
                 ALWAYS, false,
                 new AreaUnderControlDistanceToClosesNeighbourComparator(),
                 new EmasDominanceComparator()));
 
-        algorithms.add(new JMetal5BaseEMAS<>(problem, "AreaUnderControl",
+        algorithms.add(new BaseEMAS<>(problem, "AreaUnderControl",
                 ALWAYS, false,
                 new AreaUnderControlDistanceToClosesNeighbourComparator(),
                 new AreaUnderControlComparator()));
 
-        algorithms.add(new JMetal5ProgressiveEMAS<>(problem,
+        algorithms.add(new ProgressiveEMAS<>(problem,
                 "ProgresiveAreaUnderControl",
                 ALWAYS, false,
                 new AreaUnderControlDistanceToClosesNeighbourComparator(),
                 new AreaUnderControlComparator()));
 
-        algorithms.add(new JMetal5ProgressiveEMAS<>(problem,
+        algorithms.add(new ProgressiveEMAS<>(problem,
                 "ProgresiveEliteAreaUnderControl",
                 IF_BETTER, false,
                 new AreaUnderControlDistanceToClosesNeighbourComparator(),
@@ -93,7 +93,7 @@ public class JMetal5EMASMultiProblemExperimentVisualRunner extends AbstractAlgor
             ((Measurable) algorithm).getMeasureManager()
                     .getPushMeasure("currentPopulation")
                     .register(population ->
-                            wrapper.updateChart((List<DoubleSolution>) population, algorithm.getName(), (JMetal5BaseEMAS<?>) algorithm, algorithms.indexOf(algorithm)));
+                            wrapper.updateChart((List<DoubleSolution>) population, algorithm.getName(), (BaseEMAS<?>) algorithm, algorithms.indexOf(algorithm)));
         });
     }
 
