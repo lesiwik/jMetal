@@ -12,7 +12,7 @@ import org.uma.jmetal.util.comparator.ObjectiveComparator;
 public class EmasSingleObjectiveComparator<S extends BaseAgent<?>> extends EmasDominanceComparator<S> {
 
     /**
-     * Compares two genotypes of agents using instance of newly {@link ObjectiveComparator} with ObjectiveID = 0.
+     * Compares two genotypes of Agents using instance of newly {@link ObjectiveComparator} with ObjectiveID = 0.
      * @param a1 agent to compare genotype from.
      * @param a2 agent to compare genotype from.
      * @return result of comparison from {@link ObjectiveComparator#compare(Solution, Solution)}.

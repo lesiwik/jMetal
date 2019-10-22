@@ -8,7 +8,7 @@ import java.util.List;
 
 */
 /**
- * Area under control comparator. Instead of using agents, it uses their objective values.
+ * Area under control comparator. Instead of using Agents, it uses their objective values.
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
  * *//*
@@ -22,7 +22,7 @@ public class AreaUnderControlPlainIteratorComparator<S extends BaseAgent<?>> ext
 /**
      * Compares two agent to each other. First using super call which calls {@link EmasDominanceComparator#compare(JMetal5Agent, JMetal5Agent)},
      * then if neither agent is better it calls {@link AreaUnderControlPlainIteratorComparator#isPartnerUnderControl(JMetal5Agent, JMetal5Agent)}.
-     * If again neither is better it updates lists of known non dominated objects and agents in agent1 only.
+     * If again neither is better it updates lists of known non dominated objects and Agents in agent1 only.
      * @param agent1 agent to compare to.
      * @param agent2 agent to compare to.
      * @return result of comparison.

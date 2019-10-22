@@ -16,7 +16,7 @@ import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 import org.uma.jmetal.util.experiment.util.ExperimentProblem;
 
 /**
- * Main constants used by EMAS algorithms.
+ * Main constants used by EMAS Algorithms.
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * */
 public class Constants {
@@ -46,9 +46,9 @@ public class Constants {
     public final static int FIRST_IS_BETTER = -1;
     public final static int NEITHER_IS_BETTER = 0;
     public final static int SECOND_IS_BETTER = 1;
-    public static int IS_BETTER = 1;
-    public static int IS_WORSE = -1;
-    public static int IS_NEITHER_BETTER_NOR_WORSE = 0;
+    public final static int IS_BETTER = 1;
+    public final static int IS_WORSE = -1;
+    public final static int IS_NEITHER_BETTER_NOR_WORSE = 0;
 
     /* Charts */
     public static final int HV_FREQUENCY = 50;

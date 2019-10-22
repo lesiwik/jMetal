@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 /**
  * Base Agent implementation that is used by EMAS algorithm. {@link BaseEMAS}
  * Each agent is Serializable as noted by {@link Serializable} interface as well as each agent must extend {@link Solution<S>}.
- * Contains necessary functions for agents to reproduce, mutate and
+ * Contains necessary functions for Agents to reproduce, mutate and
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 9/02/2018
  * @param <S> is {@link Solution} where <?> can be <Double>, <Integer>, etc.
@@ -49,7 +49,7 @@ public class BaseAgent<S extends Solution<?>> implements Serializable {
     public transient static Map<Integer, PseudoRandomGenerator> randomJMetalSave = new HashMap<>();
 
     /**
-     * Id of a current agent. Used mainly to distinguish agents between them.
+     * Id of a current agent. Used mainly to distinguish Agents between them.
      * */
     public int id;
 
@@ -76,7 +76,7 @@ public class BaseAgent<S extends Solution<?>> implements Serializable {
     private boolean met;
 
     /**
-     * Boolean check to see if agents are allowed to exchange knowledge between them when they meet. Set by EMAS algorithm when creating new agents from builder.
+     * Boolean check to see if Agents are allowed to exchange knowledge between them when they meet. Set by EMAS algorithm when creating new Agents from builder.
      * */
     private boolean allowKnowledgeExchange;
 
@@ -103,7 +103,7 @@ public class BaseAgent<S extends Solution<?>> implements Serializable {
 
     /* Operators */
     /**
-     * Used to do crossover genotypes between 2 agents when they reproduce. Usually set by EMAS algorithm.
+     * Used to do crossover genotypes between 2 Agents when they reproduce. Usually set by EMAS algorithm.
      * */
     public transient CrossoverOperator<S> crossoverOperator;
 

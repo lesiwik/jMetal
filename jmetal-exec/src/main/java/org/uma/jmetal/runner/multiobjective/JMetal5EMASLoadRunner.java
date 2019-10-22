@@ -25,9 +25,9 @@ public class JMetal5EMASLoadRunner {
 
     public static void main(String[] args) throws JMetalException {
 
-        String informationMessage = "Choose all your genotypes at once for all the algorithms you intend to run at once. \n" +
+        String informationMessage = "Choose all your genotypes at once for all the Algorithms you intend to run at once. \n" +
                 "For example choose all .ser files whose names contain 'NotWorse' and 'randomSeed_NotWorse' etc. for every algorithm.\n" +
-                "If you select auto chose last available iteration from selected folder will be loaded (for all algorithms).";
+                "If you select auto chose last available iteration from selected folder will be loaded (for all Algorithms).";
 
         JOptionPane.showMessageDialog(null, informationMessage, "Instruction!", JOptionPane.INFORMATION_MESSAGE);
 

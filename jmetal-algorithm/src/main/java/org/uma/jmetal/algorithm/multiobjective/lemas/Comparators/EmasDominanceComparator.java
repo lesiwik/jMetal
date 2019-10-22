@@ -15,7 +15,7 @@ import java.util.Comparator;
 public class EmasDominanceComparator<Agent extends BaseAgent<?>> implements Comparator<Agent>, Serializable {
 
     /**
-     * Compares two agents genotypes using {@link DominanceComparator#compare(Solution, Solution)}.
+     * Compares two Agents genotypes using {@link DominanceComparator#compare(Solution, Solution)}.
      * @param a1 agent to compare.
      * @param a2 agent to compare.
      * @return result of comparison.

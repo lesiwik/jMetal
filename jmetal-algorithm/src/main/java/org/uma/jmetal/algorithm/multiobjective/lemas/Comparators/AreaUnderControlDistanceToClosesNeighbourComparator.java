@@ -17,7 +17,7 @@ public class AreaUnderControlDistanceToClosesNeighbourComparator<S extends BaseA
 
     */
 /**
-     * Compares two agents. Firstly it calls to super {@link AreaUnderControlComparator#compare(JMetal5Agent, JMetal5Agent)}.
+     * Compares two Agents. Firstly it calls to super {@link AreaUnderControlComparator#compare(JMetal5Agent, JMetal5Agent)}.
      * Then if result is 0 (neither is better), it will compare their distances {@link JMetal5Agent#getDistanceToClosestNeighbour()}.
      * @param agent1 agent1 to compare to. Keep in mind this makes a difference in {@link AreaUnderControlComparator}.
      * @param agent2 agent2 to compare to.

@@ -83,7 +83,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /**
      * MutationOperators are used to maintain genetic diversity from one generation of population to the next. It is analogous to biological mutation.
-     * Used during reproduction of agents.
+     * Used during reproduction of Agents.
      * Set to {@link Constants#MOP} = {@link org.uma.jmetal.operator.impl.mutation.PolynomialMutation}. With distribution index = 10.
      * @see MutationOperator<S>
      * @see org.uma.jmetal.operator.impl.mutation.PolynomialMutation
@@ -101,13 +101,13 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /* comparators */
     /**
-     * Set as dominance comparator for each created agent. agents then use it to compare themselves to other agents and determine stronger genes.
+     * Set as dominance comparator for each created agent. Agents then use it to compare themselves to other Agents and determine stronger genes.
      * @see EmasDominanceComparator
      * */
     private EmasDominanceComparator<BaseAgent<?>> comparator;
 
     /**
-     * Set as dominance comparator for each created agent. agents then use it to compare themselves to their parent agents and determine stronger genes.
+     * Set as dominance comparator for each created agent. Agents then use it to compare themselves to their parent Agents and determine stronger genes.
      * @see EmasDominanceComparator
      * */
     private EmasDominanceComparator<BaseAgent<?>> parentToChildComparator;
@@ -126,9 +126,9 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     private int evaluations;
 
     /**
-     * Meeting counter. Is a number of how many times meeting happened AND one of the agents was better than the other.
-     * Plotted on {@link org.uma.jmetal.algorithm.multiobjective.lemas.visualization.MeetingsChart}.
-     * @see org.uma.jmetal.algorithm.multiobjective.lemas.visualization.MeetingsChart
+     * Meeting counter. Is a number of how many times meeting happened AND one of the Agents was better than the other.
+     * Plotted on {@link org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.MeetingsChart}.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.MeetingsChart
      * */
     private int imBetterMeetingTypeCounter;
 
@@ -149,7 +149,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     private int whenAddOffspringToPopulation;
 
     /**
-     * Boolean check to allow knowledge exchange between agents.
+     * Boolean check to allow knowledge exchange between Agents.
      * */
     private boolean allowKnowledgeExchange;
 
@@ -160,8 +160,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     private final AgentBuilder<S> agentBuilder = new AgentBuilder<>();
 
     /**
-     * Used to save and load EMAS iterations. Stores as value FULL population of agents as they were at the start of each iteration.
-     * Key is a number of iteration to access. Saved ONLY when {@link BaseEMAS#isDebugMode} is set to true.
+     * Used to save and load EMAS iterations. Stores as value FULL population of Agents as they were at the start of each iteration.
+     * Key is a number of iteration to access. Saved ONLY when {@link JMetal5BaseEMAS#isDebugMode} is set to true.
      * */
     private TreeMap<Integer, ArrayList<BaseAgent<S>>> populationSavers;
 
@@ -184,7 +184,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /* Problem definition */
     /**
-     * Problem for agents to find solution to.
+     * Problem for Agents to find solution to.
      * Example bench marks to see effectiveness of algorithm: {@link org.uma.jmetal.problem.multiobjective.zdt.ZDT1}, {@link org.uma.jmetal.problem.multiobjective.zdt.ZDT2}..
      * */
     private Problem<S> problem;
@@ -203,7 +203,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /* Agent lists */
     /**
-     * List of currently ALIVE agents defined as Population. Set to NONE due to issues with lombok and hiding {@link AbstractEMASAlgorithm#setPopulation(List)}.
+     * List of currently ALIVE Agents defined as Population. Set to NONE due to issues with lombok and hiding {@link AbstractEMASAlgorithm#setPopulation(List)}.
      * */
     protected List<BaseAgent<S>> population;
 
@@ -324,7 +324,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Creates initial population of agents (size is {@link BaseEMAS#envEnergy}/{@link BaseEMAS#initialAgentResourceLevel}).
+     * Creates initial population of Agents (size is {@link JMetal5BaseEMAS#envEnergy}/{@link JMetal5BaseEMAS#initialAgentResourceLevel}).
      * That means it creates and initializes every agent as well as initializes their genotypes. After doing all that, it runs evaluate method of each created agent.
      * @see BaseAgent#evaluate(Problem)
      * */
@@ -340,10 +340,10 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * In this function there are two main steps done. Its purpose is to simulate agents meeting.
-     * 1. It resets all meeting statistics as well as sets {@link BaseAgent#isMet()} of all agents to False.
-     * 2. Then it runs through all of the agents and makes them meet each other.
-     * @see BaseAgent#doMeeting(List, double)
+     * In this function there are two main steps done. Its purpose is to simulate Agents meeting.
+     * 1. It resets all meeting statistics as well as sets {@link JMetal5Agent#isMet()} of all Agents to False.
+     * 2. Then it runs through all of the Agents and makes them meet each other.
+     * @see JMetal5Agent#doMeeting(List, double)
      * */
     @Override
     protected void meetStep(){
@@ -363,12 +363,12 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Step in algorithm that's responsible for agents reproduction.
-     * Firstly, it sets every agents {@link BaseAgent#hasAlreadyReproduced} to false.
-     * Then it runs over a list of agents and makes 2 of them reproduce, making 1 or 2 additional agents.
-     * It checks which agents can reproduce from {@link BaseEMAS#getListOfAgentsWhoCanReproduce()}.
-     * Newly created agents ('offspring') are then added to population.
-     * @see BaseAgent#doReproduce(List)
+     * Step in algorithm that's responsible for Agents reproduction.
+     * Firstly, it sets every Agents {@link JMetal5Agent#hasAlreadyReproduced} to false.
+     * Then it runs over a list of Agents and makes 2 of them reproduce, making 1 or 2 additional Agents.
+     * It checks which Agents can reproduce from {@link JMetal5BaseEMAS#getListOfAgentsWhoCanReproduce()}.
+     * Newly created Agents ('offspring') are then added to population.
+     * @see JMetal5Agent#doReproduce(List)
      * */
     @Override
     protected void reproStep() {
@@ -388,7 +388,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
 
     /**
-     * Step in algorithm which agents that died (their resources reached 0 or below) are filtered out of population based on {@link BaseAgent#isAlive()}.
+     * Step in algorithm which Agents that died (their resources reached 0 or below) are filtered out of population based on {@link JMetal5Agent#isAlive()}.
      * */
     @Override
     protected void deadStep() {
@@ -413,8 +413,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Increments {@link BaseEMAS#neitherIsBetterMeetingTypeCounter} or {@link BaseEMAS#imBetterMeetingTypeCounter} depending on meeting result.
-     * @param meetingResult meeting result of two agents.
+     * Increments {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} or {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} depending on meeting result.
+     * @param meetingResult meeting result of two Agents.
      * */
     private void updateMeetingStatistics(int meetingResult) {
         if (meetingResult == 0)
@@ -424,25 +424,25 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Compares two agents based on {@link BaseEMAS#comparator}
+     * Compares two Agents based on {@link JMetal5BaseEMAS#comparator}
      * @param agent1 agent to compare to agent2
      * @param agent2 agent to compare to agent1
      * */
     public int compareAgents(BaseAgent<S> agent1, BaseAgent<S> agent2) {
         if(agent1.getClass() != agent2.getClass())
-            throw new RuntimeException("Regular comparator: agent1 and agent2 are not the same type of agents!");
+            throw new RuntimeException("Regular comparator: agent1 and agent2 are not the same type of Agents!");
         return comparator.compare(agent1, agent2);
     }
 
     /**
-     * Compares two agents, one of which is parent of the other using {@link BaseEMAS#parentToChildComparator}.
+     * Compares two Agents, one of which is parent of the other using {@link JMetal5BaseEMAS#parentToChildComparator}.
      * @param parent parent agent.
      * @param agent offspring agent.
      * @return comparator result.
      * */
     public int compareParentToOffspring(BaseAgent<S> parent, BaseAgent<S> agent) {
         if(parent.getClass() != agent.getClass())
-            throw new RuntimeException("Parent to child comparator: Parent and agents are not the same type of agents!");
+            throw new RuntimeException("Parent to child comparator: Parent and Agents are not the same type of Agents!");
         return parentToChildComparator.compare(parent, agent);
     }
 
@@ -470,7 +470,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /**
      * Helper function for logging. Prints objective[0], objective[1] and resourceLevel.
-     * @param preamble printed out before logs of agents.
+     * @param preamble printed out before logs of Agents.
      * */
     private void populationLOG(String preamble) {
         if (Constants.LOG_LEVEL == 2) {
@@ -637,8 +637,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Helper function to filter agents that can reproduce out of population.
-     * @return lists of agents who can reproduce.
+     * Helper function to filter Agents that can reproduce out of population.
+     * @return lists of Agents who can reproduce.
      * */
     private List<BaseAgent<S>> getListOfAgentsWhoCanReproduce() {
         return population.stream().filter(a -> a.canReproduce()
@@ -665,7 +665,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Setter to set each agents GENOTYPE to the one provided in argument.
+     * Setter to set each Agents GENOTYPE to the one provided in argument.
      * @param genotype list of genotypes to set to each agent.
      * */
     @Override

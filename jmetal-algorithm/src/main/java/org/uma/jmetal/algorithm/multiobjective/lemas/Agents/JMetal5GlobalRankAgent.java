@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Specialized agent class. In addition to base implementation of {@link BaseAgent} it allows to sort agents based on Global ranking {@link Ranking<DoubleSolution>}.
+ * Specialized agent class. In addition to base implementation of {@link JMetal5Agent} it allows to sort Agents based on Global ranking {@link Ranking<DoubleSolution>}.
  * This allows to sort population based on the rank and discard those who are too 'weak' (their genotypes too far from majority) by comparison with {@link RankingComparator}.
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 9/02/2018
@@ -49,9 +49,9 @@ public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
     }
 
     /**
-     * Calls {@link BaseAgent#doMeeting(List, double)} and does meeting based its result. Next meet is done using based on result from {@link GlobalRankAgent#computeDominanceRanking(List)}.
-     * @param meetPopulation population from which to search agents to meet.
-     * @param transferResourceValue value of resources to transfer between agents during meeting.
+     * Calls {@link JMetal5Agent#doMeeting(List, double)} and does meeting based its result. Next meet is done using based on result from {@link JMetal5GlobalRankAgent#computeDominanceRanking(List)}.
+     * @param meetPopulation population from which to search Agents to meet.
+     * @param transferResourceValue value of resources to transfer between Agents during meeting.
      * @return result of meeting in form of integer.
      * */
     @Override

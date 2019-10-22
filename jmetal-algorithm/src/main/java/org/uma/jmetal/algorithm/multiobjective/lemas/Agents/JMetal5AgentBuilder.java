@@ -14,7 +14,7 @@ import java.util.Optional;
  * Provides 3 different builds:
  * 1. Classic building method that chains functions.
  * 2. Spin on building method that provides parameters in build function.
- * 3. Build specifically made for copy of an agents. Supposed to be used without any chaining functions and with combination of {@link org.uma.jmetal.algorithm.multiobjective.lemas.utils.DeepCopier}.
+ * 3. Build specifically made for copy of an Agents. Supposed to be used without any chaining functions and with combination of {@link org.uma.jmetal.algorithm.multiobjective.lemas.Utils.DeepCopier}.
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
  * */
