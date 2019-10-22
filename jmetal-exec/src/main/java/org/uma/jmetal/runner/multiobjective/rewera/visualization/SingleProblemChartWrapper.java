@@ -27,7 +27,7 @@ public class SingleProblemChartWrapper<T extends Chart> {
         charts.add(new EvaluationHVRChart(algorithmToShow));
         charts.add(new EvaluationIGDPlusChart(algorithmToShow));
         for (int i = 0; i < numberOFDecisionVariablesToShow ; i++) {
-            charts.add(new VariableChart(algorithmToShow,i));
+            charts.add(new SingleVariableChart(algorithmToShow,i));
         }
         charts.add(new LegendChart(algorithmToShow));
         charts.add(new MeetingsChart(algorithmToShow, MeetingType.I_AM_BETTER));
