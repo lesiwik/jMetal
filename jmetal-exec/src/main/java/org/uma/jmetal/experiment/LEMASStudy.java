@@ -2,12 +2,12 @@ package org.uma.jmetal.experiment;/*
 package org.uma.jmetal.experiment;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.AlphaDominanceComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.AreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasDominanceComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasSingleObjectiveComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.EMAS.Comparators.AlphaDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasSingleObjectiveComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.impl.crossover.SBXCrossover;
 import org.uma.jmetal.operator.impl.mutation.PolynomialMutation;
 import org.uma.jmetal.problem.multiobjective.zdt.*;
@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.ALWAYS;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.ALWAYS;
 
 public class LEMASStudy {
     private static final int INDEPENDENT_RUNS = 25;
@@ -80,7 +80,7 @@ public class LEMASStudy {
 
 
         for (int i = 0; i < problemList.size(); i++) {
-            Algorithm<List<DoubleSolution>> algorithm = new BaseEMAS<>(problemList.get(i).getProblem(),
+            Algorithm<List<DoubleSolution>> algorithm = new JMetal5BaseEMAS<>(problemList.get(i).getProblem(),
                     "BaseEMAS", ALWAYS,
                     false,
                     new EmasDominanceComparator(), new EmasDominanceComparator());
@@ -89,7 +89,7 @@ public class LEMASStudy {
 
 
         for (int i = 0; i < problemList.size(); i++) {
-            Algorithm<List<DoubleSolution>> algorithm = new BaseEMAS<>(problemList.get(i).getProblem(),
+            Algorithm<List<DoubleSolution>> algorithm = new JMetal5BaseEMAS<>(problemList.get(i).getProblem(),
                     "AreaUnderControl", ALWAYS, false,
                     new AreaUnderControlComparator(), new EmasDominanceComparator());
             algorithms.add(new ExperimentAlgorithm<>(algorithm, algorithm.getName(), problemList.get(i), i));
@@ -97,7 +97,7 @@ public class LEMASStudy {
 
 
         for (int i = 0; i < problemList.size(); i++) {
-            Algorithm<List<DoubleSolution>> algorithm = new BaseEMAS<>(problemList.get(i).getProblem(),
+            Algorithm<List<DoubleSolution>> algorithm = new JMetal5BaseEMAS<>(problemList.get(i).getProblem(),
                     "AlphaDominance", ALWAYS, false,
                     new AlphaDominanceComparator(Constants.ALPHA_VALUES),
                     new EmasDominanceComparator());

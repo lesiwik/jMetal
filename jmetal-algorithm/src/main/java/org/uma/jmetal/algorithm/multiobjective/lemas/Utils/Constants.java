@@ -1,4 +1,4 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.utils;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Utils;
 
 
 //import javafx.scene.paint.Color;
@@ -76,7 +76,7 @@ public class Constants {
                     20.0);
     static final SelectionOperator SEL_OP = new BinaryTournamentSelection<>(new RankingAndCrowdingDistanceComparator<DoubleSolution>());
 
-    /* comparators ? */
+    /* Comparators ? */
     public static double NOISE_LEVEL = 0.0;
     public static double[][] ALPHA_VALUES = {{0.0, 0,1},{0.1, 0.0}};
 

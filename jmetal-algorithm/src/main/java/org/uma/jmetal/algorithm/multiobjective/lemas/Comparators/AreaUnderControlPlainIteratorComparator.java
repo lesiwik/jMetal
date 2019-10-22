@@ -1,8 +1,8 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.comparators;/*
-package org.uma.jmetal.algorithm.multiobjective.lemas.comparators;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;/*
+package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;
 
-import org.uma.jmetal.algorithm.multiobjective.lemas.agents.BaseAgent;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
  * @since 8/27/2018
  * *//*
 
-public class AreaUnderControlPlainIteratorComparator<S extends BaseAgent<?>> extends EmasDominanceComparator<S> {
+public class AreaUnderControlPlainIteratorComparator<S extends JMetal5Agent<?>> extends EmasDominanceComparator<S> {
 
 
 
@@ -29,7 +29,7 @@ public class AreaUnderControlPlainIteratorComparator<S extends BaseAgent<?>> ext
      * *//*
 
     @Override
-    public int compare(BaseAgent agent1, BaseAgent agent2) {
+    public int compare(JMetal5Agent agent1, JMetal5Agent agent2) {
 
         int isBetter = super.compare(agent1, agent2);
         if (isBetter == Constants.NEITHER_IS_BETTER) {
@@ -54,7 +54,7 @@ public class AreaUnderControlPlainIteratorComparator<S extends BaseAgent<?>> ext
      * @return result of comparison.
      * *//*
 
-    private int isPartnerUnderControl(BaseAgent agent1, BaseAgent agent2) {
+    private int isPartnerUnderControl(JMetal5Agent agent1, JMetal5Agent agent2) {
         for (List<Double> l : (List<List<Double>>) agent1.getKnownNonDominatedObjectiveValues()) {
             int isPartnerUnderControl = 1;
             for (int i = 0; i < Constants.PROBLEM.getProblem().getNumberOfObjectives(); i++) {

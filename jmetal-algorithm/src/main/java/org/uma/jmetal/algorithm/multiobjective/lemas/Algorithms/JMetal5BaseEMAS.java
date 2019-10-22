@@ -1,12 +1,12 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.algorithms;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 
 import lombok.*;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.agents.BaseAgent;
-import org.uma.jmetal.algorithm.multiobjective.lemas.agents.AgentBuilder;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasDominanceComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5AgentBuilder;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
@@ -37,15 +37,15 @@ import java.util.stream.Stream;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper=false) /* Used due to lombok warning. */
-public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, List<S>> implements Measurable{
+public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, List<S>> implements Measurable{
 
 
     /**
      * Agent type used by builder to determine what kind of agent to build.
-     * By default it is set to "BaseAgent" but can be exchanged for something else. Be wary of it as it may break builder or EMAS should agent types be incompatible with each other.
-     * @see AgentBuilder
+     * By default it is set to "JMetal5Base" but can be exchanged for something else. Be wary of it as it may break builder or EMAS should agent types be incompatible with each other.
+     * @see JMetal5AgentBuilder
      * */
-    protected String agentType = "BaseAgent";
+    protected String agentType = "JMetal5BaseAgent";
 
     /**
      * Max number of iterations.
@@ -54,27 +54,27 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     private int maxNumberOfIterations;
 
     /**
-     * Used to determine initial amount of agent where numberOfAgents = ( envEnergy / {@link BaseEMAS#initialAgentResourceLevel } )
+     * Used to determine initial amount of agent where numberOfAgents = ( envEnergy / {@link JMetal5BaseEMAS#initialAgentResourceLevel } )
      * Set to {@link Constants#ENV_ENERGY} = {@value Constants#ENV_ENERGY}
      * */
     private int envEnergy;
 
     /**
-     * Initial resources assigned to each agent upon his creation. See {@link BaseEMAS#envEnergy} for more details.
+     * Initial resources assigned to each agent upon his creation. See {@link JMetal5BaseEMAS#envEnergy} for more details.
      * Set to {@link Constants#INITIAL_RESOURCE_VALUE} = {@value Constants#INITIAL_RESOURCE_VALUE}
      * */
     private double initialAgentResourceLevel;
 
     /**
-     * Sets value of resource that is transferred to agent that "won" comparison showdown. Used in {@link BaseAgent#doMeeting(List, double)}.
+     * Sets value of resource that is transferred to agent that "won" comparison showdown. Used in {@link JMetal5Agent#doMeeting(List, double)}.
      * Set to {@link Constants#TRANSFER_RESOURCE_VALUE} = {@value Constants#TRANSFER_RESOURCE_VALUE}
      * */
     private double transferAgentResourceLevel;
 
     /* Operators */
     /**
-     * CrossoverOperators are used to combine the genetic information ({@link S}) of two parents ({@link BaseAgent <S>}) to generate new offspring.
-     * Used in {@link BaseAgent#doReproduce(List)}
+     * CrossoverOperators are used to combine the genetic information ({@link S}) of two parents ({@link JMetal5Agent<S>}) to generate new offspring.
+     * Used in {@link JMetal5Agent#doReproduce(List)}
      * Set to {@link Constants#XOP} = {@link org.uma.jmetal.operator.impl.crossover.SBXCrossover} in constructor.
      * @see org.uma.jmetal.operator.impl.crossover.SBXCrossover
      * @see CrossoverOperator
@@ -87,7 +87,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * Set to {@link Constants#MOP} = {@link org.uma.jmetal.operator.impl.mutation.PolynomialMutation}. With distribution index = 10.
      * @see MutationOperator<S>
      * @see org.uma.jmetal.operator.impl.mutation.PolynomialMutation
-     * @see BaseAgent#reproAct(int, List, List)
+     * @see JMetal5Agent#reproAct(int, List, List)
      * */
     private MutationOperator<S> mutationOperator;
 
@@ -95,22 +95,22 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * Strong MutationOperator. Analogous to mutationOperator, but with higher distribution index = 20.
      * Set to {@link Constants#STRONG_MOP} = {@link org.uma.jmetal.operator.impl.mutation.PolynomialMutation}
      * @deprecated Currently not in use.
-     * @see BaseEMAS#mutationOperator
+     * @see JMetal5BaseEMAS#mutationOperator
      * */
     private MutationOperator<S> strongMutationOperator;
 
-    /* comparators */
+    /* Comparators */
     /**
      * Set as dominance comparator for each created agent. Agents then use it to compare themselves to other Agents and determine stronger genes.
      * @see EmasDominanceComparator
      * */
-    private EmasDominanceComparator<BaseAgent<?>> comparator;
+    private EmasDominanceComparator<JMetal5Agent<?>> comparator;
 
     /**
      * Set as dominance comparator for each created agent. Agents then use it to compare themselves to their parent Agents and determine stronger genes.
      * @see EmasDominanceComparator
      * */
-    private EmasDominanceComparator<BaseAgent<?>> parentToChildComparator;
+    private EmasDominanceComparator<JMetal5Agent<?>> parentToChildComparator;
 
     /* Variables */
     private String algorithmName = "";
@@ -134,8 +134,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     /**
      * Meeting counter. Is a number of how many times meeting happened AND neither agent was better.
-     * Plotted on {@link org.uma.jmetal.algorithm.multiobjective.lemas.visualization.MeetingsChart}.
-     * @see org.uma.jmetal.algorithm.multiobjective.lemas.visualization.MeetingsChart
+     * Plotted on {@link org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.MeetingsChart}.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.MeetingsChart
      * */
     private int neitherIsBetterMeetingTypeCounter;
 
@@ -153,27 +153,27 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * */
     private boolean allowKnowledgeExchange;
 
-    /* utils */
+    /* Utils */
     /**
      * Agent builder.
      * */
-    private final AgentBuilder<S> agentBuilder = new AgentBuilder<>();
+    private final JMetal5AgentBuilder<S> agentBuilder = new JMetal5AgentBuilder<>();
 
     /**
      * Used to save and load EMAS iterations. Stores as value FULL population of Agents as they were at the start of each iteration.
      * Key is a number of iteration to access. Saved ONLY when {@link JMetal5BaseEMAS#isDebugMode} is set to true.
      * */
-    private TreeMap<Integer, ArrayList<BaseAgent<S>>> populationSavers;
+    private TreeMap<Integer, ArrayList<JMetal5Agent<S>>> populationSavers;
 
     /**
      * Used to save all necessary variables from EMAS class for each iteration.
-     * Saved ONLY when {@link BaseEMAS#isDebugMode} is set to true.
+     * Saved ONLY when {@link JMetal5BaseEMAS#isDebugMode} is set to true.
      * */
-    private List<BaseEMASSaver> emasSavers;
+    private List<JMetal5BaseEMASSaver> emasSavers;
 
     /**
      * Used to save seed of randomGenerator to fix randomness of EMAS algorithm during loading/saving chosen EMAS runs.
-     * Saved ONLY when {@link BaseEMAS#isDebugMode} is set to true. Stored in {@link BaseEMAS#emasSavers}
+     * Saved ONLY when {@link JMetal5BaseEMAS#isDebugMode} is set to true. Stored in {@link JMetal5BaseEMAS#emasSavers}
      * */
     private PseudoRandomGenerator randomGeneratorSaver;
 
@@ -205,17 +205,17 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     /**
      * List of currently ALIVE Agents defined as Population. Set to NONE due to issues with lombok and hiding {@link AbstractEMASAlgorithm#setPopulation(List)}.
      * */
-    protected List<BaseAgent<S>> population;
+    protected List<JMetal5Agent<S>> population;
 
     /**
-     * List of every agent that has ever lived (including {@link BaseEMAS#population}).
+     * List of every agent that has ever lived (including {@link JMetal5BaseEMAS#population}).
      * */
-    public List<BaseAgent<S>> agentsRecords;
+    public List<JMetal5Agent<S>> agentsRecords;
 
     /**
      * Builder constructor.
      * */
-    protected BaseEMAS()
+    protected JMetal5BaseEMAS()
     {
         /* Initialization */
         this.populationSavers = new TreeMap<>();
@@ -226,10 +226,10 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
 
     @SuppressWarnings("unchecked")
-    public BaseEMAS(Problem problem, String algorithmName, int whenAddOffspringToPopulation,
-                    boolean allowKnowledgeExchange,
-                    EmasDominanceComparator meetingComparator,
-                    EmasDominanceComparator parentChildComparator) {
+    public JMetal5BaseEMAS(Problem problem, String algorithmName, int whenAddOffspringToPopulation,
+                           boolean allowKnowledgeExchange,
+                           EmasDominanceComparator meetingComparator,
+                           EmasDominanceComparator parentChildComparator) {
 
         /* Operators */
         this.crossoverOperator = (CrossoverOperator<S>) Constants.XOP;
@@ -260,10 +260,10 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
 
     @SuppressWarnings("unchecked")
-    public BaseEMAS(String algorithmName, int whenAddOffspringToPopulation,
-                    boolean allowKnowledgeExchange,
-                    EmasDominanceComparator meetingComparator,
-                    EmasDominanceComparator parentChildComparator) {
+    public JMetal5BaseEMAS(String algorithmName, int whenAddOffspringToPopulation,
+                           boolean allowKnowledgeExchange,
+                           EmasDominanceComparator meetingComparator,
+                           EmasDominanceComparator parentChildComparator) {
 
         /* Operators */
         this.problem = (Problem<S>) Constants.PROBLEM.getProblem();
@@ -294,8 +294,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     /* Measures code */
     /**
      * Initializes measures.
-     * @see BaseEMAS#measureManager
-     * @see BaseEMAS#solutionListMeasure
+     * @see JMetal5BaseEMAS#measureManager
+     * @see JMetal5BaseEMAS#solutionListMeasure
      * */
     private void initMeasures() {
         solutionListMeasure = new BasicMeasure<>();
@@ -304,7 +304,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
 
     /**
-     * Initializes all progress. Sets {@link BaseEMAS#iterations} and {@link BaseEMAS#evaluations} to 0.
+     * Initializes all progress. Sets {@link JMetal5BaseEMAS#iterations} and {@link JMetal5BaseEMAS#evaluations} to 0.
      * */
     @Override
     protected void initProgress() {
@@ -313,7 +313,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Loads initial population from {@link BaseEMAS#populationSavers} and sets JMetalRandom instance to {@link BaseEMAS#randomGeneratorSaver}
+     * Loads initial population from {@link JMetal5BaseEMAS#populationSavers} and sets JMetalRandom instance to {@link JMetal5BaseEMAS#randomGeneratorSaver}
      * @see JMetalRandom
      * */
     @Override
@@ -326,7 +326,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     /**
      * Creates initial population of Agents (size is {@link JMetal5BaseEMAS#envEnergy}/{@link JMetal5BaseEMAS#initialAgentResourceLevel}).
      * That means it creates and initializes every agent as well as initializes their genotypes. After doing all that, it runs evaluate method of each created agent.
-     * @see BaseAgent#evaluate(Problem)
+     * @see JMetal5Agent#evaluate(Problem)
      * */
     @Override
     protected void createInitialPopulation() {
@@ -350,10 +350,10 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
         populationLOG("----meetStep----");
 
         resetMeetingStatistics();
-        List<BaseAgent<S>> meetingAgents = population;
+        List<JMetal5Agent<S>> meetingAgents = population;
         meetingAgents.forEach(a -> a.setMet(false));
 
-        for (BaseAgent<S> agent : meetingAgents) {
+        for (JMetal5Agent<S> agent : meetingAgents) {
             if (!agent.isMet()) {
                 int meetingResult = agent.doMeeting(meetingAgents,
                         transferAgentResourceLevel);
@@ -374,8 +374,8 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     protected void reproStep() {
         populationLOG("----reproStep----");
 
-        List<BaseAgent<S>> listOfAgentsWhoCanReproduce;
-        List<BaseAgent<S>> offSpringList = new ArrayList<>();
+        List<JMetal5Agent<S>> listOfAgentsWhoCanReproduce;
+        List<JMetal5Agent<S>> offSpringList = new ArrayList<>();
 
         population.forEach(a -> a.hasAlreadyReproduced = false);
 
@@ -392,12 +392,12 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * */
     @Override
     protected void deadStep() {
-        population = population.stream().filter(BaseAgent::isAlive).collect(Collectors.toList());
+        population = population.stream().filter(JMetal5Agent::isAlive).collect(Collectors.toList());
     }
 
     /**
      * Checks if algorithm reached stopping condition.
-     * @return {@link BaseEMAS#iterations} >= {@link BaseEMAS#maxNumberOfIterations}
+     * @return {@link JMetal5BaseEMAS#iterations} >= {@link JMetal5BaseEMAS#maxNumberOfIterations}
      * */
     @Override
     protected boolean isStoppingConditionReached() {
@@ -405,7 +405,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Resets {@link BaseEMAS#imBetterMeetingTypeCounter} and {@link BaseEMAS#neitherIsBetterMeetingTypeCounter} to 0.
+     * Resets {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} and {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} to 0.
      * */
     private void resetMeetingStatistics() {
         this.imBetterMeetingTypeCounter = 0;
@@ -428,7 +428,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * @param agent1 agent to compare to agent2
      * @param agent2 agent to compare to agent1
      * */
-    public int compareAgents(BaseAgent<S> agent1, BaseAgent<S> agent2) {
+    public int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
         if(agent1.getClass() != agent2.getClass())
             throw new RuntimeException("Regular comparator: agent1 and agent2 are not the same type of Agents!");
         return comparator.compare(agent1, agent2);
@@ -440,14 +440,14 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * @param agent offspring agent.
      * @return comparator result.
      * */
-    public int compareParentToOffspring(BaseAgent<S> parent, BaseAgent<S> agent) {
+    public int compareParentToOffspring(JMetal5Agent<S> parent, JMetal5Agent<S> agent) {
         if(parent.getClass() != agent.getClass())
             throw new RuntimeException("Parent to child comparator: Parent and Agents are not the same type of Agents!");
         return parentToChildComparator.compare(parent, agent);
     }
 
     /**
-     * Counter for {@link BaseEMAS#evaluations}.
+     * Counter for {@link JMetal5BaseEMAS#evaluations}.
      * */
     public void updateEvaluationsCounter() {
         this.evaluations++;
@@ -460,7 +460,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Increments {@link BaseEMAS#iterations} and pushes {@link BaseEMAS#population} to {@link BaseEMAS#solutionListMeasure}.
+     * Increments {@link JMetal5BaseEMAS#iterations} and pushes {@link JMetal5BaseEMAS#population} to {@link JMetal5BaseEMAS#solutionListMeasure}.
      * */
     @Override
     protected void updateProgress() {
@@ -475,15 +475,15 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     private void populationLOG(String preamble) {
         if (Constants.LOG_LEVEL == 2) {
             System.out.println(preamble);
-            for (BaseAgent a : population) {
+            for (JMetal5Agent a : population) {
                 System.out.println(a.toString() + " " + a.genotype.getObjective(0) + " " + a.genotype.getObjective(1) + " " + a.getResourceLevel());
             }
         }
     }
 
     /**
-     * Function to serialize and save {@link BaseEMAS#populationSavers}. It creates folder in projects folder called "generated_genotype" and saves all chosen iterations there.
-     * Important is that all iterations between startingIteration and prevIterationOffset need to be present in {@link BaseEMAS#populationSavers}.
+     * Function to serialize and save {@link JMetal5BaseEMAS#populationSavers}. It creates folder in projects folder called "generated_genotype" and saves all chosen iterations there.
+     * Important is that all iterations between startingIteration and prevIterationOffset need to be present in {@link JMetal5BaseEMAS#populationSavers}.
      * It ALWAYS saves backwards meaning startingIteration >= prevIterationOffset > 0.
      * @param startingIteration Iteration from which to start saving.
      * @param prevIterationOffset Iterations to end on.
@@ -514,9 +514,9 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Saves 2 different random seeds (because they are both independently used) that are statically used in {@link BaseAgent}.
-     * @see BaseAgent#randomSave
-     * @see BaseAgent#randomJMetalSave
+     * Saves 2 different random seeds (because they are both independently used) that are statically used in {@link JMetal5Agent}.
+     * @see JMetal5Agent#randomSave
+     * @see JMetal5Agent#randomJMetalSave
      * @param filePath path in which seeds will be stored.
      * @throws IOException If saving to '.ser' file is not successful.
      * */
@@ -526,38 +526,38 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
         try(FileOutputStream fileOutputStream = new FileOutputStream(agentSeedFileName);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream))
         {
-            outputStream.writeObject(BaseAgent.randomSave);
+            outputStream.writeObject(JMetal5Agent.randomSave);
         }
 
         String jMetalSeedFileName = filePath + "randomJMetalSeed_" + getName();
         try(FileOutputStream fileOutputStream = new FileOutputStream(jMetalSeedFileName);
             ObjectOutputStream outputStream = new ObjectOutputStream(fileOutputStream))
         {
-            outputStream.writeObject(BaseAgent.randomJMetalSave);
+            outputStream.writeObject(JMetal5Agent.randomJMetalSave);
         }
 
     }
 
     /**
      * Saves chosen iteration. It creates deep copies of objects that are required to have exactly the same EMAS iteration.
-     * That includes {@link BaseAgent#randomJMetalSave}, {@link BaseAgent#randomSave}, {@link BaseEMASSaver} instance of copied variables from 'this' reference,
+     * That includes {@link JMetal5Agent#randomJMetalSave}, {@link JMetal5Agent#randomSave}, {@link JMetal5BaseEMASSaver} instance of copied variables from 'this' reference,
      * @param iteration chosen iteration to save.
      * */
     @Override
     protected void saveIteration(int iteration) {
         if(isDebugMode) {
-            BaseAgent.saveRandom(iterations);
-            BaseAgent.saveJMetalRandom(iterations);
-            BaseEMASSaver saver = new BaseEMASSaver();
+            JMetal5Agent.saveRandom(iterations);
+            JMetal5Agent.saveJMetalRandom(iterations);
+            JMetal5BaseEMASSaver saver = new JMetal5BaseEMASSaver();
             saver.save(this);
             emasSavers.add(saver);
 
-            ArrayList<BaseAgent<S>> currentIteration = new ArrayList<>();
-            Iterator<BaseAgent<S>> iterator = population.iterator();
+            ArrayList<JMetal5Agent<S>> currentIteration = new ArrayList<>();
+            Iterator<JMetal5Agent<S>> iterator = population.iterator();
 
             while(iterator.hasNext()) {
-                BaseAgent<S> a = iterator.next();
-                BaseAgent<S> c = a.copy();
+                JMetal5Agent<S> a = iterator.next();
+                JMetal5Agent<S> c = a.copy();
                 currentIteration.add(c);
             }
 
@@ -566,7 +566,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     }
 
     /**
-     * Loads serialized RANDOM seed from a file. The file needs to have specific name convention (preferable same as from {@link BaseEMAS#serializeRandomSeed(String)}.
+     * Loads serialized RANDOM seed from a file. The file needs to have specific name convention (preferable same as from {@link JMetal5BaseEMAS#serializeRandomSeed(String)}.
      * @param iterationToSet iteration to which set to specific seed.
      * @param file file from which to load seed.
      * */
@@ -578,7 +578,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
             if(file.getName().contains("Agent"))
             {
                 Map<Integer, Random> randomSave = (HashMap<Integer, Random>) objectInputStream.readObject();
-                BaseAgent.setRandom(randomSave.get(iterationToSet));
+                JMetal5Agent.setRandom(randomSave.get(iterationToSet));
             }
             else if(file.getName().contains("JMetal"))
             {
@@ -601,7 +601,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
     public void loadSerializedEMAS(File file){
         try(FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
-            BaseEMASSaver saver = (BaseEMASSaver) objectInputStream.readObject();
+            JMetal5BaseEMASSaver saver = (JMetal5BaseEMASSaver) objectInputStream.readObject();
             saver.load(this);
         }catch(Exception e)
         {
@@ -620,11 +620,11 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
         try(FileInputStream fileInputStream = new FileInputStream(file.getAbsolutePath());
             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)){
 
-            ArrayList<BaseAgent<S>> loadedGenotype = (ArrayList<BaseAgent<S>>) objectInputStream.readObject();
+            ArrayList<JMetal5Agent<S>> loadedGenotype = (ArrayList<JMetal5Agent<S>>) objectInputStream.readObject();
             if(loadedGenotype == null)
                 throw new JMetalException("Loaded genotype was null!");
 
-            for(BaseAgent<S> agent: loadedGenotype){
+            for(JMetal5Agent<S> agent: loadedGenotype){
                 agent.setEMAS(this);
                 agent.addToAgentRecords();
                 agent.setCrossoverOperator(this.getCrossoverOperator());
@@ -640,7 +640,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * Helper function to filter Agents that can reproduce out of population.
      * @return lists of Agents who can reproduce.
      * */
-    private List<BaseAgent<S>> getListOfAgentsWhoCanReproduce() {
+    private List<JMetal5Agent<S>> getListOfAgentsWhoCanReproduce() {
         return population.stream().filter(a -> a.canReproduce()
                 && !a.hasAlreadyReproduced).collect(Collectors.toList());
     }
@@ -651,7 +651,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
      * */
     public double getSumOfResources()
     {
-        return population.stream().mapToDouble(BaseAgent::getResourceLevel).sum();
+        return population.stream().mapToDouble(JMetal5Agent::getResourceLevel).sum();
     }
 
     @Override
@@ -661,7 +661,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     @Override
     public List<S> getPopulation() {
-        return population.stream().map(BaseAgent::getGenotype).collect(Collectors.toList());
+        return population.stream().map(JMetal5Agent::getGenotype).collect(Collectors.toList());
     }
 
     /**
@@ -677,7 +677,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
                     "Genotype size:" + genotype.size() +
                     "Population size:" + population.size());
         int genotypeIndex = 0;
-        for(BaseAgent<S> agent: population)
+        for(JMetal5Agent<S> agent: population)
         {
             agent.setGenotype(genotype.get(genotypeIndex++));
         }
@@ -711,7 +711,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     @Override
     public String getDescription() {
-        return "BaseEMAS";
+        return "JMetal5BaseEMAS";
     }
 
     @Override
@@ -725,7 +725,7 @@ public class BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, Li
 
     public void setAgentType(String agentType)
     {
-        this.agentType = Optional.ofNullable(agentType).orElse("BaseAgent");
+        this.agentType = Optional.ofNullable(agentType).orElse("JMetal5BaseAgent");
     }
 
 }

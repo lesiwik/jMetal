@@ -1,9 +1,9 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.visualization;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.solution.DoubleSolution;
 
 import java.util.ArrayList;
@@ -42,7 +42,7 @@ public class SingleObjectiveChartWrapper {
 //        });
 //    }
 //
-    public void updateChart(List<DoubleSolution> data, String seriesName, BaseEMAS emas, int seriesNumber) {
+    public void updateChart(List<DoubleSolution> data, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
         javax.swing.SwingUtilities.invokeLater(() -> {
             for (int i = 0; i < charts.size(); i++) {
                 charts.get(i).update(data, seriesName, emas, seriesNumber);

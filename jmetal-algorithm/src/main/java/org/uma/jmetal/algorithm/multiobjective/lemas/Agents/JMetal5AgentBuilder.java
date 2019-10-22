@@ -1,8 +1,8 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.agents;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
-import org.uma.jmetal.algorithm.multiobjective.lemas.agents.utils.ReproCondition;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.solution.Solution;
@@ -10,7 +10,7 @@ import org.uma.jmetal.solution.Solution;
 import java.util.Optional;
 
 /**
- * Classic implementation of builder for {@link BaseAgent}, {@link GlobalRankAgent} and {@link ProgressiveAgent}.
+ * Classic implementation of builder for {@link JMetal5Agent}, {@link JMetal5GlobalRankAgent} and {@link JMetal5ProgressiveAgent}.
  * Provides 3 different builds:
  * 1. Classic building method that chains functions.
  * 2. Spin on building method that provides parameters in build function.
@@ -18,10 +18,10 @@ import java.util.Optional;
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
  * */
-public final class AgentBuilder<S extends Solution<?>> {
+public final class JMetal5AgentBuilder<S extends Solution<?>> {
 
-    /* utils */
-    private BaseEMAS EMAS;
+    /* Utils */
+    private JMetal5BaseEMAS EMAS;
 
     /* Problem */
     private S genotype;
@@ -39,81 +39,81 @@ public final class AgentBuilder<S extends Solution<?>> {
     private EmasDominanceComparator parentToChildComparator;
     private ReproCondition reproCondition;
 
-    public AgentBuilder<S> withReproCondition(ReproCondition reproCondition)
+    public JMetal5AgentBuilder<S> withReproCondition(ReproCondition reproCondition)
     {
         this.reproCondition = reproCondition;
         return this;
     }
 
-    public AgentBuilder<S> withGenotype(S genotype) {
+    public JMetal5AgentBuilder<S> withGenotype(S genotype) {
         this.genotype = genotype;
         return this;
     }
 
-    public AgentBuilder<S> withEMAS(BaseEMAS EMAS) {
+    public JMetal5AgentBuilder<S> withEMAS(JMetal5BaseEMAS EMAS) {
         this.EMAS = EMAS;
         return this;
     }
 
 
-    public AgentBuilder<S> withCrossover(CrossoverOperator crossover) {
+    public JMetal5AgentBuilder<S> withCrossover(CrossoverOperator crossover) {
         this.crossoverOperator = crossover;
         return this;
     }
 
-    public AgentBuilder<S> withMutation(MutationOperator mutationOperator) {
+    public JMetal5AgentBuilder<S> withMutation(MutationOperator mutationOperator) {
         this.mutationOperator = mutationOperator;
         return this;
     }
 
 
-    public AgentBuilder<S> withAgentType(String type) {
+    public JMetal5AgentBuilder<S> withAgentType(String type) {
         this.type = type;
         return this;
     }
 
-    public AgentBuilder<S> withCurrentIsland(int currentIsland) {
+    public JMetal5AgentBuilder<S> withCurrentIsland(int currentIsland) {
         this.currentIsland = currentIsland;
         return this;
     }
 
-    public AgentBuilder<S> withDominanceComparator(EmasDominanceComparator comparator) {
+    public JMetal5AgentBuilder<S> withDominanceComparator(EmasDominanceComparator comparator) {
         this.comparator = comparator;
         return this;
     }
 
-    public AgentBuilder<S> withParentToChildComparator(EmasDominanceComparator parentToChildComparator) {
+    public JMetal5AgentBuilder<S> withParentToChildComparator(EmasDominanceComparator parentToChildComparator) {
         this.parentToChildComparator = parentToChildComparator;
         return this;
     }
 
 
-    public AgentBuilder<S> withInitialResourcesValue(double initialResourcesValue) {
+    public JMetal5AgentBuilder<S> withInitialResourcesValue(double initialResourcesValue) {
         this.initialResourcesValue = initialResourcesValue;
         return this;
     }
 
-    public AgentBuilder<S> withKnowledgeExchange(boolean allow) {
+    public JMetal5AgentBuilder<S> withKnowledgeExchange(boolean allow) {
         this.allowKnowledgeExchange = allow;
         return this;
     }
 
     @SuppressWarnings("unchecked")
-    public BaseAgent<S> build() {
-        BaseAgent<S> agent;
+    public JMetal5Agent<S> build() {
+        JMetal5Agent<S> agent;
         switch (Optional.ofNullable(type).orElse("")) {
             default:
-            case "BaseAgent":
-                agent = new BaseAgent<>();
+            case "JMetal5BaseAgent":
+                agent = new JMetal5Agent<>();
                 break;
-            case "GlobalRankAgent":
-                agent = new GlobalRankAgent();
+            case "JMetal5GlobalRankAgent":
+                agent = new JMetal5GlobalRankAgent();
                 break;
-            case "AreaControlAgent":
-                agent = new AreaControlAgent();
+            case "JMetal5AreaControlAgent":
+                agent = new JMetal5AreaControlAgent();
                 break;
-            case "ProgressiveAgent":
-                agent = new ProgressiveAgent();
+            case "JMetal5ProgressiveAgent":
+                agent = new JMetal5ProgressiveAgent();
                 break;
         }
         agent.setGenotype(genotype);
@@ -127,21 +127,21 @@ public final class AgentBuilder<S extends Solution<?>> {
     }
 
     @SuppressWarnings("unchecked")
-    public BaseAgent<S> build(BaseEMAS EMAS, S genotype, String agentClassName, double initialResourceLevel) {
-        BaseAgent<S> agent;
+    public JMetal5Agent<S> build(JMetal5BaseEMAS EMAS, S genotype, String agentClassName, double initialResourceLevel) {
+        JMetal5Agent<S> agent;
         switch (agentClassName) {
             default:
-            case "BaseAgent":
-                agent = new BaseAgent<>();
+            case "JMetal5BaseAgent":
+                agent = new JMetal5Agent<>();
                 break;
-            case "GlobalRankAgent":
-                agent = new GlobalRankAgent<>();
+            case "JMetal5GlobalRankAgent":
+                agent = new JMetal5GlobalRankAgent<>();
                 break;
-            case "AreaControlAgent":
-                agent = new AreaControlAgent<>();
+            case "JMetal5AreaControlAgent":
+                agent = new JMetal5AreaControlAgent<>();
                 break;
-            case "ProgressiveAgent":
-                agent = new ProgressiveAgent<>();
+            case "JMetal5ProgressiveAgent":
+                agent = new JMetal5ProgressiveAgent<>();
                 break;
         }
         agent.setReproCondition(Optional.ofNullable(reproCondition).orElse(agent.getReproCondition()));
@@ -156,21 +156,21 @@ public final class AgentBuilder<S extends Solution<?>> {
     }
 
     @SuppressWarnings("unchecked")
-    public BaseAgent<S> buildForCopy(String agentClassName, int id) {
-        BaseAgent<S> agent;
+    public JMetal5Agent<S> buildForCopy(String agentClassName, int id) {
+        JMetal5Agent<S> agent;
         switch (agentClassName) {
             default:
-            case "BaseAgent":
-                agent = new BaseAgent<>(id);
+            case "JMetal5BaseAgent":
+                agent = new JMetal5Agent<>(id);
                 break;
-            case "GlobalRankAgent":
-                agent = new GlobalRankAgent(id);
+            case "JMetal5GlobalRankAgent":
+                agent = new JMetal5GlobalRankAgent(id);
                 break;
-            case "AreaControlAgent":
-                agent = new AreaControlAgent(id);
+            case "JMetal5AreaControlAgent":
+                agent = new JMetal5AreaControlAgent(id);
                 break;
-            case "ProgressiveAgent":
-                agent = new ProgressiveAgent(id);
+            case "JMetal5ProgressiveAgent":
+                agent = new JMetal5ProgressiveAgent(id);
                 break;
         }
         return agent;

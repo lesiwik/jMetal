@@ -1,8 +1,8 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.comparators;/*
-package org.uma.jmetal.algorithm.multiobjective.lemas.comparators;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;/*
+package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;
 
-import org.uma.jmetal.algorithm.multiobjective.lemas.agents.BaseAgent;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 
 
 */
@@ -12,7 +12,7 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
  * @since 8/27/2018
  * *//*
 
-public class AreaUnderControlDistanceToClosesNeighbourComparator<S extends BaseAgent<?>> extends AreaUnderControlComparator<S> {
+public class AreaUnderControlDistanceToClosesNeighbourComparator<S extends JMetal5Agent<?>> extends AreaUnderControlComparator<S> {
 
 
     */
@@ -25,7 +25,7 @@ public class AreaUnderControlDistanceToClosesNeighbourComparator<S extends BaseA
      * *//*
 
     @Override
-    public int compare(BaseAgent agent1, BaseAgent agent2) {
+    public int compare(JMetal5Agent agent1, JMetal5Agent agent2) {
         int isBetter = super.compare(agent1,agent2);
         if (isBetter == Constants.NEITHER_IS_BETTER) {
             if (agent1.getDistanceToClosestNeighbour()==agent2.getDistanceToClosestNeighbour())

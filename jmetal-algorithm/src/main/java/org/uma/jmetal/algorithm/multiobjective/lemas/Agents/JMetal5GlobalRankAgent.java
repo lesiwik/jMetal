@@ -1,4 +1,4 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.agents;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.solution.Solution;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 9/02/2018
  * */
-public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
+public class JMetal5GlobalRankAgent<S extends Solution<?>> extends JMetal5Agent<S> {
 
     /**
      * Comparator based on global ranking.
@@ -28,10 +28,10 @@ public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
      * */
     private Ranking<DoubleSolution> ranking = new DominanceRanking<>();
 
-    public GlobalRankAgent() { }
+    public JMetal5GlobalRankAgent() { }
 
 
-    public GlobalRankAgent(int id)
+    public JMetal5GlobalRankAgent(int id)
     {
         super(id);
     }
@@ -42,7 +42,7 @@ public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
      * @param population population to compute ranking from.
      * @return instance of computed ranking.
      * */
-    private Ranking<DoubleSolution> computeDominanceRanking(List<? extends BaseAgent> population) {
+    private Ranking<DoubleSolution> computeDominanceRanking(List<? extends JMetal5Agent> population) {
         List solutionList = population.stream().map(p -> p.getGenotype()).collect(Collectors.toList());
         ranking.computeRanking(solutionList);
         return ranking;
@@ -55,10 +55,10 @@ public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
      * @return result of meeting in form of integer.
      * */
     @Override
-    public int doMeeting(List<? extends BaseAgent<S>> meetPopulation, double transferResourceValue) {
+    public int doMeeting(List<? extends JMetal5Agent<S>> meetPopulation, double transferResourceValue) {
         int domResult = super.doMeeting(meetPopulation, transferResourceValue);
             if(domResult==0){
-                BaseAgent meetingPartner = findMeetingPartner(meetPopulation);
+                JMetal5Agent meetingPartner = findMeetingPartner(meetPopulation);
                 computeDominanceRanking(meetPopulation);
                 int compResult = comparator.compare(this.getGenotype(), meetingPartner.getGenotype());
                 if (compResult == -1) {
@@ -78,6 +78,6 @@ public class GlobalRankAgent<S extends Solution<?>> extends BaseAgent<S> {
 
     @Override
     public String getAgentType() {
-        return "GlobalRankAgent";
+        return "JMetal5GlobalRankAgent";
     }
 }

@@ -2,11 +2,11 @@ package org.uma.jmetal.runner.multiobjective;/*
 package org.uma.jmetal.runner.multiobjective;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.ProgressiveEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.AreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.ParentToChildAreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
-import org.uma.jmetal.algorithm.multiobjective.lemas.visualization.PausableChartWrapper;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5ProgressiveEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.ParentToChildAreaUnderControlComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
 import org.uma.jmetal.measure.Measurable;
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.util.AlgorithmRunner;
@@ -18,8 +18,8 @@ import java.io.*;
 import java.util.*;
 import java.util.List;
 
-import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.IF_BETTER_AND_COULD_NOT_KNOW;
-import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.IF_NOT_WORSE;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.IF_BETTER_AND_COULD_NOT_KNOW;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.IF_NOT_WORSE;
 
 public class JMetal5EMASLoadRunner {
 
@@ -104,18 +104,18 @@ public class JMetal5EMASLoadRunner {
                     .replaceAll("[^0-9]", ""));
             if(iteration == maxIteration) {
                 String algorithmName = genotypeFiles.get(i).getName().replaceAll("_iteration_\\d+.ser", "");
-                ProgressiveEMAS emas;
+                JMetal5ProgressiveEMAS emas;
                 if (!algorithmsNames.contains(algorithmName) && !algorithmName.contains("EMAS")) {
                     System.out.println("Load from: " + genotypeFiles.get(i).getName());
 
                     switch (algorithmName) {
                         case "Better":
-                            emas = new ProgressiveEMAS(algorithmName, IF_BETTER_AND_COULD_NOT_KNOW, false,
+                            emas = new JMetal5ProgressiveEMAS(algorithmName, IF_BETTER_AND_COULD_NOT_KNOW, false,
                                     new AreaUnderControlComparator(), new ParentToChildAreaUnderControlComparator());
                             emas.setLoadedState();
                             break;
                         case "NotWorse":
-                            emas = new ProgressiveEMAS(algorithmName,
+                            emas = new JMetal5ProgressiveEMAS(algorithmName,
                                     IF_NOT_WORSE, false,
                                     new AreaUnderControlComparator(), new ParentToChildAreaUnderControlComparator());
                             emas.setLoadedState();

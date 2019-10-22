@@ -1,10 +1,10 @@
 package org.uma.jmetal.runner.singleobjective;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.comparators.EmasSingleObjectiveComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants;
-import org.uma.jmetal.algorithm.multiobjective.lemas.visualization.SingleObjectiveChartWrapper;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasSingleObjectiveComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.SingleObjectiveChartWrapper;
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.AlgorithmRunner;
@@ -14,7 +14,7 @@ import org.uma.jmetal.util.measure.Measurable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.uma.jmetal.algorithm.multiobjective.lemas.utils.Constants.IF_BETTER;
+import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.IF_BETTER;
 
 public class JMetal5EMASSingleObjectiveVisualExperimentRunner extends AbstractAlgorithmRunner {
 
@@ -22,7 +22,7 @@ public class JMetal5EMASSingleObjectiveVisualExperimentRunner extends AbstractAl
 
         List<Algorithm> algorithmsToRun = new ArrayList<>();
 
-        algorithmsToRun.add(new BaseEMAS<>("BaseEMAS",
+        algorithmsToRun.add(new JMetal5BaseEMAS<>("BaseEMAS",
                 IF_BETTER, false,
                 new EmasSingleObjectiveComparator(), new EmasSingleObjectiveComparator()));
 
@@ -31,7 +31,7 @@ public class JMetal5EMASSingleObjectiveVisualExperimentRunner extends AbstractAl
         algorithmsToRun.forEach(algorithm -> ((Measurable) algorithm).getMeasureManager()
                 .getPushMeasure("currentPopulation")
                 .register(population ->
-                        chartWrapper.updateChart((List<DoubleSolution>) population, algorithm.getName(), (BaseEMAS) algorithm, algorithmsToRun.indexOf(algorithm))));
+                        chartWrapper.updateChart((List<DoubleSolution>) population, algorithm.getName(), (JMetal5BaseEMAS) algorithm, algorithmsToRun.indexOf(algorithm))));
 
         algorithmsToRun
                 .parallelStream()

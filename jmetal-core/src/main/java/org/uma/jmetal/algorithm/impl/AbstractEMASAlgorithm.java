@@ -159,10 +159,10 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
                 updateProgress();
                 System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             }
-//           try {
-//                Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//            }
+/*           try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }*/
         }
     }
 }

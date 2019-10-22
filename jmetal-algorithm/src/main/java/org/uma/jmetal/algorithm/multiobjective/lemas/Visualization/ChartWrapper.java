@@ -1,10 +1,10 @@
-package org.uma.jmetal.algorithm.multiobjective.lemas.visualization;
+package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.algorithms.BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.utils.config.MeetingType;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.config.MeetingType;
 import org.uma.jmetal.solution.DoubleSolution;
 
 import javax.swing.*;
@@ -57,7 +57,7 @@ public class ChartWrapper {
         });
     }
 
-    public void updateChart(List<DoubleSolution> data, String seriesName, BaseEMAS emas, int seriesNumber) {
+    public void updateChart(List<DoubleSolution> data, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
         SwingUtilities.invokeLater(() -> {
             for (int i = 0; i < charts.size(); i++) {
                 charts.get(i).update(data, seriesName, emas, seriesNumber);
