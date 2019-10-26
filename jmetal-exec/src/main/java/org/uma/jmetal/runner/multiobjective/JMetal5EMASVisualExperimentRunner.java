@@ -29,15 +29,6 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
         if (args.length > 0 && args[0].equals("-debug"))
             isDebugMode = true;
 
-/*        JMetal5ProgressiveEMAS emas1 = new JMetal5ProgressiveEMAS( "Better",
-                 IF_BETTER_AND_COULD_NOT_KNOW, false,
-                 new AreaUnderControlComparator(), new ParentToChildAreaUnderControlComparator());
-        if(isDebugMode)
-        {
-            emas1.setDebugMode();
-        }
-*/
-
         //addBaseEMASes(algorithmsToRun);
         addAreaUnderControlBaseEMASes(algorithmsToRun);
 

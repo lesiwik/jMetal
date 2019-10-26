@@ -50,6 +50,10 @@ public class Constants {
     public final static int IS_WORSE = -1;
     public final static int IS_NEITHER_BETTER_NOR_WORSE = 0;
 
+    /* Comparator types */
+    public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
+    public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
+
     /* Charts */
     public static final int HV_FREQUENCY = 50;
     public static final int POP_FREQUENCY = 1;

@@ -20,6 +20,7 @@ public class EmasDominanceComparator<Agent extends JMetal5Agent<?>> implements C
      * @param a2 agent to compare.
      * @return result of comparison.
      * */
+    @SuppressWarnings("unchecked")
     @Override
     public int compare(Agent a1, Agent a2) {
         return new DominanceComparator().compare(a1.genotype, a2.genotype);

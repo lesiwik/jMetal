@@ -44,6 +44,8 @@ public class ChartWrapper {
         charts.add(new MeetingsChart(algorithmToShow, MeetingType.NEITHER_IS_BETTER));
         charts.add(new PopulationSizeChart(algorithmToShow));
 
+        charts.forEach(chart -> chart.getChart().getStyler().setToolTipsEnabled(true));
+
         wrapper = new SwingWrapper<>(charts.stream().map(BaseChart::getChart).collect(Collectors.toList()), 3, 3);
         wrapper.displayChartMatrix();
     }
