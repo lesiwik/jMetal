@@ -71,8 +71,8 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
     {
         algorithms.addAll(
                 Arrays.asList(
-                        createAreaControlBaseEMAS("Base[Area] - If better", IF_BETTER),
-                        createAreaControlBaseEMAS("Base[Area] - If not worse", IF_NOT_WORSE),
+//                        createAreaControlBaseEMAS("Base[Area] - If better", IF_BETTER),
+//                        createAreaControlBaseEMAS("Base[Area] - If not worse", IF_NOT_WORSE),
                         createAreaControlBaseEMAS("Base[Area] - Always", ALWAYS)
                 ));
     }

@@ -7,6 +7,7 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.DoubleSolution;
 
 import java.util.List;
+import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class SingleVariableChart extends BaseChart {
@@ -77,3 +78,4 @@ public class SingleVariableChart extends BaseChart {
 //        }
     }
 }
+

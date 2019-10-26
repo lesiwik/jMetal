@@ -254,39 +254,8 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
             offSpring.mutate();
             offSpring.evaluate(EMAS.getProblem());
 
-            int isOffspringBetter = 0;
-            if (EMAS.getWhenAddOffspringToPopulation() != Constants.ALWAYS) {
-                isOffspringBetter = EMAS.compareParentToOffspring(parent, offSpring);
-            }
-
-
-            boolean isOffspringGoodEnough = false;
-            switch(EMAS.getWhenAddOffspringToPopulation())
-            {
-
-                case Constants.IF_NOT_WORSE:
-                    if(isOffspringBetter == Constants.NEITHER_IS_BETTER || isOffspringBetter == Constants.IS_BETTER) {
-                        isOffspringGoodEnough = true;
-                    }
-                    break;
-
-                case Constants.IF_BETTER_AND_COULD_NOT_KNOW:
-                case Constants.IF_BETTER:
-                    if(isOffspringBetter == Constants.IS_BETTER)
-                        isOffspringGoodEnough = true;
-                    break;
-
-                case Constants.ALWAYS:
-                default:
-                    isOffspringGoodEnough = true;
-                    break;
-            }
-
-            if(isOffspringGoodEnough)
-            {
-                offSpring.transferResourcesFrom(parent, Constants.INITIAL_RESOURCE_VALUE);
-                listOfOffspringToBeReturned.add(offSpring);
-            }
+            offSpring.transferResourcesFrom(parent, Constants.INITIAL_RESOURCE_VALUE);
+            listOfOffspringToBeReturned.add(offSpring);
 
             parent.hasAlreadyReproduced = true;
         }
