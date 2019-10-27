@@ -1,6 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
@@ -21,26 +22,26 @@ public class JMetal5GlobalRankEMAS<S extends Solution<?>> extends JMetal5BaseEMA
 
     public JMetal5GlobalRankEMAS(String algorithmName, int replaceOnlyIfBetter,
                                  boolean allowKnowledgeExchange,
-                                 EmasDominanceComparator comparator,
-                                 EmasDominanceComparator parentToChildComparator) {
+                                 String comparatorType,
+                                 String parentToChildComparatorType) {
         super(algorithmName,replaceOnlyIfBetter,
-                allowKnowledgeExchange,comparator, parentToChildComparator);
-        agentType = "JMetal5GlobalRankAgent";
+                allowKnowledgeExchange,comparatorType, parentToChildComparatorType);
+        agentType = Constants.GLOBAL_RANK_AGENT;
     }
 
 
     JMetal5GlobalRankEMAS(){
         super();
-        agentType = "JMetal5GlobalRankAgent";
+        agentType = Constants.GLOBAL_RANK_AGENT;
     }
 
     @Override
     public String getDescription() {
-        return "JMetal5GlobalRankEMAS";
+        return Constants.GLOBAL_RANK_EMAS;
     }
 
     @Override
     public void setAgentType(String agentType) {
-        this.agentType = Optional.ofNullable(agentType).orElse("JMetal5GlobalRankAgent");
+        this.agentType = Optional.ofNullable(agentType).orElse(Constants.GLOBAL_RANK_AGENT);
     }
 }

@@ -25,6 +25,6 @@ public class JMetal5ProgressiveAgent<S extends Solution<?>> extends JMetal5Agent
 
     @Override
     public String getAgentType() {
-        return "JMetal5ProgressiveAgent";
+        return Constants.PROGRESSIVE_AGENT;
     }
 }

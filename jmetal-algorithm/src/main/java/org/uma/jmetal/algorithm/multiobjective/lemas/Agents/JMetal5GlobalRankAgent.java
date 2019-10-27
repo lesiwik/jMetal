@@ -1,5 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.DoubleSolution;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingComparator;
@@ -78,6 +79,6 @@ public class JMetal5GlobalRankAgent<S extends Solution<?>> extends JMetal5Agent<
 
     @Override
     public String getAgentType() {
-        return "JMetal5GlobalRankAgent";
+        return Constants.GLOBAL_RANK_AGENT;
     }
 }

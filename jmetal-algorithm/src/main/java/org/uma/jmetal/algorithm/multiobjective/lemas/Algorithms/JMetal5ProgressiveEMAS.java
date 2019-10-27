@@ -1,6 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.problem.Problem;
@@ -21,11 +22,11 @@ public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEM
     public JMetal5ProgressiveEMAS(String algorithmName,
                                   int whenAddOffspringToPopulation,
                                   boolean allowKnowledgeExchange,
-                                  EmasDominanceComparator comparator,
-                                  EmasDominanceComparator parentToChildComparator) {
+                                  String comparatorType,
+                                  String parentToChildComparatorType) {
         super(algorithmName,whenAddOffspringToPopulation, allowKnowledgeExchange,
-                comparator, parentToChildComparator);
-        agentType = "JMetal5ProgressiveAgent";
+                comparatorType, parentToChildComparatorType);
+        agentType = Constants.PROGRESSIVE_AGENT;
     }
 
     public JMetal5ProgressiveEMAS(Problem problem, String algorithmName,
@@ -35,23 +36,23 @@ public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEM
                                   EmasDominanceComparator parentToChildComparator) {
         super(problem, algorithmName,whenAddOffspringToPopulation, allowKnowledgeExchange,
                 comparator, parentToChildComparator);
-        agentType = "JMetal5ProgressiveAgent";
+        agentType = Constants.PROGRESSIVE_AGENT;
     }
 
     JMetal5ProgressiveEMAS()
     {
         super();
-        agentType = "JMetal5ProgressiveAgent";
+        agentType = Constants.PROGRESSIVE_AGENT;
     }
 
     @Override
     public String getDescription() {
-        return "JMetal5ProgressiveEMAS";
+        return Constants.PROGRESSIVE_EMAS;
     }
 
     @Override
     public void setAgentType(String agentType) {
-        this.agentType = Optional.ofNullable(agentType).orElse("JMetal5ProgressiveAgent");
+        this.agentType = Optional.ofNullable(agentType).orElse(Constants.PROGRESSIVE_AGENT);
     }
 
 }

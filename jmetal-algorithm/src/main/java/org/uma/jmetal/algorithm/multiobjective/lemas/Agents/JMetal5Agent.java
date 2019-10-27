@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.EqualsAndHashCode;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.DeepCopier;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -113,6 +114,16 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
      * */
     private MutationOperator<S> mutationOperator;
 
+    /**
+     * Base comparator used to compare agents between themselves.
+     * */
+    private EmasDominanceComparator<JMetal5Agent<?>> comparator;
+
+    /**
+     * Parent to child comparator used to compare agents to its offspring when they get created. Used to determine if the offspring is better than its parent before allowing it to population.
+     * */
+    private EmasDominanceComparator<JMetal5Agent<?>> parentToChildComparator;
+
     public JMetal5Agent(){
         met = false;
         resourceLevel = 0;
@@ -182,7 +193,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
                          double transferResourceValue) {
         JMetal5Agent<S> meetingPartner = findMeetingPartner(meetPopulation);
 
-        int comparatorResult = EMAS.compareAgents(this, meetingPartner);
+        int comparatorResult = compareAgents(this, meetingPartner);
 
         if (comparatorResult == Constants.FIRST_IS_BETTER) {
             transferResourcesFrom(meetingPartner, transferResourceValue);
@@ -306,6 +317,32 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
     }
 
     /**
+     * Compares two Agents based on {@link #comparator}
+     * @param agent1 agent to compare to agent2
+     * @param agent2 agent to compare to agent1
+     * */
+    private int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
+        if(agent1.getClass() != agent2.getClass()
+                || agent1.getParentToChildComparator().getClass() != agent2.getParentToChildComparator().getClass())
+            throw new RuntimeException("Regular comparator: Type mismatch of comparator or agent!");
+        return comparator.compare(agent1, agent2);
+    }
+
+    /**
+     * Compares two Agents, one of which is parent of the other using {@link #parentToChildComparator}.
+     * @param parent parent agent.
+     * @param agent offspring agent.
+     * @return comparator result.
+     * */
+    private int compareParentToOffspring(JMetal5Agent<S> parent, JMetal5Agent<S> agent) {
+        if(parent.getClass() != agent.getClass()
+                || parent.getParentToChildComparator().getClass() != agent.getParentToChildComparator().getClass())
+            throw new RuntimeException("Parent to child comparator: Type mismatch of comparator or agent!");
+        return parentToChildComparator.compare(parent, agent);
+    }
+
+
+    /**
      * Checks to see if agent is alive.
      * @return {@link JMetal5Agent#resourceLevel} > {@link Constants#DEATH_LEVEL_VALUE} ({@value Constants#DEATH_LEVEL_VALUE}).
      * */
@@ -369,7 +406,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
 
 
     public String getAgentType() {
-        return "JMetal5BaseAgent";
+        return Constants.BASE_AGENT;
     }
 
     public static void setRandom(Random rand) { random = rand; }

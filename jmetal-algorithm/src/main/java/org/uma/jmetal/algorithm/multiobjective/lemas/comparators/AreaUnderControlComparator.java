@@ -1,8 +1,11 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;
 
-import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5AreaControlAgent;
+import lombok.Setter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -10,14 +13,20 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
  * */
+@Setter
+public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends EmasDominanceComparator<Agent> {
 
-public class AreaUnderControlComparator<Agent extends JMetal5AreaControlAgent<?>> extends EmasDominanceComparator<Agent> {
+
+
+    private List<Agent> listOfKnownNonDominatedAgents;
+
+    public AreaUnderControlComparator() { listOfKnownNonDominatedAgents = new ArrayList<>(); }
 
 
     /**
      * Compares to given agent based. First it makes call to {@link EmasDominanceComparator#compare(JMetal5Agent, JMetal5Agent)}.
      * If result is 0 (both are equal) then it calls {@link AreaUnderControlComparator#isPartnerUnderControl(Agent, Agent)}.
-     * If again both are equal, then it updates Non Dominated lists {@link JMetal5AreaControlAgent#updateListOfKnownNondominatedAgents(JMetal5AreaControlAgent)}.
+     * If again both are equal, then it updates Non Dominated lists {@link #updateListOfKnownNondominatedAgents(Agent, Agent)}.
      * @param agent1 agent to compare.
      * @param agent2 agent to compare.
      * @return result of comparison.
@@ -35,8 +44,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5AreaControlAgent<?>
                 {
                     case Constants.SECOND_IS_BETTER: //2-2
                     case Constants.NEITHER_IS_BETTER: //3-3
-                        agent1.updateListOfKnownNondominatedAgents((JMetal5AreaControlAgent) agent2);
-                        agent2.updateListOfKnownNondominatedAgents((JMetal5AreaControlAgent) agent1);
+                        updateListOfKnownNondominatedAgents(agent1, agent2);
                     case Constants.FIRST_IS_BETTER: //1-1
                         return Constants.NEITHER_IS_BETTER;
                 }
@@ -70,23 +78,57 @@ public class AreaUnderControlComparator<Agent extends JMetal5AreaControlAgent<?>
     }
 
     /**
-     * Fetches {@link JMetal5AreaControlAgent#getListOfKnownNonDominatedAgents()} from agent1 and
-     * then for every agent in that list, it compares them to agent2 using {@link EmasDominanceComparator}.
+     * Fetches {@link #listOfKnownNonDominatedAgents} from agentToFetchList and
+     * then for every agent in that list, it compares them to agentToCompareTo using {@link EmasDominanceComparator}.
      * @param agentToFetchList agent to fetch list from.
-     * @param agentToCompareToList agent to compare agents from list to.
+     * @param agentToCompareTo agent to compare agents from list to.
      * @return result of comparison.
      * */
-    private int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareToList) {
+    private int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
 
         //TODO: A co w przypadku w którym w liscie jest [ niedominowany, dominowany, dominujacy] ?
         //TODO II: Wywalac przy okazji te dominowane raczej nie?
         //TODO III: Co zrobic z dominujacymi?
 
-        for (JMetal5AreaControlAgent agent:  agentToFetchList.getListOfKnownNonDominatedAgents()) {
-            int isPartnerUnderControl = super.compare((Agent) agent, agentToCompareToList);
+        List<Agent> listOfKnownNonDominatedAgents = getListOfKnownNonDominatedAgents(agentToFetchList);
+        for (Agent agent:  listOfKnownNonDominatedAgents) {
+            int isPartnerUnderControl = super.compare(agent, agentToCompareTo);
             if (isPartnerUnderControl != Constants.NEITHER_IS_BETTER)
                 return isPartnerUnderControl;
         }
         return Constants.NEITHER_IS_BETTER;
+    }
+
+
+
+    /**
+     * Updates {@link #listOfKnownNonDominatedAgents} by adding agent in parameter if its not present already.
+     * @param meetingPartner agent to check.
+     * */
+    private void updateListOfKnownNondominatedAgents(Agent thisAgent, Agent meetingPartner) {
+        /* TODO: Tutaj trzeba by sie przejsc po liscie i sprawdzic czy ten dodawany nie dominuje ktoregos jesli dominuje to wywalic te dominowane,
+        od razu sprawdzic czy nie jest przez ktoregos dominowany jesli jest to nie dodajemy */
+        List<Agent> thisAgentList = getListOfKnownNonDominatedAgents(thisAgent);
+        List<Agent> meetingPartnerList = getListOfKnownNonDominatedAgents(meetingPartner);
+
+        if (!thisAgentList.contains(meetingPartner)) {
+            thisAgentList.add(meetingPartner);
+        }
+
+        if (!meetingPartnerList.contains(thisAgent)) {
+            meetingPartnerList.add(thisAgent);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
+    {
+        AreaUnderControlComparator<Agent> agentComparator = (AreaUnderControlComparator) agent.getComparator();
+        return agentComparator.getListOfKnownNonDominatedAgents();
+    }
+
+    private List<Agent> getListOfKnownNonDominatedAgents()
+    {
+        return listOfKnownNonDominatedAgents;
     }
 }

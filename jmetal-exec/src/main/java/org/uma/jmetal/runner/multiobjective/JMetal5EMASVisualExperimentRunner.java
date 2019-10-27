@@ -3,8 +3,6 @@ package org.uma.jmetal.runner.multiobjective;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.EMASBuilder;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
 import org.uma.jmetal.solution.DoubleSolution;
@@ -58,12 +56,12 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
     public static JMetal5BaseEMAS createBaseEMAS(String name, int whenAddOffspring)
     {
         return new EMASBuilder<>()
-                .emasType("Base")
+                .emasType(BASE_EMAS)
                 .algorithmName(name)
                 .allowKnowledgeExchange(false)
                 .whenAddOffspringToPopulation(whenAddOffspring)
-                .comparator(new EmasDominanceComparator())
-                .parentToChildComparator(new EmasDominanceComparator())
+                .comparator(EMAS_DOMINANCE_COMPARATOR)
+                .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                 .build();
     }
 
@@ -80,13 +78,13 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
     public static JMetal5BaseEMAS createAreaControlBaseEMAS(String name, int whenAddOffspring)
     {
         return new EMASBuilder<>()
-                .emasType("Base")
-                .agentType("JMetal5AreaControlAgent")
+                .emasType(BASE_EMAS)
+                .agentType(BASE_AGENT)
                 .algorithmName(name)
                 .allowKnowledgeExchange(false)
                 .whenAddOffspringToPopulation(whenAddOffspring)
-                .comparator(new AreaUnderControlComparator())
-                .parentToChildComparator(new AreaUnderControlComparator())
+                .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                .parentToChildComparator(AREA_UNDER_CONTROL_COMPARATOR)
                 .build();
     }
 }

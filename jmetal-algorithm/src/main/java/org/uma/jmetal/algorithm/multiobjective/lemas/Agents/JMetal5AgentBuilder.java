@@ -1,8 +1,10 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
 import org.uma.jmetal.solution.Solution;
@@ -35,8 +37,6 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
     /* Operators */
     private CrossoverOperator crossoverOperator;
     private MutationOperator mutationOperator;
-    private EmasDominanceComparator comparator;
-    private EmasDominanceComparator parentToChildComparator;
     private ReproCondition reproCondition;
 
     public JMetal5AgentBuilder<S> withReproCondition(ReproCondition reproCondition)
@@ -77,17 +77,6 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         return this;
     }
 
-    public JMetal5AgentBuilder<S> withDominanceComparator(EmasDominanceComparator comparator) {
-        this.comparator = comparator;
-        return this;
-    }
-
-    public JMetal5AgentBuilder<S> withParentToChildComparator(EmasDominanceComparator parentToChildComparator) {
-        this.parentToChildComparator = parentToChildComparator;
-        return this;
-    }
-
-
     public JMetal5AgentBuilder<S> withInitialResourcesValue(double initialResourcesValue) {
         this.initialResourcesValue = initialResourcesValue;
         return this;
@@ -103,16 +92,13 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         JMetal5Agent<S> agent;
         switch (Optional.ofNullable(type).orElse("")) {
             default:
-            case "JMetal5BaseAgent":
+            case Constants.BASE_AGENT:
                 agent = new JMetal5Agent<>();
                 break;
-            case "JMetal5GlobalRankAgent":
-                agent = new JMetal5GlobalRankAgent();
+            case Constants.GLOBAL_RANK_AGENT:
+                agent = new JMetal5GlobalRankAgent<>();
                 break;
-            case "JMetal5AreaControlAgent":
-                agent = new JMetal5AreaControlAgent();
-                break;
-            case "JMetal5ProgressiveAgent":
+            case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent();
                 break;
         }
@@ -131,16 +117,13 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         JMetal5Agent<S> agent;
         switch (agentClassName) {
             default:
-            case "JMetal5BaseAgent":
+            case Constants.BASE_AGENT:
                 agent = new JMetal5Agent<>();
                 break;
-            case "JMetal5GlobalRankAgent":
+            case Constants.GLOBAL_RANK_AGENT:
                 agent = new JMetal5GlobalRankAgent<>();
                 break;
-            case "JMetal5AreaControlAgent":
-                agent = new JMetal5AreaControlAgent<>();
-                break;
-            case "JMetal5ProgressiveAgent":
+            case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
         }
@@ -150,6 +133,8 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         agent.setCrossoverOperator(EMAS.getCrossoverOperator());
         agent.setEMAS(EMAS);
         agent.addToAgentRecords();
+        agent.setComparator(buildComparator(EMAS.getBaseComparatorType()));
+        agent.setParentToChildComparator(buildComparator(EMAS.getParentToChildComparatorType()));
         agent.setMutationOperator(EMAS.getMutationOperator());
         agent.setAllowKnowledgeExchange(EMAS.isKnowledgeExchangeAllowed());
         return agent;
@@ -160,20 +145,36 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         JMetal5Agent<S> agent;
         switch (agentClassName) {
             default:
-            case "JMetal5BaseAgent":
+            case Constants.BASE_AGENT:
                 agent = new JMetal5Agent<>(id);
                 break;
-            case "JMetal5GlobalRankAgent":
+            case Constants.GLOBAL_RANK_AGENT:
                 agent = new JMetal5GlobalRankAgent(id);
                 break;
-            case "JMetal5AreaControlAgent":
-                agent = new JMetal5AreaControlAgent(id);
-                break;
-            case "JMetal5ProgressiveAgent":
+            case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent(id);
                 break;
         }
         return agent;
+    }
+
+
+
+    private EmasDominanceComparator<JMetal5Agent<?>> buildComparator(String comparatorType)
+    {
+        EmasDominanceComparator<JMetal5Agent<?>> comparator;
+        switch(comparatorType)
+        {
+            case Constants.AREA_UNDER_CONTROL_COMPARATOR:
+                comparator = new AreaUnderControlComparator<>();
+                break;
+            default:
+            case Constants.EMAS_DOMINANCE_COMPARATOR:
+                comparator = new EmasDominanceComparator<>();
+                break;
+        }
+
+        return comparator;
     }
 
 }

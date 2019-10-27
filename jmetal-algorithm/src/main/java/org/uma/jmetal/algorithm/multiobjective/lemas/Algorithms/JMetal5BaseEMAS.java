@@ -45,7 +45,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * By default it is set to "JMetal5Base" but can be exchanged for something else. Be wary of it as it may break builder or EMAS should agent types be incompatible with each other.
      * @see JMetal5AgentBuilder
      * */
-    protected String agentType = "JMetal5BaseAgent";
+    protected String agentType = Constants.BASE_AGENT;
 
     /**
      * Max number of iterations.
@@ -101,16 +101,20 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     /* Comparators */
     /**
-     * Set as dominance comparator for each created agent. Agents then use it to compare themselves to other Agents and determine stronger genes.
+     * Set as type of dominance comparator for each created agent. Every agent will have its own instance of said comparator created based on this string in {@link JMetal5AgentBuilder}.
+     * Agents then use it to compare themselves to other Agents and determine stronger genes. By default set to {@link EmasDominanceComparator}
      * @see EmasDominanceComparator
+     * @see JMetal5AgentBuilder
      * */
-    private EmasDominanceComparator<JMetal5Agent<?>> comparator;
+    private String baseComparatorType;
 
     /**
-     * Set as dominance comparator for each created agent. Agents then use it to compare themselves to their parent Agents and determine stronger genes.
+     * Set as type of dominance comparator for each created agent. Every agent will have its own Agents then use it to compare themselves to their parent Agents and determine stronger genes. See {@link JMetal5BaseEMAS#baseComparatorType} for more info.
      * @see EmasDominanceComparator
+     * @see #baseComparatorType
      * */
-    private EmasDominanceComparator<JMetal5Agent<?>> parentToChildComparator;
+    //TODO: Resolve issue of doubling list and its access in 'smarter' comparators.
+    private String parentToChildComparatorType;
 
     /* Variables */
     private String algorithmName = "";
@@ -246,8 +250,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         /* Constructor parameters */
         this.whenAddOffspringToPopulation = whenAddOffspringToPopulation;
         this.allowKnowledgeExchange = allowKnowledgeExchange;
-        this.comparator = meetingComparator;
-        this.parentToChildComparator = parentChildComparator;
+        this.baseComparatorType = Constants.EMAS_DOMINANCE_COMPARATOR;
+        this.parentToChildComparatorType = Constants.EMAS_DOMINANCE_COMPARATOR;
         this.problem = problem;
         this.setName(algorithmName);
 
@@ -262,8 +266,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     @SuppressWarnings("unchecked")
     public JMetal5BaseEMAS(String algorithmName, int whenAddOffspringToPopulation,
                            boolean allowKnowledgeExchange,
-                           EmasDominanceComparator meetingComparator,
-                           EmasDominanceComparator parentChildComparator) {
+                           String meetingComparatorType,
+                           String parentChildComparatorType) {
 
         /* Operators */
         this.problem = (Problem<S>) Constants.PROBLEM.getProblem();
@@ -280,8 +284,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         /* Constructor Parameters */
         this.whenAddOffspringToPopulation = whenAddOffspringToPopulation;
         this.allowKnowledgeExchange = allowKnowledgeExchange;
-        this.comparator = meetingComparator;
-        this.parentToChildComparator = parentChildComparator;
+        this.baseComparatorType = meetingComparatorType;
+        this.parentToChildComparatorType = parentChildComparatorType;
         this.setName(algorithmName);
 
         /* Initialization */
@@ -421,29 +425,6 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
             neitherIsBetterMeetingTypeCounter++;
         else
             imBetterMeetingTypeCounter++;
-    }
-
-    /**
-     * Compares two Agents based on {@link JMetal5BaseEMAS#comparator}
-     * @param agent1 agent to compare to agent2
-     * @param agent2 agent to compare to agent1
-     * */
-    public int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
-        if(agent1.getClass() != agent2.getClass())
-            throw new RuntimeException("Regular comparator: agent1 and agent2 are not the same type of Agents!");
-        return comparator.compare(agent1, agent2);
-    }
-
-    /**
-     * Compares two Agents, one of which is parent of the other using {@link JMetal5BaseEMAS#parentToChildComparator}.
-     * @param parent parent agent.
-     * @param agent offspring agent.
-     * @return comparator result.
-     * */
-    public int compareParentToOffspring(JMetal5Agent<S> parent, JMetal5Agent<S> agent) {
-        if(parent.getClass() != agent.getClass())
-            throw new RuntimeException("Parent to child comparator: Parent and Agents are not the same type of Agents!");
-        return parentToChildComparator.compare(parent, agent);
     }
 
     /**
@@ -711,7 +692,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     @Override
     public String getDescription() {
-        return "JMetal5BaseEMAS";
+        return Constants.BASE_EMAS;
     }
 
     @Override
@@ -725,7 +706,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     public void setAgentType(String agentType)
     {
-        this.agentType = Optional.ofNullable(agentType).orElse("JMetal5BaseAgent");
+        this.agentType = Optional.ofNullable(agentType).orElse(Constants.BASE_AGENT);
     }
 
 }

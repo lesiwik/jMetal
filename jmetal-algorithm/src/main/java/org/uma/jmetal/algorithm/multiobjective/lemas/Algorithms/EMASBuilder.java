@@ -29,8 +29,8 @@ public class EMASBuilder<S extends Solution<?>> {
     private String agentType;
     private String algorithmName;
     private String emasType;
-    private EmasDominanceComparator comparator;
-    private EmasDominanceComparator parentToChildComparator;
+    private String comparatorType;
+    private String parentToChildComparatorType;
     private boolean allowKnowledgeExchange;
 
     /* Constants */
@@ -64,13 +64,13 @@ public class EMASBuilder<S extends Solution<?>> {
         JMetal5BaseEMAS<S> emas;
         switch (Optional.ofNullable(emasType).orElse("")) {
             default:
-            case "Base":
+            case Constants.BASE_EMAS:
                 emas = new JMetal5BaseEMAS<>();
                 break;
-            case "GlobalRank":
+            case Constants.GLOBAL_RANK_EMAS:
                 emas = new JMetal5GlobalRankEMAS<>();
                 break;
-            case "Progressive":
+            case Constants.PROGRESSIVE_EMAS:
                 emas = new JMetal5ProgressiveEMAS<>();
                 break;
         }
@@ -89,8 +89,8 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setCrossoverOperator(crossoverOperator);
         emas.setMutationOperator(mutationOperator);
         emas.setStrongMutationOperator(strongMutationOperator);
-        emas.setComparator(comparator);
-        emas.setParentToChildComparator(parentToChildComparator);
+        emas.setBaseComparatorType(comparatorType);
+        emas.setParentToChildComparatorType(parentToChildComparatorType);
         emas.setProblem(problem);
         emas.setAllowKnowledgeExchange(allowKnowledgeExchange);
         emas.setTransferAgentResourceLevel(transferAgentResourceLevel);
@@ -133,15 +133,15 @@ public class EMASBuilder<S extends Solution<?>> {
         return this;
     }
 
-    public EMASBuilder<S> parentToChildComparator(EmasDominanceComparator parentToChildComparator)
+    public EMASBuilder<S> parentToChildComparator(String parentToChildComparatorType)
     {
-        this.parentToChildComparator = parentToChildComparator;
+        this.parentToChildComparatorType = parentToChildComparatorType;
         return this;
     }
 
-    public EMASBuilder<S> comparator(EmasDominanceComparator comparator)
+    public EMASBuilder<S> comparator(String comparatorType)
     {
-        this.comparator = comparator;
+        this.comparatorType = comparatorType;
         return this;
     }
 

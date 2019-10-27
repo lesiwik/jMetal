@@ -22,9 +22,9 @@ public class JMetal5EMASSingleObjectiveVisualExperimentRunner extends AbstractAl
 
         List<Algorithm> algorithmsToRun = new ArrayList<>();
 
-        algorithmsToRun.add(new JMetal5BaseEMAS<>("BaseEMAS",
-                IF_BETTER, false,
-                new EmasSingleObjectiveComparator(), new EmasSingleObjectiveComparator()));
+//        algorithmsToRun.add(new JMetal5BaseEMAS<>("BaseEMAS",
+//                IF_BETTER, false,
+//                new EmasSingleObjectiveComparator(), new EmasSingleObjectiveComparator()));
 
 
         SingleObjectiveChartWrapper chartWrapper = new SingleObjectiveChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);

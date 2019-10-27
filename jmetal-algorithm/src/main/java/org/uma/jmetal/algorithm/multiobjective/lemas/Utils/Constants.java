@@ -1,8 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Utils;
 
 
-//import javafx.scene.paint.Color;
-
 import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.operator.CrossoverOperator;
 import org.uma.jmetal.operator.MutationOperator;
@@ -53,6 +51,16 @@ public class Constants {
     /* Comparator types */
     public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
     public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
+
+    /* Agent types */
+    public final static String BASE_AGENT = "JMetal5BaseAgent";
+    public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
+    public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
+
+    /* EMAS types */
+    public final static String BASE_EMAS = "JMetal5BaseEMAS";
+    public final static String GLOBAL_RANK_EMAS = "JMetal5GlobalRankEMAS";
+    public final static String PROGRESSIVE_EMAS = "JMetal5ProgressiveEMAS";
 
     /* Charts */
     public static final int HV_FREQUENCY = 50;
