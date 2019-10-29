@@ -113,7 +113,11 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
     }
 
     @SuppressWarnings("unchecked")
-    public JMetal5Agent<S> build(JMetal5BaseEMAS EMAS, S genotype, String agentClassName, double initialResourceLevel) {
+    public JMetal5Agent<S> build(JMetal5BaseEMAS EMAS,
+                                 S genotype,
+                                 String agentClassName,
+                                 double initialResourceLevel,
+                                 ReproCondition reproCondition) {
         JMetal5Agent<S> agent;
         switch (agentClassName) {
             default:
@@ -127,7 +131,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
         }
-        agent.setReproCondition(Optional.ofNullable(reproCondition).orElse(agent.getReproCondition()));
+        agent.setReproCondition(reproCondition);
         agent.setGenotype(genotype);
         agent.setResourceLevel(initialResourceLevel);
         agent.setCrossoverOperator(EMAS.getCrossoverOperator());

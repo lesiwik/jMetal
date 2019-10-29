@@ -1,5 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -40,6 +41,7 @@ public class EMASBuilder<S extends Solution<?>> {
     private int maxNumberOfIterations;
     private double initialAgentResourceLevel;
     private double transferAgentResourceLevel;
+    private ReproCondition reproCondition;
 
 
     @SuppressWarnings("unchecked")
@@ -56,6 +58,7 @@ public class EMASBuilder<S extends Solution<?>> {
         this.transferAgentResourceLevel = Constants.TRANSFER_RESOURCE_VALUE;
         this.maxNumberOfIterations = Constants.MAX_ITERATIONS;
         this.problem = (Problem<S>) Constants.PROBLEM.getProblem();
+        this.reproCondition = Constants.BASIC_REPRODUCTION_LEVEL;
     }
 
     @SuppressWarnings("unchecked")
@@ -94,6 +97,7 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setProblem(problem);
         emas.setAllowKnowledgeExchange(allowKnowledgeExchange);
         emas.setTransferAgentResourceLevel(transferAgentResourceLevel);
+        emas.setReproCondition(reproCondition);
     }
 
     public EMASBuilder<S> agentType(String agentType)
@@ -106,6 +110,12 @@ public class EMASBuilder<S extends Solution<?>> {
     public EMASBuilder<S> emasType(String emasType)
     {
         this.emasType = emasType;
+        return this;
+    }
+
+    public EMASBuilder<S> reproCondition(ReproCondition reproCondition)
+    {
+        this.reproCondition = reproCondition;
         return this;
     }
 

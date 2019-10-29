@@ -5,6 +5,7 @@ import lombok.*;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5AgentBuilder;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.CrossoverOperator;
@@ -66,12 +67,23 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     private double initialAgentResourceLevel;
 
     /**
+     * Initial resources assigned to each agent upon his conception by another agent.
+     * Set to {@link Constants#OFFSPRING_INITIAL_RESOURCE_VALUE} = {@value Constants#OFFSPRING_INITIAL_RESOURCE_VALUE}
+     * */
+    private double initialOffspringResourceLevel;
+
+    /**
      * Sets value of resource that is transferred to agent that "won" comparison showdown. Used in {@link JMetal5Agent#doMeeting(List, double)}.
      * Set to {@link Constants#TRANSFER_RESOURCE_VALUE} = {@value Constants#TRANSFER_RESOURCE_VALUE}
      * */
     private double transferAgentResourceLevel;
 
     /* Operators */
+    /**
+     * Reproduction condition set to all agents (initial ones and newly created). By default set to {@link Constants#BASIC_REPRODUCTION_LEVEL}.
+     * */
+    private ReproCondition reproCondition;
+
     /**
      * CrossoverOperators are used to combine the genetic information ({@link S}) of two parents ({@link JMetal5Agent<S>}) to generate new offspring.
      * Used in {@link JMetal5Agent#doReproduce(List)}
@@ -213,6 +225,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     /**
      * List of every agent that has ever lived (including {@link JMetal5BaseEMAS#population}).
+     * TODO: Uzywac tego dalej czy nie? Moze wywalic
      * */
     public List<JMetal5Agent<S>> agentsRecords;
 
@@ -338,7 +351,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         population = Stream.generate(problem::createSolution)
                 .limit(numberOfAgents)
                 .map(genotype -> agentBuilder
-                        .build(this, genotype, getAgentType(), initialAgentResourceLevel))
+                        .build(this, genotype, getAgentType(), initialAgentResourceLevel, reproCondition))
                 .collect(Collectors.toList());
         population.forEach(agent -> agent.evaluate(problem));
     }

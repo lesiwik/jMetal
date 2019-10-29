@@ -38,7 +38,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
      * Default boolean check if agent can reproduce. Can be set to other expression in derived classes by using {@link JMetal5Agent#setReproCondition(ReproCondition)};
      * @see ReproCondition
      * */
-    private ReproCondition reproCondition = () -> getResourceLevel() >= Constants.REPRODUCTION_LEVEL_VALUE;
+    private ReproCondition reproCondition = (double resourceLevel) -> resourceLevel >= Constants.REPRODUCTION_LEVEL_VALUE;
 
     /**
      * Used to store random seed for each different iteration which is also used as key.
@@ -237,7 +237,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         List<S> off = crossoverOperator.execute(argList);
 
         List<? extends JMetal5Agent<S>> offspringList = off.stream().map(genotype ->
-                builder.build(EMAS, genotype, getAgentType(), Constants.OFFSPRING_INITIAL_RESOURCE_VALUE))
+                builder.build(EMAS, genotype, getAgentType(), EMAS.getInitialOffspringResourceLevel(), reproCondition))
                 .collect(Collectors.toList());
 
         return (this.equals(matingPartner))
@@ -265,7 +265,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
             offSpring.mutate();
             offSpring.evaluate(EMAS.getProblem());
 
-            offSpring.transferResourcesFrom(parent, Constants.INITIAL_RESOURCE_VALUE);
+            offSpring.transferResourcesFrom(parent, EMAS.getInitialAgentResourceLevel());
             listOfOffspringToBeReturned.add(offSpring);
 
             parent.hasAlreadyReproduced = true;
@@ -355,7 +355,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
      * @return {@link JMetal5Agent#resourceLevel} >= {@link Constants#REPRODUCTION_LEVEL_VALUE} ({@value Constants#REPRODUCTION_LEVEL_VALUE}).
      * */
     public boolean canReproduce() {
-        return reproCondition.canReproduce();
+        return reproCondition.canReproduce(getResourceLevel());
     }
 
     /**

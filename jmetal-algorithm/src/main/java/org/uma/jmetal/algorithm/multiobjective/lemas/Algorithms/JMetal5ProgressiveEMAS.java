@@ -15,6 +15,7 @@ import java.util.Optional;
  * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5ProgressiveAgent
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
+ * TODO: Usunac ta klase.
  * */
 public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEMAS {
 

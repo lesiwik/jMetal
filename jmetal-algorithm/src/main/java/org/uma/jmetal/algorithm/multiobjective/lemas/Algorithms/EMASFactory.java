@@ -29,15 +29,13 @@ public class EMASFactory<S extends Solution<?>> {
         algorithms = new ArrayList<>();
     }
 
-    public List<Algorithm> getAlgorithms(){ return algorithms; }
-    public EMASFactory addBaseEMAS(String name) {
+    public EMASFactory addEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
-                        .whenAddOffspringToPopulation(IF_NOT_WORSE)
                         .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .build());
         return this;
@@ -55,10 +53,10 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addProgressiveBaseEMAS(String name) {
+    public EMASFactory addProgressiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
-                        //.reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
+                        .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
@@ -70,7 +68,7 @@ public class EMASFactory<S extends Solution<?>> {
     public EMASFactory addProgressiveAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
-                        //.reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
+                        .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)

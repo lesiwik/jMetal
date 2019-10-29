@@ -64,11 +64,11 @@ public class Constants {
     public final static String PROGRESSIVE_EMAS = "JMetal5ProgressiveEMAS";
 
     /* Reproduction levels */
-//    public final static ReproCondition PROGRESSIVE_REPRODUCTION_LEVEL =
-//            (double resourceLevel) -> resourceLevel >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE;
-//
-//    public final static ReproCondition BASIC_REPRODUCTION_LEVEL =
-//            (double resourceLevel) -> resourceLevel >= Constants.REPRODUCTION_LEVEL_VALUE;
+    public final static ReproCondition PROGRESSIVE_REPRODUCTION_LEVEL =
+            (double resourceLevel) -> resourceLevel >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE;
+
+    public final static ReproCondition BASIC_REPRODUCTION_LEVEL =
+            (double resourceLevel) -> resourceLevel >= Constants.REPRODUCTION_LEVEL_VALUE;
 
     /* Charts */
     public static final int HV_FREQUENCY = 50;

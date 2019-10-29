@@ -8,6 +8,7 @@ import org.uma.jmetal.solution.Solution;
  * @see Constants#PROGRESSIVE_REPRODUCTION_LEVEL_VALUE
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 9/02/2018
+ * TODO: Usunac tego agenta
  * */
 public class JMetal5ProgressiveAgent<S extends Solution<?>> extends JMetal5Agent {
 
@@ -15,12 +16,12 @@ public class JMetal5ProgressiveAgent<S extends Solution<?>> extends JMetal5Agent
     public JMetal5ProgressiveAgent(int id)
     {
         super(id);
-        this.setReproCondition(() -> getResourceLevel() >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE);
+        //this.setReproCondition(() -> getResourceLevel() >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE);
     }
 
 
     public JMetal5ProgressiveAgent() {
-        this.setReproCondition(() -> getResourceLevel() >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE);
+        //this.setReproCondition(() -> getResourceLevel() >= Constants.PROGRESSIVE_REPRODUCTION_LEVEL_VALUE);
     }
 
     @Override
