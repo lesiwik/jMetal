@@ -112,7 +112,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
     /**
      * Used to mutate agent.
      * */
-    private MutationOperator<S> mutationOperator;
+    protected MutationOperator<S> mutationOperator;
 
     /**
      * Base comparator used to compare agents between themselves.
@@ -159,7 +159,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
     /**
      * Mutate genotype of agent based on mutationOperator operator to execute genotype on.
      * */
-    private void mutate() {
+    protected void mutate() {
         mutationOperator.execute(genotype);
     }
 

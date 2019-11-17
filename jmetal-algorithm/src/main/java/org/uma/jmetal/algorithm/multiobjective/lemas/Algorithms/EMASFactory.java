@@ -76,4 +76,33 @@ public class EMASFactory<S extends Solution<?>> {
                         .build());
         return this;
     }
+
+    public EMASFactory addSmartBaseEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
+    public EMASFactory addSmartAreaEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .parentToChildComparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
 }
