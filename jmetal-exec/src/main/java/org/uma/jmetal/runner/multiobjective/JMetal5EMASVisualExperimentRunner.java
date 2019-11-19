@@ -25,7 +25,7 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addSmartBaseEMAS("SmartEMAS_3", Constants.ALWAYS)
 //                 .addSmartBaseEMAS("SmartEMAS_4", Constants.IF_BETTER)
                  //.addSmartAreaEMAS("SmartEMAS_1", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-                 //.addSmartAreaEMAS("SmartEMAS_3", Constants.ALWAYS)
+                 .addSmartAreaEMAS("SmartEMAS_3", Constants.ALWAYS)
                  //.addSmartAreaEMAS("SmartEMAS_2", Constants.IF_NOT_WORSE)
                  //.addSmartAreaEMAS("SmartEMAS_4", Constants.IF_BETTER)
                 //.addEMAS("BaseEMAS")

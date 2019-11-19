@@ -28,7 +28,8 @@ public class HVRChart extends ProgressBaseChart<Double> {
             FrontNormalizer frontNormalizer = new FrontNormalizer(referenceFront);
             return frontNormalizer.normalize(referenceFront);
         } catch (FileNotFoundException e) {
-//            LOGGER.log(Level.INFO, "Reference front not found in given directory: " + Constants.REF_FRONT_DIR);
+
+            //            LOGGER.log(Level.INFO, "Reference front not found in given directory: " + Constants.REF_FRONT_DIR);
             return null;
         }
     }
