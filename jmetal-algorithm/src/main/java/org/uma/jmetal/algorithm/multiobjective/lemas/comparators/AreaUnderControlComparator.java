@@ -18,7 +18,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
 
 
 
-    private List<Agent> listOfKnownNonDominatedAgents;
+    protected List<Agent> listOfKnownNonDominatedAgents;
 
     public AreaUnderControlComparator() { listOfKnownNonDominatedAgents = new ArrayList<>(); }
 
@@ -84,7 +84,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
      * @param agentToCompareTo agent to compare agents from list to.
      * @return result of comparison.
      * */
-    private int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
+    protected int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
 
         //TODO: A co w przypadku w którym w liscie jest [ niedominowany, dominowany, dominujacy] ?
         //TODO II: Wywalac przy okazji te dominowane raczej nie?
@@ -105,7 +105,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
      * Updates {@link #listOfKnownNonDominatedAgents} by adding agent in parameter if its not present already.
      * @param meetingPartner agent to check.
      * */
-    private void updateListOfKnownNondominatedAgents(Agent thisAgent, Agent meetingPartner) {
+    protected void updateListOfKnownNondominatedAgents(Agent thisAgent, Agent meetingPartner) {
         /* TODO: Tutaj trzeba by sie przejsc po liscie i sprawdzic czy ten dodawany nie dominuje ktoregos jesli dominuje to wywalic te dominowane,
         od razu sprawdzic czy nie jest przez ktoregos dominowany jesli jest to nie dodajemy */
         List<Agent> thisAgentList = getListOfKnownNonDominatedAgents(thisAgent);
@@ -121,13 +121,13 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
     }
 
     @SuppressWarnings("unchecked")
-    private List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
+    protected List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
     {
         AreaUnderControlComparator<Agent> agentComparator = (AreaUnderControlComparator) agent.getComparator();
         return agentComparator.getListOfKnownNonDominatedAgents();
     }
 
-    private List<Agent> getListOfKnownNonDominatedAgents()
+    protected List<Agent> getListOfKnownNonDominatedAgents()
     {
         return listOfKnownNonDominatedAgents;
     }
