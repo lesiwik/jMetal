@@ -1,5 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Comparators;
 
+import lombok.Getter;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
@@ -14,11 +15,14 @@ import java.util.List;
  * @since 8/27/2018
  * */
 @Setter
+@Getter
 public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends EmasDominanceComparator<Agent> {
 
 
 
     protected List<Agent> listOfKnownNonDominatedAgents;
+    private int agent1ToListComparisonResult;
+    private int agent2ToListComparisonResult;
 
     public AreaUnderControlComparator() { listOfKnownNonDominatedAgents = new ArrayList<>(); }
 
@@ -38,6 +42,8 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
             int firstComparison = isPartnerUnderControl(agent1, agent2);
             int secondComparison = isPartnerUnderControl(agent2, agent1);
 
+            agent2ToListComparisonResult = firstComparison;
+            agent1ToListComparisonResult = secondComparison;
             if(firstComparison == secondComparison)
             {
                 switch(firstComparison)
@@ -121,13 +127,13 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
     }
 
     @SuppressWarnings("unchecked")
-    protected List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
+    public List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
     {
         AreaUnderControlComparator<Agent> agentComparator = (AreaUnderControlComparator) agent.getComparator();
         return agentComparator.getListOfKnownNonDominatedAgents();
     }
 
-    protected List<Agent> getListOfKnownNonDominatedAgents()
+    public List<Agent> getListOfKnownNonDominatedAgents()
     {
         return listOfKnownNonDominatedAgents;
     }

@@ -416,6 +416,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         return  getAgentType() + "{" +
                 "id=" + id +
                 ", resourceLevel=" + resourceLevel +
+                ", objectives = [" + genotype.getObjective(0) + ", " + genotype.getObjective(1) + ']' +
                 '}';
     }
 }

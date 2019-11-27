@@ -52,6 +52,7 @@ public class Constants {
     /* Comparator types */
     public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
     public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
+    public final static String AREA_UNDER_CONTROL_EXTENDED_COMPARATOR = "AreaUnderControlExtendedComparator";
 
     /* Agent types */
     public final static String BASE_AGENT = "JMetal5BaseAgent";

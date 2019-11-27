@@ -2,6 +2,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlExtendedComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
@@ -177,6 +178,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         EmasDominanceComparator<JMetal5Agent<?>> comparator;
         switch(comparatorType)
         {
+            case Constants.AREA_UNDER_CONTROL_EXTENDED_COMPARATOR:
+                comparator = new AreaUnderControlExtendedComparator<>();
+                break;
             case Constants.AREA_UNDER_CONTROL_COMPARATOR:
                 comparator = new AreaUnderControlComparator<>();
                 break;
