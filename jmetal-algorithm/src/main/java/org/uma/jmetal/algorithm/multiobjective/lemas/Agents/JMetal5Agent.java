@@ -376,7 +376,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
 
     @Override
     public String toString() {
-        return  getAgentType() + "{" +
+        return getAgentType() + "{" +
                 "id=" + id +
                 ", resourceLevel=" + resourceLevel +
                 '}';

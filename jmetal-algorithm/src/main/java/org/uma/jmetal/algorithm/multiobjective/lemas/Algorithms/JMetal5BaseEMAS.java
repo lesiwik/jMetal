@@ -416,7 +416,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Increments {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} or {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} depending on meeting result.
      * @param meetingResult meeting result of two agents.
      * */
-    private void updateMeetingStatistics(int meetingResult) {
+    protected void updateMeetingStatistics(int meetingResult) {
         if (meetingResult == 0)
             neitherIsBetterMeetingTypeCounter++;
         else

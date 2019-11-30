@@ -73,6 +73,9 @@ public class EMASBuilder<S extends Solution<?>> {
             case "Progressive":
                 emas = new JMetal5ProgressiveEMAS<>();
                 break;
+            case "Parallel":
+                emas = new JMetal5ParallelEMAS<>();
+                break;
         }
         setBaseFields(emas);
         return emas;
