@@ -37,7 +37,7 @@ public class ComparatorUtils {
                                                          final String additionalInformations)
     {
         return String.format(
-                "Compared with: %s "
+                "\nCompared with: %s "
                         + "\nAgent 1: %s"
                         + "\nAgent 2: %s"
                         + additionalInformations

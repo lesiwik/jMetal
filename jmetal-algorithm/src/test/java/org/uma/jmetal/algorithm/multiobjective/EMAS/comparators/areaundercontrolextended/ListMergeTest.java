@@ -1,14 +1,13 @@
-package org.uma.jmetal.algorithm.multiobjective.EMAS.comparators;
+package org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.areaundercontrolextended;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.areaundercontrol.AreaUnderControlComparisonTest;
+import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.emasdominance.EmasDominanceComparisonTest;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.utils.AgentUtils;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.utils.ComparatorUtils;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5AgentBuilder;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.util.point.PointSolution;
 
@@ -26,7 +25,7 @@ import static org.junit.Assert.assertEquals;
  * (eg. A1 has agent A1_1 in his list and A1_1 gets dominated by A2 or any agent in A2s list).
  * 3. Final merge should:..
  * */
-public class AreaUnderControlExtensionTest{
+public class ListMergeTest {
 
     private JMetal5Agent<PointSolution> agent1;
     private JMetal5Agent<PointSolution> agent2;
@@ -60,8 +59,6 @@ public class AreaUnderControlExtensionTest{
         a2_list.add(a2_1);
         a2_list.add(a2_2);
         a2Comparator.setListOfKnownNonDominatedAgents(a2_list);
-
-
     }
 
 
@@ -69,61 +66,31 @@ public class AreaUnderControlExtensionTest{
     @Test
     public void mergeLists()
     {
-
+        neitherAgentIsBetterEmasDominance();
+        neitherAgentIsBetterAreaUnderControl();
+        neitherAgentIsBetterListAreaUnderControl();
+        nonDominatedListIsNonDominated();
         /*TODO: Implemented area under control extended test */
-
     }
 
-    @Test
     public void neitherAgentIsBetterEmasDominance()
     {
-        EmasDominanceComparator comparator = new EmasDominanceComparator();
-        int comparatorResult = comparator.compare(agent1, agent2);
-        System.out.println(ComparatorUtils.constructComparisonResultString(comparator, agent1, agent2, comparatorResult, Constants.NEITHER_IS_BETTER, ""));
-        assertEquals(Constants.NEITHER_IS_BETTER, comparatorResult);
+        EmasDominanceComparisonTest.compareAgentWithResult(agent1, agent2, Constants.NEITHER_IS_BETTER);
     }
 
-    @Test
-    public void listOfKnownNonDominatedAgentsIsNonDominated()
+    public void neitherAgentIsBetterListAreaUnderControl()
     {
-        a1_list.forEach(agent -> {
-            int comparatorResult = agent.getComparator().compare(agent1, agent);
-            System.out.println(ComparatorUtils.constructComparisonResultString(agent.getComparator(), agent, agent1, comparatorResult, Constants.NEITHER_IS_BETTER, ""));
-            assertEquals(Constants.NEITHER_IS_BETTER, comparatorResult);
-        });
-
-        a2_list.forEach(agent -> {
-            int comparatorResult = agent.getComparator().compare(agent2, agent);
-            System.out.println(ComparatorUtils.constructComparisonResultString(agent.getComparator(), agent, agent2, comparatorResult, Constants.NEITHER_IS_BETTER, ""));
-            assertEquals(Constants.NEITHER_IS_BETTER, comparatorResult);
-        });
-
-/*        for(int i = 0; i < a1_list.size(); i++)
-        {
-            JMetal5Agent agentFromList1 = a1_list.get(i);
-            for(int j = 0; j < a2_list.size(); j++)
-            {
-                JMetal5Agent agentFromList2 = a2_list.get(j);
-                int comparatorResult = agentFromList1.getComparator().compare(agentFromList1, agentFromList2);
-                System.out.println(ComparatorUtils.constructComparisonResultString(agentFromList1.getComparator(), agentFromList1, agentFromList2, comparatorResult, Constants.NEITHER_IS_BETTER, ""));
-                assertEquals(Constants.NEITHER_IS_BETTER, comparatorResult);
-            }
-        }*/
+        AreaUnderControlComparisonTest.compareListsToAgentsWithResult(a1_list, a2_list, agent1, agent2, Constants.NEITHER_IS_BETTER, Constants.NEITHER_IS_BETTER);
     }
 
-    @Test
     public void neitherAgentIsBetterAreaUnderControl()
     {
-        AreaUnderControlComparator comparator = (AreaUnderControlComparator) agent1.getComparator();
-        int comparatorResult = comparator.compare(agent1, agent2);
-        System.out.println(ComparatorUtils.constructComparisonResultString(comparator, agent1, agent2, comparatorResult, Constants.NEITHER_IS_BETTER,
-                 ComparatorUtils.constructAreaUnderComparisonResultString(comparator.getAgent2ToListComparisonResult(), comparator.getAgent1ToListComparisonResult())));
-
-        assertEquals(Constants.NEITHER_IS_BETTER, comparatorResult);
+        AreaUnderControlComparisonTest.compareAgentsWithResult(agent1, agent2, Constants.NEITHER_IS_BETTER);
     }
 
-    @After
-    public void printResults()
+    public void nonDominatedListIsNonDominated()
     {
+        EmasDominanceComparisonTest.listIsNonDominated(a1_list);
+        EmasDominanceComparisonTest.listIsNonDominated(a2_list);
     }
 }
