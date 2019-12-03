@@ -1,5 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.areaundercontrolextended;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.areaundercontrol.AreaUnderControlComparisonTest;
@@ -66,31 +67,42 @@ public class ListMergeTest {
     @Test
     public void mergeLists()
     {
+        System.out.println("\n== Checking if neither agent dominate each other using EmasDominanceComparator. == \n ");
         neitherAgentIsBetterEmasDominance();
+        System.out.println("\n== Checking if neither agent dominate each other using AreaUnderControlComparator. == \n");
         neitherAgentIsBetterAreaUnderControl();
+        System.out.println("\n== Checking if neither agent dominate or gets dominated using raw EmasDominanceComparator to their list of known non dominated agents. == \n");
         neitherAgentIsBetterListAreaUnderControl();
+        System.out.println("\n== Checking if agents in list of known non dominated agents are in fact non dominated. == \n");
         nonDominatedListIsNonDominated();
         /*TODO: Implemented area under control extended test */
+        assertEquals(1, 2);
     }
 
-    public void neitherAgentIsBetterEmasDominance()
+    private void neitherAgentIsBetterEmasDominance()
     {
         EmasDominanceComparisonTest.compareAgentWithResult(agent1, agent2, Constants.NEITHER_IS_BETTER);
     }
 
-    public void neitherAgentIsBetterListAreaUnderControl()
+    private void neitherAgentIsBetterListAreaUnderControl()
     {
         AreaUnderControlComparisonTest.compareListsToAgentsWithResult(a1_list, a2_list, agent1, agent2, Constants.NEITHER_IS_BETTER, Constants.NEITHER_IS_BETTER);
     }
 
-    public void neitherAgentIsBetterAreaUnderControl()
+    private void neitherAgentIsBetterAreaUnderControl()
     {
         AreaUnderControlComparisonTest.compareAgentsWithResult(agent1, agent2, Constants.NEITHER_IS_BETTER);
     }
 
-    public void nonDominatedListIsNonDominated()
+    private void nonDominatedListIsNonDominated()
     {
         EmasDominanceComparisonTest.listIsNonDominated(a1_list);
         EmasDominanceComparisonTest.listIsNonDominated(a2_list);
+    }
+
+    @After
+    public void printResult()
+    {
+        System.out.println("\n== Merge list test has ended. ==");
     }
 }

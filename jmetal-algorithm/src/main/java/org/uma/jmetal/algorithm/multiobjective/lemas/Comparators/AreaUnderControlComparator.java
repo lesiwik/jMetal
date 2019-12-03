@@ -7,6 +7,7 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -118,13 +119,44 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
         List<Agent> meetingPartnerList = getListOfKnownNonDominatedAgents(meetingPartner);
 
         if (!thisAgentList.contains(meetingPartner)) {
-            thisAgentList.add(meetingPartner);
+            if(checkIfAgentIsGoodEnough(thisAgentList, meetingPartner))
+                thisAgentList.add(meetingPartner);
         }
 
         if (!meetingPartnerList.contains(thisAgent)) {
-            meetingPartnerList.add(thisAgent);
+            if(checkIfAgentIsGoodEnough(meetingPartnerList, thisAgent))
+                meetingPartnerList.add(thisAgent);
         }
     }
+
+
+    /**
+     * Checks if agent is non dominated by other agents in the list, so that he can  be added to listOfKnownNonDominatedAgents.
+     * It also checks if agents in the list are not dominated by him, and if they are removes them.
+     * @param agentToAdd agent to be compared to list.
+     * @param listOfKnownNonDominatedAgents list to compare to.
+     * */
+    private boolean checkIfAgentIsGoodEnough(List<Agent> listOfKnownNonDominatedAgents, Agent agentToAdd)
+    {
+        boolean isAgentDominated = listOfKnownNonDominatedAgents.stream().anyMatch(agent ->{
+           int comparison_result =  super.compare(agent, agentToAdd);
+           return comparison_result == Constants.FIRST_IS_BETTER;
+        });
+
+        if(isAgentDominated)
+            return false;
+
+        List<Agent> dominatedAgents = new ArrayList<>(listOfKnownNonDominatedAgents.stream().filter(agent ->
+        {
+            int comparison_result = super.compare(agent, agentToAdd);
+            return comparison_result == Constants.SECOND_IS_BETTER;
+        }).collect(Collectors.toList()));
+
+        listOfKnownNonDominatedAgents.removeAll(dominatedAgents);
+
+        return true;
+    }
+
 
     @SuppressWarnings("unchecked")
     public List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
