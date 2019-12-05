@@ -59,7 +59,7 @@ public class Constants {
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
 
     /* Problems */
-    public static final ExperimentProblem<DoubleSolution> PROBLEM = new ExperimentProblem<>(new ZDT1());
+    public static final ExperimentProblem<DoubleSolution> PROBLEM = new ExperimentProblem<>(new ZDT2());
     public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT2 = new ExperimentProblem<>(new ZDT2());
     public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT3 = new ExperimentProblem<>(new ZDT3());
     public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT4 = new ExperimentProblem<>(new ZDT4());

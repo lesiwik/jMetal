@@ -199,7 +199,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Used to represent measure that is pushed and stored in measureManager. Stores population.
      * @see BasicMeasure
      * */
-    private BasicMeasure<Object> solutionListMeasure;
+    protected BasicMeasure<Object> solutionListMeasure;
 
     /* Agent lists */
     /**
