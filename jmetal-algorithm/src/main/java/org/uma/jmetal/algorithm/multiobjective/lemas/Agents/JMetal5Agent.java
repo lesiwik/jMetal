@@ -323,13 +323,14 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
      * */
     private int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
         if(agent1.getClass() != agent2.getClass()
-                || agent1.getParentToChildComparator().getClass() != agent2.getParentToChildComparator().getClass())
+                || agent1.getComparator().getClass() != agent2.getComparator().getClass())
             throw new RuntimeException("Regular comparator: Type mismatch of comparator or agent!");
         return comparator.compare(agent1, agent2);
     }
 
     /**
      * Compares two Agents, one of which is parent of the other using {@link #parentToChildComparator}.
+     * If the class of parent comparator is the same as regular comparator OR comparator is its derived class, then that one will be called.
      * @param parent parent agent.
      * @param agent offspring agent.
      * @return comparator result.
@@ -338,6 +339,10 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         if(parent.getClass() != agent.getClass()
                 || parent.getParentToChildComparator().getClass() != agent.getParentToChildComparator().getClass())
             throw new RuntimeException("Parent to child comparator: Type mismatch of comparator or agent!");
+
+        if(parentToChildComparator.getClass() == comparator.getClass() || parentToChildComparator.getClass().isAssignableFrom(comparator.getClass()))
+            return comparator.compare(parent, agent);
+
         return parentToChildComparator.compare(parent, agent);
     }
 

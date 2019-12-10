@@ -176,7 +176,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
     private EmasDominanceComparator<JMetal5Agent<?>> buildComparator(String comparatorType)
     {
         EmasDominanceComparator<JMetal5Agent<?>> comparator;
-        switch(comparatorType)
+        switch(Optional.ofNullable(comparatorType).orElse(""))
         {
             case Constants.AREA_UNDER_CONTROL_EXTENDED_COMPARATOR:
                 comparator = new AreaUnderControlExtendedComparator<>();

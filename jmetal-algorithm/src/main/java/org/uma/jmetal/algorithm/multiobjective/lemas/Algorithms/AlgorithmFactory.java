@@ -42,7 +42,6 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
-                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .build());
         return this;
     }
@@ -54,36 +53,33 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
-                        .parentToChildComparator(AREA_UNDER_CONTROL_COMPARATOR)
                         .build());
         return this;
     }
 
-    public AlgorithmFactory addProgressiveEMAS(String name) {
+    public AlgorithmFactory addReproductiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
-                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .build());
         return this;
     }
 
-    public AlgorithmFactory addProgressiveAreaEMAS(String name) {
+    public AlgorithmFactory addReproductiveAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
-                        .parentToChildComparator(AREA_UNDER_CONTROL_COMPARATOR)
                         .build());
         return this;
     }
 
-    public AlgorithmFactory addSmartBaseEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory addProgressiveEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -97,7 +93,21 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addSmartAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory addProgressiveAreaEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -106,7 +116,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
-                        .parentToChildComparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .whenAddOffspringToPopulation(whenToAddOffspring)
                         .build());
         return this;

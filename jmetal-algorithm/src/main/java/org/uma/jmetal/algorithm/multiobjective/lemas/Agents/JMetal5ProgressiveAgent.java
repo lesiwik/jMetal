@@ -36,7 +36,7 @@ public class JMetal5ProgressiveAgent<S extends Solution<?>> extends JMetal5Agent
 
                 int isOffspringBetter = 0;
                 if (EMAS.getWhenAddOffspringToPopulation() != Constants.ALWAYS) {
-                    isOffspringBetter = getComparator().compare(parent, offSpring);
+                    isOffspringBetter = getParentToChildComparator().compare(parent, offSpring);
                 }
 
 
