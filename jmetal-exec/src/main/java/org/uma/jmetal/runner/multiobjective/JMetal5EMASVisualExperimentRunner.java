@@ -1,7 +1,7 @@
 package org.uma.jmetal.runner.multiobjective;
 
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.EMASFactory;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
 import org.uma.jmetal.solution.DoubleSolution;
@@ -19,20 +19,21 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
      public static void main(String[] args) throws JMetalException {
 
          @SuppressWarnings("unchecked")
-         List<Algorithm> algorithmsToRun = new EMASFactory<>()
+         List<Algorithm> algorithmsToRun = new AlgorithmFactory<>()
 //                 .addSmartBaseEMAS("SmartEMAS_1", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
 //                 .addSmartBaseEMAS("SmartEMAS_2", Constants.IF_NOT_WORSE)
 //                 .addSmartBaseEMAS("SmartEMAS_3", Constants.ALWAYS)
 //                 .addSmartBaseEMAS("SmartEMAS_4", Constants.IF_BETTER)
-                 //.addSmartAreaEMAS("SmartEMAS_1", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-                 //.addSmartAreaEMAS("SmartEMAS_3", Constants.ALWAYS)
-                 //.addSmartAreaEMAS("SmartEMAS_2", Constants.IF_NOT_WORSE)
-                 //.addSmartAreaEMAS("SmartEMAS_4", Constants.IF_BETTER)
-                //.addEMAS("BaseEMAS")
-                .addAreaEMAS("AreaEMAS")
-                //.addProgressiveAreaEMAS("ProgressiveAreaEMAS")
-                //.addProgressiveEMAS("ProgressiveEMAS")
-                .getAlgorithms();
+//                 .addSmartAreaEMAS("SmartEMAS_1", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
+//                 .addSmartAreaEMAS("SmartEMAS_3", Constants.ALWAYS)
+//                 .addSmartAreaEMAS("SmartEMAS_2", Constants.IF_NOT_WORSE)
+//                 .addSmartAreaEMAS("SmartEMAS_4", Constants.IF_BETTER)
+//                 .addEMAS("BaseEMAS")
+                 .addAreaEMAS("AreaEMAS")
+//                 .addProgressiveAreaEMAS("ProgressiveAreaEMAS")
+//                 .addProgressiveEMAS("ProgressiveEMAS")
+//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
+                 .getAlgorithms();
 
          //Slider execution
          PausableChartWrapper chartWrapper = new PausableChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);

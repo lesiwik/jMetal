@@ -93,7 +93,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
      * */
     protected int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
 
-        //TODO: A co w przypadku w którym w liscie jest [ niedominowany, dominowany, dominujacy] ?
+        //TODO: A co w przypadku w którym w liscie jest [niedominowany, dominowany, dominujacy] ?
         //TODO II: Wywalac przy okazji te dominowane raczej nie?
         //TODO III: Co zrobic z dominujacymi?
 
@@ -146,11 +146,11 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
         if(isAgentDominated)
             return false;
 
-        List<Agent> dominatedAgents = new ArrayList<>(listOfKnownNonDominatedAgents.stream().filter(agent ->
+        List<Agent> dominatedAgents = listOfKnownNonDominatedAgents.stream().filter(agent ->
         {
             int comparison_result = super.compare(agent, agentToAdd);
             return comparison_result == Constants.SECOND_IS_BETTER;
-        }).collect(Collectors.toList()));
+        }).collect(Collectors.toList());
 
         listOfKnownNonDominatedAgents.removeAll(dominatedAgents);
 

@@ -113,4 +113,9 @@ public class Constants {
 
     //    public static Color REFERENCE_COLOR = Color.GREEN;
     //    public static boolean WITH_VISUALIZATION = true;
+
+
+    /* NSGAII Constants */
+    public static final int NSGAII_INITIAL_POPULATION_SIZE = 100;
+    public static final int NSGAII_MAX_EVALUATIONS = 25000;
 }

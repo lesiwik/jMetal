@@ -4,7 +4,11 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAIIBuilder;
+import org.uma.jmetal.operator.impl.selection.BinaryTournamentSelection;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,24 +16,26 @@ import java.util.List;
 import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.*;
 
 /**
- * Basic EMAS Factory that uses its builder. Basically wrapper functions for set configurations of builder.
+ * Basic Algorithm Factory that uses its builder. Basically wrapper functions for set configurations of builder.
  *
  * @author Michal Kasprzyk <michal0kasprzyk@gmail.com>
  * @since 29/10/2019
  */
 @Data
-public class EMASFactory<S extends Solution<?>> {
+public class AlgorithmFactory<S extends Solution<?>> {
 
     @Setter(AccessLevel.NONE)
     private final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
 
     private List<Algorithm> algorithms;
 
-    public EMASFactory() {
+    public AlgorithmFactory() {
         algorithms = new ArrayList<>();
     }
 
-    public EMASFactory addEMAS(String name) {
+    public Algorithm getAlgorithm(int index) { return algorithms.get(index); }
+
+    public AlgorithmFactory addEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -41,7 +47,7 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addAreaEMAS(String name) {
+    public AlgorithmFactory addAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -53,7 +59,7 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addProgressiveEMAS(String name) {
+    public AlgorithmFactory addProgressiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -65,7 +71,7 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addProgressiveAreaEMAS(String name) {
+    public AlgorithmFactory addProgressiveAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -77,7 +83,7 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addSmartBaseEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory addSmartBaseEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -91,7 +97,7 @@ public class EMASFactory<S extends Solution<?>> {
         return this;
     }
 
-    public EMASFactory addSmartAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory addSmartAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -105,4 +111,19 @@ public class EMASFactory<S extends Solution<?>> {
                         .build());
         return this;
     }
+
+    public AlgorithmFactory addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+    {
+        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM.getProblem(),
+                Constants.XOP, Constants.MOP, initialPopulationSize)
+                .setSelectionOperator(
+                        new BinaryTournamentSelection<>(
+                                new RankingAndCrowdingDistanceComparator<>()))
+                .setMaxEvaluations(maxEvaluations)
+                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
+                .build());
+
+        return this;
+    }
+
 }

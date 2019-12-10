@@ -15,6 +15,11 @@ import java.util.Comparator;
 public class EmasDominanceComparator<Agent extends JMetal5Agent<?>> implements Comparator<Agent>, Serializable {
 
     /**
+     * Private instance of dominance comparator. There is no need of creating more than one instance of it already.
+     * */
+    private static final DominanceComparator DOMINANCE_COMPARATOR = new DominanceComparator();
+
+    /**
      * Compares two Agents genotypes using {@link DominanceComparator#compare(Solution, Solution)}.
      * @param a1 agent to compare.
      * @param a2 agent to compare.
@@ -23,6 +28,6 @@ public class EmasDominanceComparator<Agent extends JMetal5Agent<?>> implements C
     @SuppressWarnings("unchecked")
     @Override
     public int compare(Agent a1, Agent a2) {
-        return new DominanceComparator().compare(a1.genotype, a2.genotype);
+        return DOMINANCE_COMPARATOR.compare(a1.genotype, a2.genotype);
     }
 }
