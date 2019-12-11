@@ -1,101 +1,58 @@
-# About
+# jMetal 5 Development Site
 
-Repozytorium zawiera rozszerzenie biblioteki JMetal w postaci algorytmu EMAS - agentowo-ewolucyjnego algorytmu do optymalizacji wielokryterialnej.
-Jeżeli uzyskałeś dostęp do tego repozytorium, załóż własnego brancha i upewnij się, że wprowadzone przez Ciebie zmiany są tylko na tym branchu.
-W celu commitowania do mastera wystaw pullrequesta. 
+## Purpose
 
-# Additional Dependencies
-Wykorzystano [Lomboka](https://projectlombok.org/) w celu poprawy jakości kodu, jest dodany w pliku pom.xml modułu który go wykorzystuje.
-Jeżeli IDE w którym pracujesz pokazuję Ci błędy przy getterach/setterach mimo poprawnej kompilacji kodu zainstaluj wtyczkę do lomboka.
-Dla IntelliJ taką wtyczkę można znaleźć [tutaj](https://plugins.jetbrains.com/plugin/6317-lombok).
+**jMetal** is an object-oriented Java-based framework for multi-objective optimization with metaheuristics.
+The Web page of the project is: [http://jmetal.github.io/jMetal/](http://jmetal.github.io/jMetal/).
+Former jMetal versions can be found in [SourceForge](http://jmetal.sourceforge.net). The current version is jMetal 5.7. 
 
+## How to use
 
-# Importowanie projektu
+You can find the last released versions of jMetal on the [Maven Central Repository](https://search.maven.org/search?q=g:org.uma.jmetal).
 
-* kazdy mam tam swoje sciezki/sposoby ale najprosciej to chyba bezposrednio z IJ
-    
-    - Chcesz utworzyc projekt - Tak - Import project from external model - maven - Search for project recursively, Import Maven projects automatically
-    - select profiles (doclinit-java8-disable) - Next - Next - Finish
-     
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/1.png) 
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/2.png)
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/3.png)
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/4.png)
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/5.png)
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/6.png)
-	![](http://jagular.iisg.agh.edu.pl/~siwik/emas/7.png)
+To use jMetal in your project, you need at least the `jmetal-core` artifact.
+It provides various components used to implement jMetal algorithms.
+To implement your own, you only need this package.
 
+jMetal comes with various algorithms already implemented, which you can obtain by adding the `jmetal-algorithm` artifact.
+If you are more interested in experimenting with your own algorithms, you can instead add the `jmetal-problem` artifact to obtain various problems to solve.
+You can of course add both of them to try combinations.
+If you want to go further by running and evaluating different combinations, you can finally add the `jmetal-exec` artifact, which comes with various utilities.
 
-# (Pierwsze) uruchomienie.....
+## Status
+[![Build Status](https://travis-ci.org/jMetal/jMetal.svg?branch=master)](https://travis-ci.org/jMetal/jMetal)
 
+The jMetal development version is hosted in this repository; this way, interested users can take a look to the new incoming features in advance.
 
-* Jako pierwsze uruchomienie najprosciej uruchomic jeden z dostepnych w jmetalu predefiniowanych" eksperymentow badajacych wydajnosc algorytmu NSGAII w tym celu 
-   * wedrujemy w projekcie jMetal do jmetal-exec - > src - > main - > java -> org.uma.jmetal experiment i otwieramy plik NSGAIIStudy2
-   * przy probie uruchomienia maina dostaniesz wyjatek Exception in thread "main" org.uma.jmetal.util.JMetalException: Needed arguments: experimentBaseDirectory
-	at org.uma.jmetal.experiment.NSGAIIStudy2.main(NSGAIIStudy2.java:63)
-	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
-	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
-	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
-	at java.lang.reflect.Method.invoke(Method.java:498)
-	at com.intellij.rt.execution.application.AppMain.main(AppMain.java:147)
-jak widac w lini 65 jako pierwszy argument wywolania czytamy experimentBaseDirectory
-* jesli chcemy odpalac to w IJ to http://stackoverflow.com/questions/2066307/how-do-you-input-commandline-argument-in-intellij-idea  i podajemy katalog powyzej katalogu repo tj. ../../Results/INazwisko/Timestamp 
-* po zakonczeniu obliczen w katalogu eksperymentow znajdziesz katalog z nazwa eksperymentu a w nim trzy podkatalogi "data", "latex", "R"
-* zeby zobaczyc/ocenic wyniki eksperymentu idziemy do katalogu latex, kompilujemy pliki latexowe (np tak: for i in *.tex; do pdflatex $i;done)
-i ogladamy wyniki w plikach pdf (w szczegolnosci NSGAIIStudy2.pdf
-* nastepnie wedrujemy do katalogu R i "Rujemy" pliki zrodlowe np tak: for i in *.R; do Rscript $i;done (pakiet R sciagniesz stad: https://www.r-project.org/) i ogladamy wygenerowane wykresy i rankingi
-* poza rankingami i metrykami finalnymi generowanymi przez jmetalowy eksperyment zadbaj o to aby gromadzic wyniki co "n" iteracji / co "m" ewaluacji , (przyklad wizualizowany na panelu ponizej). Przygotuj sobie skrypty
-ktore po zakonczeniu eksperymentu wygeneruja wartosci poszczegolnych metryk (uwzglednianych przez ekspeyment jmetalowy) w kolejnym co n0tym i co m-tym kroku, dodatkowo warto pokazac w tych krokach posrednich:  
-ilosc osobnikow w populacji, ilosc osobnikow niezdominowanych, ilosc osobnikow "nowych" (rodzacych sie), ilosc osobnikow umierajacych. Najlepiej oczywiscie w postaci "wsteg" (min, max, srednia w danym kroku z n uruchomien bo byc moze biezaca charakterystyka to "przypadek"
+If you are interested in contributing with your ideas and comments, please take a look at the current discussions in the [Issues section](https://github.com/jMetal/jMetal/issues).
 
-* Dostepna implementacje EMASA
-	* Lepsza/gorsza - Znajduje sie w jmetal-algorithm\src\main\java\org\uma\jmetal\algorithm\multiobjective\lemas\
-	* Runner do tego: jmetal-exec\src\main\java\org\uma\jmetal\runner\multiobjective\JMetal5EMASVisualExperimentRunner.java
-	* Po odpaleniu powinienes zobaczyc panel podobny do ponizszego:
-	![Panel\label{fig:zdt3}](http://jagular.iisg.agh.edu.pl/~siwik/emas/panel.png) 
-	* Eksperyment do tego siedzi w jmetal-exec\src\main\java\org\uma\jmetal\experiment\LEMASStudy.java   
+## Changelog of the next incoming release (jMetal 5.8)
 
+### Algorithms
 
-# DEPRACTED ~~Wczytywanie iteracji~~ 
+* Add class [`GMOCellRunner`](https://github.com/jMetal/jMetal/blob/master/jmetal-exec/src/main/java/org/uma/jmetal/runner/multiobjective/GMOCellRunner.java). This class shows how MOCell can be configured to select a priori a region of the Pareto
+accorring by indicating a reference point.
 
-~~* Pierwszym krokiem jest uruchomienie runnera: exec\src\main\java\org\uma\jmetal\runner\multiobjective\JMetal5EMASVisualExperimentRunner.java z odpowiednią flagą "-debug". Jej dodanie powoduje zapisywanie się iteracji.~~
+### Features
 
-    ![](https://i.imgur.com/eGcud1h.png)
-    
-~~* Uruchamiamy program i liczymy tyle iteracji ile potrzeba. Żeby zapisać iteracje, liczenie należy spauzować używając przycisku "Pause", a następnie wybrać odpowiednią
-iteracje sliderem i nacisnąć "Save iterations to SER file".~~
+* New implementation of the WFG hypervolume. Contribution of Alejandro Santiago.
 
-    ![](https://i.imgur.com/IqBYmrj.png)
-    - last iteration - to ostatnia obliczona iteracja.
-    - current iteration - to iteracja która jest zaznaczona przez slidera (czyli ta która jest narysowana).
-    
-~~* Wybieramy ilość iteracji jaką chcemy zapisać liczoną od poprzednio wypisanej iteracji. Przeważnie wystarczy zapisanie jednej (Czyli w dół).~~
+### Bugs
 
-    ![](https://i.imgur.com/yaJgq7L.png)
-    
-~~* Czekamy na wiadomość potwierdzającą sukces zapisu iteracji. Jeśli się powiodło to iteracje zapisane zostały w podfolderze programu o nazwie "//generated_genotypes//".~~   
+* Fixed a bug in class `ComputeQualityIndicators`
+* Fixed a bug in class `ExtendedPseudoRandomgGenerator` (issue #312)
+* Fixed a bug in algorithm PESA2
+* Fixed a bug in class `DefaultIntegerDoubleSolution` (issue #336)
 
-~~* Można w tym momencie już zamknąć obliczenia i uruchomić nowego runnera do wczytania "org.uma.jmetal.runner.multiobjective.JMetal5EMASLoadRunner". Nie wymaga już flagi -debug, choć jej dodanie pozwoli nam na ponowne zapisanie.~~
+## jMetal documentation
+The documentation is hosted in https://github.com/jMetal/jMetalDocumentation
 
-~~* Po uruchomieniu runnera pojawi nam się okno wyboru plików do wczytania. Katalogi w "generated_genotypes" są ustawione datami, żeby łatwiej je było odróżnić. Wybieramy interesujący nas folder i otwieramy go.~~
+## Publications
+A.J. Nebro, J.J. Durillo, M. Vergne: "Redesigning the jMetal Multi-Objective Optimization Framework". Proceedings of the Companion Publication of the 2015 on Genetic and Evolutionary Computation Conference (GECCO Companion '15) Pages 1093-1100. DOI: http://dx.doi.org/10.1145/2739482.2768462
 
-  ![](https://i.imgur.com/tYzEfLx.png)
-  
-  
-~~* Następnie musimy wybrać pliki które będą wczytane. Potrzebne jest zawsze:~~
-    
-    - zapisana iteracja (np. Better_iteration_16.ser)
-    - zapisana iteracje EMAS-a (np. Better_EMAS_iteration_16.ser)  (Te liczby muszą się zgadzać).
-    
-    Można też wybrać specjalny seed, choć w przypadku w którym się go nie wybierze, zostanie on pobrany automatycznie z folderu w którym się znajdujemy.
-    - random seed Agenta (np. randomAgentSeed_Better)
-    - random seed JMetala (np randomJMetalSeed_Better)
-    
-    (W tym przypadku better to nazwa algorytmu, w ten sposób można rozróżnić o który algorytm chodzi.)
+## Code coverage (5th October 2018)
+Coverage data of the jmetal-core package reported by IntelliJ Idea:
 
-  ![](https://i.imgur.com/6ubpkaY.png)
-  
-    Wybieramy wszystkie pliki naraz i clickamy "Open".
-    Alternatywnie można też nacisnąć "Auto Choose" bez wybierania plików, przez co wybiorą się one w sposób automatyczny. Wówczas wybrana iteracja będzie zawsze ostatnia (najwyższa) z folderu w którym się znajdujemy.
-    
-~~* Czekamy chwile na załadowanie i jeśli wszystko poprawnie się wczytało to Runner powinien normalnie uruchomić algorytm. Sukces, wszystkie iteracje będą wyliczone dokładnie w ten sam sposób co w poprzednim uruchomieniu.~~
+|Class % |Method %| Line % |
+|--------|--------|--------|
+|58% (122/210) |	42% (529/1236) | 40% (2524/6263)
