@@ -1,7 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingComparator;
 import org.uma.jmetal.util.solutionattribute.Ranking;

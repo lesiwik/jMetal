@@ -4,7 +4,7 @@ import org.knowm.xchart.XYSeries;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ public class SingleVariableChart extends BaseChart {
     public void update(List<DoubleSolution> population, String seriesName) {
         chart.updateXYSeries(
                 seriesName,
-                population.stream().map(solution -> solution.getVariableValue(0)).collect(Collectors.toList()),
+                population.stream().map(solution -> solution.getVariable(0)).collect(Collectors.toList()),
                 population.stream().map(solution -> solution.getObjective(1)).collect(Collectors.toList()),
                 null);
     }
@@ -50,7 +50,7 @@ public class SingleVariableChart extends BaseChart {
         if (emas.getIteration() < Constants.MAX_ITERATIONS) {
             chart.updateXYSeries(
                     seriesName,
-                    population.stream().map(solution -> solution.getVariableValue(indexOFVariableToShow)).collect(Collectors.toList()),
+                    population.stream().map(solution -> solution.getVariable(indexOFVariableToShow)).collect(Collectors.toList()),
                     population.stream().map(solution -> emas.getIteration() + 10 * indexOFVariableToShow).collect(Collectors.toList()),
                     null);
         }
@@ -61,7 +61,7 @@ public class SingleVariableChart extends BaseChart {
         if (emas.getIteration() < Constants.MAX_ITERATIONS) {
             chart.updateXYSeries(
                     seriesName,
-                    population.stream().map(solution -> solution.getVariableValue(indexOFVariableToShow)).collect(Collectors.toList()),
+                    population.stream().map(solution -> solution.getVariable(indexOFVariableToShow)).collect(Collectors.toList()),
                     population.stream().map(solution -> seriesNumber * 10).collect(Collectors.toList()),
                     null);
         }
@@ -72,7 +72,7 @@ public class SingleVariableChart extends BaseChart {
 //        if (emas.getIterations() < Constants.MAX_ITERATIONS) {
         chart.updateXYSeries(
                 seriesName,
-                population.stream().map(solution -> solution.getVariableValue(indexOFVariableToShow)).collect(Collectors.toList()),
+                population.stream().map(solution -> solution.getVariable(indexOFVariableToShow)).collect(Collectors.toList()),
                 population.stream().map(solution -> seriesNumber * 10).collect(Collectors.toList()),
                 null);
 //        }

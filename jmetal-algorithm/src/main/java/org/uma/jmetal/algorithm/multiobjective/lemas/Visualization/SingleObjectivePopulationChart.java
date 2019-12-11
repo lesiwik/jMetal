@@ -4,7 +4,7 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontUtils;
@@ -75,7 +75,7 @@ public class SingleObjectivePopulationChart extends BaseChart {
     public void update(List<DoubleSolution> population, String seriesName) {
         chart.updateXYSeries(
                 seriesName,
-                population.stream().map(solution -> solution.getVariableValue(0)).collect(Collectors.toList()),
+                population.stream().map(solution -> solution.getVariable(0)).collect(Collectors.toList()),
                 population.stream().map(solution -> solution.getObjective(0)).collect(Collectors.toList()),
                 null);
     }

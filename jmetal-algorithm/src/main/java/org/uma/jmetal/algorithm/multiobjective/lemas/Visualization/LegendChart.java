@@ -4,7 +4,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.Algorithm;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 

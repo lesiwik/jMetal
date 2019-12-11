@@ -3,7 +3,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.BaseChart;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.SolutionListUtils;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public abstract class ProgressBaseChart<E extends Number> extends BaseChart {
     }
 
     protected List<DoubleSolution> getNonDominatedSolutions(List<DoubleSolution> solutionList) {
-        return SolutionListUtils.getNondominatedSolutions(solutionList);
+        return SolutionListUtils.getNonDominatedSolutions(solutionList);
     }
 
     protected void incrementIterationCounterFor(String seriesName) {
