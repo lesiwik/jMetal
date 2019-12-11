@@ -20,8 +20,8 @@ public class SingleVariableChart extends BaseChart {
         this.indexOFVariableToShow = indexOFVariableToShow;
         this.getChart().setTitle("X" + indexOFVariableToShow);
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter);
-        chart.getStyler().setXAxisMax(Constants.PROBLEM.getProblem().createSolution().getUpperBound(indexOFVariableToShow));
-        chart.getStyler().setXAxisMin(Constants.PROBLEM.getProblem().createSolution().getLowerBound(indexOFVariableToShow));
+        chart.getStyler().setXAxisMax(Constants.PROBLEM.createSolution().getUpperBound(indexOFVariableToShow));
+        chart.getStyler().setXAxisMin(Constants.PROBLEM.createSolution().getLowerBound(indexOFVariableToShow));
         for (Algorithm alg : algorithmToShow) {
             chart.addSeries(alg.getName(), new double[]{0}, new double[]{0});
         }

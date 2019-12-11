@@ -79,17 +79,17 @@ public class Constants {
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
 
     /* Problems */
-    public static final ExperimentProblem<DoubleSolution> PROBLEM = new ExperimentProblem<>(new ZDT1());
-    public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT2 = new ExperimentProblem<>(new ZDT2());
-    public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT3 = new ExperimentProblem<>(new ZDT3());
-    public static final ExperimentProblem<DoubleSolution> PROBLEM_ZDT4 = new ExperimentProblem<>(new ZDT4());
-    public static String REF_FRONT_DIR = "./jmetal-problem/src/test/resources/pareto_fronts/";
+    public static final ZDT1 PROBLEM = new ZDT1();
+    public static final ZDT2 PROBLEM_ZDT2 = new ZDT2();
+    public static final ZDT3 PROBLEM_ZDT3 = new ZDT3();
+    public static final ZDT4 PROBLEM_ZDT4 = new ZDT4();
+    public static String REF_FRONT_DIR = "./referenceFronts/";
     public static String REF_FRONT_DIR_UNIX = "../jMetal/jmetal-problem/src/test/resources/pareto_fronts/";
 
     /* Operators */
     public static final CrossoverOperator<DoubleSolution> XOP = new SBXCrossover(1.0, 1.0);
     public static final MutationOperator<DoubleSolution> MOP =
-            new PolynomialMutation(1.0 / PROBLEM.getProblem().getNumberOfVariables(),
+            new PolynomialMutation(1.0 / PROBLEM.getNumberOfVariables(),
                     10.0);
     public static final MutationOperator<DoubleSolution> STRONG_MOP =
             new PolynomialMutation(1.0,

@@ -87,8 +87,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     /**
      * CrossoverOperators are used to combine the genetic information ({@link S}) of two parents ({@link JMetal5Agent<S>}) to generate new offspring.
      * Used in {@link JMetal5Agent#doReproduce(List)}
-     * Set to {@link Constants#XOP} = {@link org.uma.jmetal.operator.impl.crossover.SBXCrossover} in constructor.
-     * @see org.uma.jmetal.operator.impl.crossover.SBXCrossover
+     * Set to {@link Constants#XOP} = {@link org.uma.jmetal.operator.crossover.impl.SBXCrossover} in constructor.
+     * @see org.uma.jmetal.operator.crossover.impl.SBXCrossover
      * @see CrossoverOperator
      * */
     private CrossoverOperator<S> crossoverOperator;
@@ -96,16 +96,16 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     /**
      * MutationOperators are used to maintain genetic diversity from one generation of population to the next. It is analogous to biological mutation.
      * Used during reproduction of Agents.
-     * Set to {@link Constants#MOP} = {@link org.uma.jmetal.operator.impl.mutation.PolynomialMutation}. With distribution index = 10.
+     * Set to {@link Constants#MOP} = {@link org.uma.jmetal.operator.mutation.impl.PolynomialMutation}. With distribution index = 10.
      * @see MutationOperator<S>
-     * @see org.uma.jmetal.operator.impl.mutation.PolynomialMutation
+     * @see org.uma.jmetal.operator.mutation.impl.PolynomialMutation
      * @see JMetal5Agent#reproAct(int, List, List)
      * */
     private MutationOperator<S> mutationOperator;
 
     /**
      * Strong MutationOperator. Analogous to mutationOperator, but with higher distribution index = 20.
-     * Set to {@link Constants#STRONG_MOP} = {@link org.uma.jmetal.operator.impl.mutation.PolynomialMutation}
+     * Set to {@link Constants#STRONG_MOP} = {@link org.uma.jmetal.operator.mutation.impl.PolynomialMutation}
      * @deprecated Currently not in use.
      * @see JMetal5BaseEMAS#mutationOperator
      * */
@@ -283,7 +283,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
                            String parentChildComparatorType) {
 
         /* Operators */
-        this.problem = (Problem<S>) Constants.PROBLEM.getProblem();
+        this.problem = (Problem<S>) Constants.PROBLEM;
         this.crossoverOperator = (CrossoverOperator<S>) Constants.XOP;
         this.mutationOperator = (MutationOperator<S>) Constants.MOP;
         this.strongMutationOperator = (MutationOperator<S>) Constants.STRONG_MOP;
@@ -691,7 +691,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     }
 
     private List<S> getNonDominatedSolutions(List<S> solutionList) {
-        return SolutionListUtils.getNondominatedSolutions(solutionList);
+        return SolutionListUtils.getNonDominatedSolutions(solutionList);
     }
 
     @Override

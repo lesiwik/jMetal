@@ -1,6 +1,8 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.NSGAII;
+import org.uma.jmetal.component.ranking.Ranking;
+import org.uma.jmetal.component.termination.Termination;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.selection.SelectionOperator;
@@ -49,26 +51,25 @@ public class CustomMeasuredNSGAII<S extends Solution<?>> extends NSGAII<S> imple
 
     }
 
-
-
-    public CustomMeasuredNSGAII(Problem<S> problem, int maxIterations, int populationSize,
-                                CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
-                                SelectionOperator<List<S>, S> selectionOperator, Comparator<S> dominanceComparator, SolutionListEvaluator<S> evaluator) {
-          super(problem, maxIterations, populationSize, 100, 100,
-                  crossoverOperator, mutationOperator, selectionOperator, dominanceComparator, evaluator );
+    public CustomMeasuredNSGAII(Problem<S> problem,
+                                int populationSize,
+                                int offspringPopulationSize,
+                                CrossoverOperator<S> crossoverOperator,
+                                MutationOperator<S> mutationOperator,
+                                Termination termination) {
+          super(problem, populationSize, offspringPopulationSize, crossoverOperator, mutationOperator, termination );
 //        referenceFront = new ArrayFront() ;
 
         initMeasures() ;
     }
 
-    public CustomMeasuredNSGAII(Problem<S> problem, int maxIterations, int populationSize,
-                                int matingPoolSize, int offspringPopulationSize,
-                                CrossoverOperator<S> crossoverOperator, MutationOperator<S> mutationOperator,
-                                SelectionOperator<List<S>, S> selectionOperator, Comparator<S> dominanceComparator,
-                                SolutionListEvaluator<S> evaluator) {
-        super(problem, maxIterations, populationSize, matingPoolSize, offspringPopulationSize,
-                crossoverOperator, mutationOperator, selectionOperator, dominanceComparator, evaluator );
-
+    public CustomMeasuredNSGAII(Problem<S> problem, int populationSize,
+                                int offspringPopulationSize,
+                                CrossoverOperator<S> crossoverOperator,
+                                MutationOperator<S> mutationOperator,
+                                Termination termination,
+                                Ranking<S> ranking) {
+        super(problem, populationSize, offspringPopulationSize, crossoverOperator, mutationOperator, termination, ranking);
         initMeasures();
     }
 

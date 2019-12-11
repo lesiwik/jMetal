@@ -1,9 +1,9 @@
-package org.uma.jmetal.runner.multiobjective;
+package org.uma.jmetal.example.multiobjective.emas;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
-import org.uma.jmetal.solution.DoubleSolution;
-import org.uma.jmetal.util.AlgorithmRunner;
+import org.uma.jmetal.example.AlgorithmRunner;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 
@@ -29,6 +29,6 @@ public class JMetal5EMASLogExperimentRunner {
 
         JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
         printFinalSolutionSet(population);
-        printQualityIndicators(population, "jmetal-problem/src/test/resources/pareto_fronts/ZDT1.pf");
+        printQualityIndicators(population, "referenceFronts/ZDT1.pf");
     }
 }

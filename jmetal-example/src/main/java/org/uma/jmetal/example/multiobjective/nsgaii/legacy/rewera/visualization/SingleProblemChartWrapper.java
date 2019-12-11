@@ -6,7 +6,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.config.MeetingType;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.*;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import javax.swing.*;
 import java.awt.*;

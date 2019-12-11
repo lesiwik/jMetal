@@ -30,8 +30,8 @@ public class SingleObjectivePopulationChart extends BaseChart {
         this.getChart().setTitle("Populacja");
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter);
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
-        chart.getStyler().setXAxisMax(Constants.PROBLEM.getProblem().createSolution().getUpperBound(0));
-        chart.getStyler().setXAxisMin(Constants.PROBLEM.getProblem().createSolution().getLowerBound(0));
+        chart.getStyler().setXAxisMax(Constants.PROBLEM.createSolution().getUpperBound(0));
+        chart.getStyler().setXAxisMin(Constants.PROBLEM.createSolution().getLowerBound(0));
         chart.getStyler().setYAxisMax(25.0);
         chart.getStyler().setYAxisMin(0.0);
 
@@ -49,7 +49,7 @@ public class SingleObjectivePopulationChart extends BaseChart {
     private void drawReferenceFront() {
         Front front = null;
         try {
-            String fileName = "../jMetal/jmetal-problem/src/test/resources/pareto_fronts/" + Constants.PROBLEM.getProblem().getName() + ".pf";
+            String fileName = "../jMetal/jmetal-problem/src/test/resources/pareto_fronts/" + Constants.PROBLEM.getName() + ".pf";
 //            front = new ArrayFront("../jMetal/jmetal-problem/src/test/resources/pareto_fronts/ZDT1.pf");
             front = new ArrayFront(fileName);
         } catch (FileNotFoundException e) {

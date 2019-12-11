@@ -124,7 +124,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
 
     public AlgorithmFactory addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
-        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM.getProblem(),
+        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,
                 Constants.XOP, Constants.MOP, initialPopulationSize)
                 .setSelectionOperator(
                         new BinaryTournamentSelection<>(

@@ -19,7 +19,7 @@ public class AlphaDominanceComparator<S extends JMetal5Agent<?>> extends EmasDom
         Solution modifiedSolution1 = a1.getGenotype().copy();
         Solution modifiedSolution2 = a2.getGenotype().copy();
 
-        int objectivesQty = Constants.PROBLEM.getProblem().getNumberOfObjectives();
+        int objectivesQty = Constants.PROBLEM.getNumberOfObjectives();
 
         for (int i = 0; i < objectivesQty; i++) {
             for (int j = 0; j < objectivesQty; j++) {

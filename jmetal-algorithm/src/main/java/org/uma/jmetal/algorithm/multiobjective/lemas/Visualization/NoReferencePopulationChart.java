@@ -40,7 +40,7 @@ public class NoReferencePopulationChart extends BaseChart {
     private void drawReferenceFront() {
         Front front = null;
         try {
-            String fileName = Constants.REF_FRONT_DIR + Constants.PROBLEM.getProblem().getName() + ".pf";
+            String fileName = Constants.REF_FRONT_DIR + Constants.PROBLEM.getName() + ".pf";
 
             front = new ArrayFront(fileName);
         } catch (FileNotFoundException e) {

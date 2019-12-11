@@ -57,7 +57,7 @@ public class EMASBuilder<S extends Solution<?>> {
         this.initialAgentResourceLevel = Constants.INITIAL_RESOURCE_VALUE;
         this.transferAgentResourceLevel = Constants.TRANSFER_RESOURCE_VALUE;
         this.maxNumberOfIterations = Constants.MAX_ITERATIONS;
-        this.problem = (Problem<S>) Constants.PROBLEM.getProblem();
+        this.problem = (Problem<S>) Constants.PROBLEM;
         this.reproCondition = Constants.BASIC_REPRODUCTION_LEVEL;
     }
 

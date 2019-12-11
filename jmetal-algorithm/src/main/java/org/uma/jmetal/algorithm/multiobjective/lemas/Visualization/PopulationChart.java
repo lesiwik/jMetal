@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class PopulationChart extends BaseChart {
-    private final Problem<?> DEFAULT_PROBLEM = Constants.PROBLEM.getProblem();
+    private final Problem<?> DEFAULT_PROBLEM = Constants.PROBLEM;
     private boolean invisiblePareto = false; /* So that both charts are always lined up in the same way. */
 
     public PopulationChart(List<Algorithm> algorithmToShow, boolean invisiblePareto)

@@ -1,4 +1,4 @@
-package org.uma.jmetal.runner.multiobjective;/*
+package org.uma.jmetal.example.multiobjective.emas;/*
 package org.uma.jmetal.runner.multiobjective;
 
 import org.uma.jmetal.algorithm.Algorithm;

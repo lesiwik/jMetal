@@ -1,13 +1,13 @@
-package org.uma.jmetal.runner.singleobjective;
+package org.uma.jmetal.example.singleobjective;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasSingleObjectiveComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.SingleObjectiveChartWrapper;
-import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.example.AlgorithmRunner;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
-import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.measure.Measurable;
 

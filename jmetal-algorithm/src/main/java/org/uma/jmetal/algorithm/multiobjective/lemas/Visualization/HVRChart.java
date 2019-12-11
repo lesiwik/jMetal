@@ -21,7 +21,7 @@ public class HVRChart extends ProgressBaseChart<Double> {
 
     private Front getNormalizedReferenceFront() {
         try {
-            Problem<DoubleSolution> problem = Constants.PROBLEM.getProblem();
+            Problem<DoubleSolution> problem = Constants.PROBLEM;
             String proName = problem.getName();
             String referenceFrontFileName = Constants.REF_FRONT_DIR + proName + ".pf";
             Front referenceFront = new ArrayFront(referenceFrontFileName);
