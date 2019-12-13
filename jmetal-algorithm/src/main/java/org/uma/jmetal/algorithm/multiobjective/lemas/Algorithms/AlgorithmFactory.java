@@ -7,6 +7,8 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.legacy.NSGAIIBuilder;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
+import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.problem.multiobjective.zdt.ZDT1;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
@@ -26,12 +28,16 @@ public class AlgorithmFactory<S extends Solution<?>> {
 
     @Setter(AccessLevel.NONE)
     private final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
-
+    private Problem<S> problemToSolve;
     private List<Algorithm> algorithms;
 
-    public AlgorithmFactory() {
+    public AlgorithmFactory(String problem)
+    {
         algorithms = new ArrayList<>();
+        problemToSolve = selectProblemToSolve(problem);
     }
+
+    public AlgorithmFactory() { this("ZDT1"); }
 
     public Algorithm getAlgorithm(int index) { return algorithms.get(index); }
 
@@ -42,6 +48,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -53,6 +60,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -64,6 +72,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -75,6 +84,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -89,6 +99,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
                         .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -103,6 +114,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
                         .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -118,6 +130,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .comparator(AREA_UNDER_CONTROL_COMPARATOR)
                         .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
                         .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .problem(problemToSolve)
                         .build());
         return this;
     }
@@ -136,4 +149,24 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    private Problem<S> selectProblemToSolve(String problem)
+    {
+        Problem<S> result;
+        switch(problem)
+        {
+            case "ZDT2":
+                result = (Problem<S>) Constants.PROBLEM_ZDT2;
+                break;
+            case "ZDT3":
+                result = (Problem<S>) Constants.PROBLEM_ZDT3;
+                break;
+            case "ZDT4":
+                result = (Problem<S>) Constants.PROBLEM_ZDT4;
+                break;
+            default:
+                result = (Problem<S>) Constants.PROBLEM;
+                break;
+        }
+        return result;
+    }
 }

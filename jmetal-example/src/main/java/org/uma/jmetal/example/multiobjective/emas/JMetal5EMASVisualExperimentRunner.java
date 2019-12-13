@@ -17,9 +17,12 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 
 
      public static void main(String[] args) throws JMetalException {
+         String problemToSolve = new String();
+         if(args.length != 0 )
+             problemToSolve = args[0];
 
          @SuppressWarnings("unchecked")
-         List<Algorithm> algorithmsToRun = new AlgorithmFactory<>()
+         List<Algorithm> algorithmsToRun = new AlgorithmFactory<>(problemToSolve)
 //                 .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
 //                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
@@ -33,10 +36,10 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
-                 .addAreaEMAS("AreaEMAS")
+//                 .addAreaEMAS("AreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
 //                 .addReproductiveEMAS("ReproductiveEMAS")
-//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
+                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
                  .getAlgorithms();
 
          //Slider execution
