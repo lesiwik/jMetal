@@ -7,7 +7,9 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderContro
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
+import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.DoubleSolution;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.AlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
@@ -20,14 +22,19 @@ import java.util.List;
 import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.*;
 
 public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
-
     private static Boolean isDebugMode = false;
+    private static Problem problemToSolve = (Problem) Constants.PROBLEM.getProblem();
 
-     public static void main(String[] args) throws JMetalException {
-
-        List<Algorithm> algorithmsToRun = new ArrayList<>();
-        if (args.length > 0 && args[0].equals("-debug"))
-            isDebugMode = true;
+    public static void main(String[] args) throws JMetalException {
+         List<Algorithm> algorithmsToRun = new ArrayList<>();
+         if (args.length > 0){
+             if(args[0] == "-debug")
+                isDebugMode = true;
+             if(args.length > 1){
+                 String problem = args[1];
+                 setProblemToSolve(problem);// by default is set to solve ZDT1
+             }
+         }
 
 /*        JMetal5ProgressiveEMAS emas1 = new JMetal5ProgressiveEMAS( "Better",
                  IF_BETTER_AND_COULD_NOT_KNOW, false,
@@ -39,7 +46,7 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 */
 
         //addBaseEMASes(algorithmsToRun);
-        addAreaUnderControlBaseEMASes(algorithmsToRun);
+         addAreaUnderControlBaseEMASes(algorithmsToRun, problemToSolve);
 
          //Slider execution
          PausableChartWrapper chartWrapper = new PausableChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
@@ -76,17 +83,7 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
                 .build();
     }
 
-    public static void addAreaUnderControlBaseEMASes(List<Algorithm> algorithms)
-    {
-        algorithms.addAll(
-                Arrays.asList(
-//                        createAreaControlBaseEMAS("Base[Area] - If better", IF_BETTER),
-//                        createAreaControlBaseEMAS("Base[Area] - If not worse", IF_NOT_WORSE),
-                        createAreaControlBaseEMAS("Base[Area] - Always", ALWAYS)
-                ));
-    }
-
-    public static JMetal5BaseEMAS createAreaControlBaseEMAS(String name, int whenAddOffspring)
+    public static JMetal5BaseEMAS createAreaControlBaseEMAS(String name, int whenAddOffspring, Problem problem)
     {
         return new EMASBuilder<>()
                 .emasType("Base")
@@ -96,6 +93,34 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
                 .whenAddOffspringToPopulation(whenAddOffspring)
                 .comparator(new AreaUnderControlComparator())
                 .parentToChildComparator(new AreaUnderControlComparator())
+                .problem(problem)
                 .build();
+    }
+
+    public static void addAreaUnderControlBaseEMASes(List<Algorithm> algorithms, Problem problemToSolve)
+    {
+        algorithms.addAll(
+                Arrays.asList(
+//                        createAreaControlBaseEMAS("Base[Area] - If better", IF_BETTER),
+//                        createAreaControlBaseEMAS("Base[Area] - If not worse", IF_NOT_WORSE),
+                        createAreaControlBaseEMAS("Base[Area] - Always", ALWAYS, problemToSolve)
+                ));
+    }
+
+    public static void setProblemToSolve(String problem){
+        switch (problem)
+        {
+            case "ZDT2":
+                problemToSolve = Constants.PROBLEM_ZDT2.getProblem();
+                break;
+            case "ZDT3":
+                problemToSolve = Constants.PROBLEM_ZDT3.getProblem();
+                break;
+            default:
+                problemToSolve = Constants.PROBLEM.getProblem();
+                break;
+        }
+
+        return;
     }
 }
