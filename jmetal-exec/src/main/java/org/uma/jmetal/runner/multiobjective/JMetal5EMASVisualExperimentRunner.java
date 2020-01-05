@@ -89,7 +89,7 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
     public static JMetal5BaseEMAS createAreaControlBaseEMAS(String name, int whenAddOffspring)
     {
         return new EMASBuilder<>()
-                .emasType("Parallel")
+                .emasType("Base")
                 .agentType("JMetal5AreaControlAgent")
                 .algorithmName(name)
                 .allowKnowledgeExchange(false)

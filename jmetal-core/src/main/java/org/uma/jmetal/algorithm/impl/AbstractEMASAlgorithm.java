@@ -141,7 +141,7 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
      * */
     @Override
     public void run() {
-
+        long start = System.nanoTime();
         if(isLoadedState())
             loadInitialPopulation();
         else {
@@ -164,5 +164,7 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
             } catch (InterruptedException e) {
             }*/
         }
+        long stop = System.nanoTime();
+        System.out.println(stop-start);
     }
 }

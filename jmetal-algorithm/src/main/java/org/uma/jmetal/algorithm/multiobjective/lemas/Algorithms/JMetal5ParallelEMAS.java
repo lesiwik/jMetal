@@ -26,7 +26,7 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
     private final Lock populationLock = new ReentrantLock();
     private final List<List<JMetal5Agent<S>>> meetables = new ArrayList<>();
     private final List<List<JMetal5Agent<S>>> mateables = new ArrayList<>();
-    public int threadsCount = 8;
+    public int threadsCount = 4;
 
     private final Random random = new Random();
 
@@ -59,7 +59,7 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
         populationLock.lock();
         population.addAll(newBorn);
         populationLock.unlock();
-        System.out.println("matin");
+        // System.out.println("matin");
         for (JMetal5Agent<S> agent : newBorn) {
             AddMeetingAgent(agent);
         }
@@ -77,8 +77,8 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
         updateMeetingStatistics(meetingResult);
         agents.getLeft().setMet(false);
         agents.getRight().setMet(false);
-        if(meetingResult!=0)
-             System.out.println("agents meeting from");
+        // if(meetingResult!=0)
+        //     System.out.println("agents meeting from");
         if (agents.getLeft().canReproduce())
             AddMateingAgent(agents.getLeft());
         else if (agents.getLeft().isAlive())
@@ -107,7 +107,7 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
 
         @Override
         public void run() {
-            while (true) {
+            while (getIteration()<Constants.MAX_ITERATIONS ) {
                 stepsLock.lock();
                 if (meetStepsLeft > 0) {
                     meetStepsLeft -= 150;
@@ -116,8 +116,8 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
                     stepsLock.unlock();
                     return;
                 }
-                for (int i = 0; i < 150; i++) {
-                    for (int j = 0; j < 5; j++)
+                for (int i = 0; i < 25; i++) {
+                    for (int j = 0; j < 6; j++)
                         meetStep();
                     reproStep();
                 }
@@ -138,14 +138,15 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
 
     @Override
     public void run() {
+        long start = System.nanoTime();
         ExecutorService executor = Executors.newFixedThreadPool(threadsCount);
         createInitialPopulation();
         for (int i = 0; i < threadsCount; i++)
             {
-            mateableLocks.add(new ReentrantLock());
-            meetableLocks.add(new ReentrantLock());
-            meetables.add(new ArrayList<>());
-            mateables.add(new ArrayList<>());
+                mateableLocks.add(new ReentrantLock());
+                meetableLocks.add(new ReentrantLock());
+                meetables.add(new ArrayList<>());
+                mateables.add(new ArrayList<>());
             }
         for (JMetal5Agent<S> jMetal5Agent : population) {
             AddMeetingAgent(jMetal5Agent);
@@ -158,20 +159,21 @@ public class JMetal5ParallelEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<
 
             populationLock.lock();
             deadStep();
-            System.out.println(seconds+" "+getIteration());
             //System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             populationLock.unlock();
             try {
-                Thread.sleep(1000);
+                Thread.sleep(10);
                 seconds++;
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             populationLock.lock();
-            updateProgress();
+            //updateProgress();
             System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             populationLock.unlock();
         }
+        long stop = System.nanoTime();
+        System.out.println(stop-start);
     }
 }

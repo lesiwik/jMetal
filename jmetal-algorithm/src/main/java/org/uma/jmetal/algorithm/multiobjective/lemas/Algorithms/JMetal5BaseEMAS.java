@@ -352,7 +352,6 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         resetMeetingStatistics();
         List<JMetal5Agent<S>> meetingAgents = population;
         meetingAgents.forEach(a -> a.setMet(false));
-
         for (JMetal5Agent<S> agent : meetingAgents) {
             if (!agent.isMet()) {
                 int meetingResult = agent.doMeeting(meetingAgents,
@@ -378,7 +377,6 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         List<JMetal5Agent<S>> offSpringList = new ArrayList<>();
 
         population.forEach(a -> a.hasAlreadyReproduced = false);
-
         while ((listOfAgentsWhoCanReproduce = getListOfAgentsWhoCanReproduce()).size() > 0) {
             offSpringList.addAll(listOfAgentsWhoCanReproduce.get(0)
                     .doReproduce(listOfAgentsWhoCanReproduce));
