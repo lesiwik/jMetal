@@ -36,7 +36,6 @@ public class NSGAIIWithChartExample extends AbstractAlgorithmRunner {
     NSGAII<DoubleSolution> algorithm;
     CrossoverOperator<DoubleSolution> crossover;
     MutationOperator<DoubleSolution> mutation;
-    SelectionOperator<List<DoubleSolution>, DoubleSolution> selection;
 
     String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
     String referenceParetoFront = "referenceFronts/ZDT1.pf";
@@ -84,7 +83,7 @@ public class NSGAIIWithChartExample extends AbstractAlgorithmRunner {
       printQualityIndicators(population, referenceParetoFront);
     }
 
-    PlotFront plot = new Plot2DSmile(new ArrayFront(population).getMatrix()) ;
+    PlotFront plot = new Plot2DSmile(new ArrayFront(population).getMatrix(), problem.getName()) ;
     plot.plot();
   }
 }
