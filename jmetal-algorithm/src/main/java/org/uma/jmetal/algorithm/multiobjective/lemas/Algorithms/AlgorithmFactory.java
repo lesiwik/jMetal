@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
-import org.uma.jmetal.algorithm.multiobjective.nsgaii.legacy.NSGAIIBuilder;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAIIBuilder;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
