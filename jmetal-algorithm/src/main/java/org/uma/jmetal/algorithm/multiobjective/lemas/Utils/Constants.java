@@ -5,6 +5,7 @@ import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.mutation.MutationOperator;
+import org.uma.jmetal.operator.mutation.impl.NullMutation;
 import org.uma.jmetal.operator.selection.SelectionOperator;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
@@ -12,6 +13,7 @@ import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.problem.multiobjective.zdt.*;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
+import org.uma.jmetal.util.point.PointSolution;
 
 /**
  * Main constants used by EMAS Algorithms.
@@ -94,6 +96,8 @@ public class Constants {
     public static final MutationOperator<DoubleSolution> STRONG_MOP =
             new PolynomialMutation(1.0,
                     20.0);
+
+    public static final MutationOperator<PointSolution> NO_MUTATION_MOP = new NullMutation<>();
     static final SelectionOperator SEL_OP = new BinaryTournamentSelection<>(new RankingAndCrowdingDistanceComparator<DoubleSolution>());
 
     /* Comparators ? */

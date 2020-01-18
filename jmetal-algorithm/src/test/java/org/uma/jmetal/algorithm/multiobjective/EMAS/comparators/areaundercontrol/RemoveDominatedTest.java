@@ -23,6 +23,7 @@ public class RemoveDominatedTest {
     private ArrayList<JMetal5Agent<PointSolution>> agent2List;
     private ArrayList<JMetal5Agent<PointSolution>> expectedListAfterRemoval;
     private final String COMPARATOR_TYPE = Constants.AREA_UNDER_CONTROL_COMPARATOR;
+    private final String AGENT_TYPE = Constants.BASE_AGENT;
 
     @Before
     public void setup()
@@ -31,16 +32,16 @@ public class RemoveDominatedTest {
         // A1 = [0.5, 0.5] with list = [0.54, 0.45] + [0.64, 0.40]
         // A2 = [0.52, 0.39] with list = [0.53, 0.55]
         agent1List = new ArrayList<>();
-        agent1 = AgentUtils.createPointSolutionAgent(new double[]{0.5, 0.5}, COMPARATOR_TYPE);
+        agent1 = AgentUtils.createPointSolutionAgent(new double[]{0.5, 0.5}, COMPARATOR_TYPE, AGENT_TYPE);
         AreaUnderControlComparator<JMetal5Agent<PointSolution>> a1Comparator = (AreaUnderControlComparator) agent1.getComparator();
-        JMetal5Agent<PointSolution> a1_1 = AgentUtils.createPointSolutionAgent(new double[]{0.54, 0.45}, COMPARATOR_TYPE);
-        JMetal5Agent<PointSolution> a1_2 = AgentUtils.createPointSolutionAgent(new double[]{0.64, 0.40}, COMPARATOR_TYPE);
+        JMetal5Agent<PointSolution> a1_1 = AgentUtils.createPointSolutionAgent(new double[]{0.54, 0.45}, COMPARATOR_TYPE, AGENT_TYPE);
+        JMetal5Agent<PointSolution> a1_2 = AgentUtils.createPointSolutionAgent(new double[]{0.64, 0.40}, COMPARATOR_TYPE, AGENT_TYPE);
         agent1List.add(a1_1);
         agent1List.add(a1_2);
         a1Comparator.setListOfKnownNonDominatedAgents(agent1List);
 
-        agent2 = AgentUtils.createPointSolutionAgent(new double[]{0.52, 0.39}, COMPARATOR_TYPE);
-        JMetal5Agent<PointSolution> a2_1 = AgentUtils.createPointSolutionAgent(new double[]{0.53, 0.55}, COMPARATOR_TYPE);
+        agent2 = AgentUtils.createPointSolutionAgent(new double[]{0.52, 0.39}, COMPARATOR_TYPE, AGENT_TYPE);
+        JMetal5Agent<PointSolution> a2_1 = AgentUtils.createPointSolutionAgent(new double[]{0.53, 0.55}, COMPARATOR_TYPE, AGENT_TYPE);
         agent2List = new ArrayList<>();
         AreaUnderControlComparator<JMetal5Agent<PointSolution>> a2Comparator = (AreaUnderControlComparator) agent2.getComparator();
         agent2List.add(a2_1);

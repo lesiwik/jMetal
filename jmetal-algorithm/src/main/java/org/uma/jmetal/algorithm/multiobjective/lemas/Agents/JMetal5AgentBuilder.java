@@ -35,6 +35,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
     private double initialResourcesValue;
     private String type;
     private String comparatorType;
+    private String parentToChildComparator;
 
     /* Operators */
     private CrossoverOperator crossoverOperator;
@@ -95,6 +96,12 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         return this;
     }
 
+    public JMetal5AgentBuilder<S> withParentToChildComparator(String comparatorType)
+    {
+        this.parentToChildComparator = comparatorType;
+        return this;
+    }
+
     @SuppressWarnings("unchecked")
     public JMetal5Agent<S> build() {
         JMetal5Agent<S> agent;
@@ -117,6 +124,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         agent.setEMAS(EMAS);
         //agent.addToAgentRecords();
         agent.setComparator(buildComparator(comparatorType));
+        agent.setParentToChildComparator(buildComparator(parentToChildComparator));
         agent.setAllowKnowledgeExchange(allowKnowledgeExchange);
         return agent;
     }

@@ -30,7 +30,7 @@ public class JMetal5ProgressiveAgent<S extends Solution<?>> extends JMetal5Agent
 
             for (int index = 0; index < numberOfChildren; index++) {
                 JMetal5Agent<S> offSpring = offspringList.get(index);
-                JMetal5Agent<S> parent    = parentList.get(index);
+                JMetal5Agent<S> parent    = parentList.get(index); // TODO: Shouldn't it compare to ALL parents instead of one?
                 offSpring.mutate();
                 offSpring.evaluate(EMAS.getProblem());
 
