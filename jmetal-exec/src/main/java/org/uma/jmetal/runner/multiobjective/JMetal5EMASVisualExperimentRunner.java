@@ -38,8 +38,8 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
         }
 */
 
-        //addBaseEMASes(algorithmsToRun);
-        addAreaUnderControlBaseEMASes(algorithmsToRun);
+        addBaseEMASes(algorithmsToRun);
+        // addAreaUnderControlBaseEMASes(algorithmsToRun);
 
          //Slider execution
          PausableChartWrapper chartWrapper = new PausableChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
@@ -67,7 +67,8 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
     public static JMetal5BaseEMAS createBaseEMAS(String name, int whenAddOffspring)
     {
         return new EMASBuilder<>()
-                .emasType("Parallel")
+                .emasType("Parallel2")
+                .agentType("JMetal5ParallelAgent")
                 .algorithmName(name)
                 .allowKnowledgeExchange(false)
                 .whenAddOffspringToPopulation(whenAddOffspring)

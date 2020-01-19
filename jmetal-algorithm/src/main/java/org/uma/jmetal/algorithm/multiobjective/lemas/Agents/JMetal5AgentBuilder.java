@@ -143,6 +143,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case "JMetal5ProgressiveAgent":
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
+            case "JMetal5ParallelAgent":
+                agent = new JMetal5ParallelAgent<>();
+                break;
         }
         agent.setReproCondition(Optional.ofNullable(reproCondition).orElse(agent.getReproCondition()));
         agent.setGenotype(genotype);

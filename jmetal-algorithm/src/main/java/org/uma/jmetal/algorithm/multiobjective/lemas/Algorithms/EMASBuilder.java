@@ -76,6 +76,9 @@ public class EMASBuilder<S extends Solution<?>> {
             case "Parallel":
                 emas = new JMetal5ParallelEMAS<>();
                 break;
+            case "Parallel2":
+                emas = new JMetal5ParallelEMAS2<>();
+                break;
         }
         setBaseFields(emas);
         return emas;
