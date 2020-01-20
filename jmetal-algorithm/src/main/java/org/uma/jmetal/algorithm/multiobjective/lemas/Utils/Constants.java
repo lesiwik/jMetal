@@ -29,7 +29,9 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 1000;
+    //public static int MAX_ITERATIONS = 1000;
+    public static int MAX_ITERATIONS = 2000;
+
     public static int MAX_EVALUATIONS = 2500;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;
@@ -52,6 +54,7 @@ public class Constants {
     public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
     public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
     public final static String AREA_UNDER_CONTROL_EXTENDED_COMPARATOR = "AreaUnderControlExtendedComparator";
+    public final static String AREA_UNDER_CONTROL_COMPARATOR_VERSION_1 = "AreaUnderControlComparatorVersion1";
 
     /* Agent types */
     public final static String BASE_AGENT = "JMetal5BaseAgent";

@@ -65,6 +65,18 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory addAreaEMAS1(String name) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(BASE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR_VERSION_1)
+                        .problem(problemToSolve)
+                        .build());
+        return this;
+    }
+
     public AlgorithmFactory addReproductiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
