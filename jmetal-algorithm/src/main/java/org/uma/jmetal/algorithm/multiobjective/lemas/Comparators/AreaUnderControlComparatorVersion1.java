@@ -93,8 +93,6 @@ public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> e
                 }
         }
 
-
-
         private boolean checkifAgentIsDominated(List<Agent> listOfKnownNonDominatedAgents, Agent agent2)
         {
                 int comparison = 0;
