@@ -5,7 +5,6 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Setter
 @Getter
@@ -41,7 +40,6 @@ public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> e
 
                 if(isBetter == Constants.NEITHER_IS_BETTER){
                         updateListOfKnownNondominatedAgents(agent1, agent2);
-
                         int agent1Score = 0, agent2Score = 0;
                         for (int i = 0; i < agent1.genotype.getNumberOfObjectives(); i++) {
                                 double objValue1 = agent1.genotype.getObjective(i),
@@ -66,9 +64,9 @@ public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> e
                 return isBetter;
         }
 
-
         protected int checkNonDominatedAgents(Agent agent1, Agent agent2) {
-                List<Agent> listOfKnownNonDominatedAgents = ((AreaUnderControlComparatorVersion1) agent1.getComparator()).listOfKnownNonDominatedAgents;
+                List<Agent> listOfKnownNonDominatedAgents =
+                        ((AreaUnderControlComparatorVersion1) agent1.getComparator()).listOfKnownNonDominatedAgents;
                 for (Agent agent:  listOfKnownNonDominatedAgents) {
                         int isPartnerUnderControl = super.compare(agent, agent2);
                         if (isPartnerUnderControl != Constants.NEITHER_IS_BETTER)
@@ -81,41 +79,37 @@ public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> e
                 List<Agent> agent1ListOfNonDominatedAgents =
                         ((AreaUnderControlComparatorVersion1) agent1.getComparator()).listOfKnownNonDominatedAgents;
                 if (!agent1ListOfNonDominatedAgents.contains(agent2)) {
-                        //bool ifAgentIsDominated = checkIfAgentIsDominated(agent1ListOfNonDominatedAgents, agent2);
-                        if(checkIfAgentIsGoodEnough(agent1ListOfNonDominatedAgents, agent2))
+                        boolean agent2IsDominated = checkifAgentIsDominated(agent1ListOfNonDominatedAgents, agent2);
+                        if(agent2IsDominated)
                                 agent1ListOfNonDominatedAgents.add(agent2);
                 }
 
                 List<Agent> agent2ListOfNonDominatedAgents =
                         ((AreaUnderControlComparatorVersion1) agent2.getComparator()).listOfKnownNonDominatedAgents;
-
-
-
                 if (!agent2ListOfNonDominatedAgents.contains(agent1)) {
-                        if(checkIfAgentIsGoodEnough(agent2ListOfNonDominatedAgents, agent1))
+                        boolean agent1IsDominated = checkifAgentIsDominated(agent2ListOfNonDominatedAgents, agent1);
+                        if(agent1IsDominated)
                                 agent2ListOfNonDominatedAgents.add(agent1);
                 }
         }
 
 
 
-        private boolean checkIfAgentIsGoodEnough(List<Agent> listOfKnownNonDominatedAgents, Agent agentToAdd)
+        private boolean checkifAgentIsDominated(List<Agent> listOfKnownNonDominatedAgents, Agent agent2)
         {
-                boolean isAgentDominated = listOfKnownNonDominatedAgents.stream().anyMatch(agent ->{
-                        int comparison_result =  super.compare(agent, agentToAdd);
-                        return comparison_result == Constants.FIRST_IS_BETTER;
-                });
+                int comparison = 0;
+                List<Agent> listOfDominatedAgents = new ArrayList();
+                for (Agent agent : listOfKnownNonDominatedAgents) {
+                        comparison = super.compare(agent, agent2);
 
-                if(isAgentDominated)
-                        return false;
-
-                List<Agent> dominatedAgents = listOfKnownNonDominatedAgents.stream().filter(agent -> {
-                        int comparison_result = super.compare(agent, agentToAdd);
-                        return comparison_result == Constants.SECOND_IS_BETTER;
-                }).collect(Collectors.toList());
-
-                listOfKnownNonDominatedAgents.removeAll(dominatedAgents);
-
+                        if(comparison == Constants.FIRST_IS_BETTER) {
+                                return false;
+                        }
+                        else if (comparison == Constants.SECOND_IS_BETTER){
+                                listOfDominatedAgents.add(agent2);
+                        }
+                }
+                listOfKnownNonDominatedAgents.removeAll(listOfDominatedAgents);
                 return true;
         }
 }
