@@ -59,11 +59,13 @@ public class Constants {
     public final static String BASE_AGENT = "JMetal5BaseAgent";
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
+    public final static String PARALLEL_AGENT  = "JMetal5ParallelAgent";
 
     /* EMAS types */
     public final static String BASE_EMAS = "JMetal5BaseEMAS";
     public final static String GLOBAL_RANK_EMAS = "JMetal5GlobalRankEMAS";
     public final static String PROGRESSIVE_EMAS = "JMetal5ProgressiveEMAS";
+    public final static String PARALLEL_EMAS = "JMetal5ParallelEMAS";
 
     /* Reproduction levels */
     public final static ReproCondition PROGRESSIVE_REPRODUCTION_LEVEL =

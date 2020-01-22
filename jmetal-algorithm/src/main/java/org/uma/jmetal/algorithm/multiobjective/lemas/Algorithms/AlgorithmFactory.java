@@ -46,6 +46,17 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory addParallelEMAS(String name) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
     public AlgorithmFactory addAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)

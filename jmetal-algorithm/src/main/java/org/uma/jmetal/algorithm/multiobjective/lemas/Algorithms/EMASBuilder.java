@@ -76,6 +76,8 @@ public class EMASBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_EMAS:
                 emas = new JMetal5ProgressiveEMAS<>();
                 break;
+            case Constants.PARALLEL_EMAS:
+                emas = new JMetal5ParallelEMAS2<>();
         }
         setBaseFields(emas);
         return emas;

@@ -33,11 +33,13 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
+//                 .addParallelEMAS("ParallelEMAS")
                  .addAreaEMAS("AreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
 //                 .addReproductiveEMAS("ReproductiveEMAS")
 //                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
                  .getAlgorithms();
+
 
          //Slider execution
          PausableChartWrapper chartWrapper = new PausableChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);

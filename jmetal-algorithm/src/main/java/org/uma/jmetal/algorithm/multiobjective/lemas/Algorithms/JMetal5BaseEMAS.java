@@ -418,7 +418,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     @Override
     protected boolean isStoppingConditionReached() {
-        return iterations >= maxNumberOfIterations;
+        return iterations >= 1000000;//maxNumberOfIterations;
     }
 
     /**
@@ -449,6 +449,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     @Override
     protected void updateProgress(int iterations) {
+        System.out.println( evaluations );
         this.iterations++;
         solutionListMeasure.push(getPopulation());
     }
@@ -458,6 +459,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     @Override
     protected void updateProgress() {
+        System.out.println( evaluations );
         iterations++;
         solutionListMeasure.push(getPopulation());
     }
