@@ -52,6 +52,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .agentType(PARALLEL_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
+//                        .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
                         .build());
         return this;
