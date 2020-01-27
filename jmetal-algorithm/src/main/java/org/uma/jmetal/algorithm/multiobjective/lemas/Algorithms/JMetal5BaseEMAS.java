@@ -366,7 +366,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     protected void meetStep(){
         populationLOG("----meetStep----");
 
-        resetMeetingStatistics();
+        //resetMeetingStatistics();
         List<JMetal5Agent<S>> meetingAgents = population;
         meetingAgents.forEach(a -> a.setMet(false));
 
@@ -418,7 +418,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     @Override
     protected boolean isStoppingConditionReached() {
-        return iterations >= 1000000;//maxNumberOfIterations;
+        return evaluations >= 16000;//maxNumberOfIterations;
     }
 
     /**
@@ -722,6 +722,34 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     public void setAgentType(String agentType)
     {
         this.agentType = Optional.ofNullable(agentType).orElse(Constants.BASE_AGENT);
+    }
+
+    @Override
+    public void run() {
+
+
+            createInitialPopulation();
+            initProgress();
+
+
+        int lastTimeChecked = 0;
+        while (!isStoppingConditionReached()) {
+            saveIteration(getIteration());
+            meetStep();
+            reproStep();
+            deadStep();
+            if (evaluations > lastTimeChecked+100) {
+                updateProgress();
+                lastTimeChecked+=100;
+
+                System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
+            }
+        }
+/*           try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }*/
+
     }
 
 }

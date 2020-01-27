@@ -32,6 +32,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
         for(int i=0;i<matingQueuesNumber;i++)
             matingQueues.add(new ArrayList<>());
         createInitialPopulation();
+        initProgress();
         synchronized(population)
         {
             population.forEach(item -> {
@@ -45,38 +46,44 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
                 new Thread(agent).start();
             });
         }
-        for (; getEvaluations() < 500000;) {
+        for (; getEvaluations() < 16000;) {
             setNeitherIsBetterMeetingTypeCounter(hypervisor.neitherIsBetterMeetingCounter.get());
             setImBetterMeetingTypeCounter(hypervisor.imBetterMeetingCounter.get());
-            synchronized (population) {
-                System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
-                Double sum = population.stream().map(x->x.getResourceLevel()).reduce(Double::sum).get();
-                System.out.println("energy sum: "+sum.toString());
-                StringBuilder ids = new StringBuilder();
-                population.forEach(x -> ids.append(x.getId()).append(" "));
-                System.out.println(ids);
-                System.out.println(getEvaluations());
-                updateProgress();
-            }
+
             try {
-                Thread.sleep(100);
+                Thread.sleep(1000);
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        synchronized(population)
-        {
-            population.forEach(i->((JMetal5ParallelAgent<S>)i).setStopCondition(true));
-        }
+
+        JMetal5ParallelAgent.stopCondition = true;
+
         long stop = System.nanoTime();
         System.out.println(stop-start);
     }
 
     @Override
     public void updateEvaluationsCounter() {
-        synchronized (this) {
-            this.setEvaluations(getEvaluations() + 1);
+         {
+            int evals = getEvaluations();
+             synchronized (this) {
+                 this.setEvaluations(evals + 1);
+                 if (evals % 100 == 0) {
+                     synchronized (population) {
+                         System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
+                         Double sum = population.stream().map(JMetal5Agent::getResourceLevel).reduce(Double::sum).get();
+                         System.out.println("energy sum: " + sum.toString());
+                         StringBuilder ids = new StringBuilder();
+                         population.forEach(x -> ids.append(x.getId()).append(" "));
+                         System.out.println(ids);
+                         System.out.println("Evaluations: " + evals);
+                         updateProgress();
+                     }
+                 }
+             }
+
         }
     }
     @Override

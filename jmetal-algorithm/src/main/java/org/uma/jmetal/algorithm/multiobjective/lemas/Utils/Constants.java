@@ -76,10 +76,10 @@ public class Constants {
             (double resourceLevel) -> resourceLevel >= Constants.REPRODUCTION_LEVEL_VALUE;
 
     /* Charts */
-    public static final int HV_FREQUENCY = 50;
+    public static final int HV_FREQUENCY = 10;
     public static final int POP_FREQUENCY = 1;
-    public static final int MEETINGS_FREQUENCY = 50;
-    public static final int POPULATION_SIZE_FREQUENCY = 50;
+    public static final int MEETINGS_FREQUENCY = 10;
+    public static final int POPULATION_SIZE_FREQUENCY = 10;
     public static final int NUMBER_OF_DECISION_VARIABLES_TO_SHOW = 3;
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
 
