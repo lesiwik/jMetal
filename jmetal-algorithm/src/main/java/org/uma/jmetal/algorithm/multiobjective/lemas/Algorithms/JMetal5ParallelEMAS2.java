@@ -72,7 +72,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
                  this.setEvaluations(evals + 1);
                  if (evals % 100 == 0) {
                      synchronized (population) {
-                         System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
+                         System.out.println(getEvaluations());
                          Double sum = population.stream().map(JMetal5Agent::getResourceLevel).reduce(Double::sum).get();
                          System.out.println("energy sum: " + sum.toString());
                          StringBuilder ids = new StringBuilder();
@@ -80,6 +80,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
                          System.out.println(ids);
                          System.out.println("Evaluations: " + evals);
                          updateProgress();
+                         results.add(getNonDominatedSolutions(getPopulation()));
                      }
                  }
              }

@@ -40,6 +40,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper=false) /* Used due to lombok warning. */
 public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, List<S>> implements Measurable{
 
+    protected List<List<S>> results = new ArrayList<>();
 
     /**
      * Agent type used by builder to determine what kind of agent to build.
@@ -690,7 +691,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         return getNonDominatedSolutions(getPopulation());
     }
 
-    private List<S> getNonDominatedSolutions(List<S> solutionList) {
+    protected List<S> getNonDominatedSolutions(List<S> solutionList) {
         return SolutionListUtils.getNonDominatedSolutions(solutionList);
     }
 
@@ -736,6 +737,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
             meetStep();
             reproStep();
             deadStep();
+            results.add(getNonDominatedSolutions(getPopulation()));
             if (evaluations > lastTimeChecked+100) {
                 updateProgress();
                 lastTimeChecked+=100;
