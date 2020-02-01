@@ -157,7 +157,7 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
                 reproStep();
                 deadStep();
                 updateProgress();
-                System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
+               // System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             }
 /*           try {
                 Thread.sleep(100);
