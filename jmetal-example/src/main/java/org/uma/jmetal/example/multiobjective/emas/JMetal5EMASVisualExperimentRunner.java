@@ -3,6 +3,7 @@ package org.uma.jmetal.example.multiobjective.emas;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.ChartWrapper;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
 import org.uma.jmetal.example.AlgorithmRunner;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
@@ -33,7 +34,8 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
-                 .addAreaEMAS("AreaEMAS")
+//                 .addAreaEMAS("AreaEMAS")
+                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
 //                 .addReproductiveEMAS("ReproductiveEMAS")
 //                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)

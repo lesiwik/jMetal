@@ -79,7 +79,7 @@ public class IterationSlider {
         isPaused.getAndSet(false);
         savedStates = new HashMap<>();
         currentIterationEmas = new ArrayList<>();
-        //algorithmsToShow.forEach(algorithm -> currentIterationEmas.add((JMetal5BaseEMAS) algorithm)); TODO: Part of not including loading from same iteration.
+        algorithmsToShow.forEach(algorithm -> currentIterationEmas.add((JMetal5BaseEMAS) algorithm)); //TODO: Part of not including loading from same iteration.
         initComponents();
         for (Algorithm alg : algorithmsToShow)
             initSeries(alg.getName());

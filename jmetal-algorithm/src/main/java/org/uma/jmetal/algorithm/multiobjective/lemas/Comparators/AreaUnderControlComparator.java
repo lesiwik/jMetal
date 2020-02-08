@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 
 /**
  * Area under control comparator for agents in EMAS algorithms.
- * @author dr inż. Siwik Leszek siwik@agh.edu.pl
+ * @author M. Kasprzyk <michal0kasprzyk@gmail.com>
  * @since 8/27/2018
  * */
 @Setter

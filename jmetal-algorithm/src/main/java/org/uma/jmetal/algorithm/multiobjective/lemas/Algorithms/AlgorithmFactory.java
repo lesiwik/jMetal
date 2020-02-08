@@ -107,6 +107,20 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory addProgressiveAreaNotWorseEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .parentToChildComparator(NOT_WORSE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
     public AlgorithmFactory addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(

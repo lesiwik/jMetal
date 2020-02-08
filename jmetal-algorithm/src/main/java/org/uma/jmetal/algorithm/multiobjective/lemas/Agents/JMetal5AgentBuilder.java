@@ -5,6 +5,7 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderContro
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlExtendedComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.EmasDominanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.NotWorseComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.mutation.MutationOperator;
@@ -186,6 +187,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         EmasDominanceComparator<JMetal5Agent<?>> comparator;
         switch(Optional.ofNullable(comparatorType).orElse(""))
         {
+            case Constants.NOT_WORSE_COMPARATOR:
+                comparator = new NotWorseComparator<>();
+                break;
             case Constants.AREA_UNDER_CONTROL_EXTENDED_COMPARATOR:
                 comparator = new AreaUnderControlExtendedComparator<>();
                 break;
