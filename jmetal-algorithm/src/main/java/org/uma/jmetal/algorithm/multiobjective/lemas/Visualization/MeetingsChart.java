@@ -52,7 +52,7 @@ public class MeetingsChart<S extends Solution<?>> extends ProgressBaseChart<Inte
         incrementIterationCounterFor(seriesName);
     }
 
-    private int getMeetingCounterValue(JMetal5BaseEMAS emas) {
+    private int getMeetingCounterValue(JMetal5BaseEMAS<S> emas) {
         if (meetingType.isIAmBetter())
             return emas.getImBetterMeetingTypeCounter();
         else if (meetingType.isNeitherIsBetter())

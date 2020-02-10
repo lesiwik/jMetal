@@ -38,17 +38,23 @@ public class ChartWrapper<S extends Solution<?>> {
         charts.add(new PopulationChart<>(algorithmToShow));
         charts.add(new PopulationChart<>(algorithmToShow, true));
 
-        /*TODO: Usunąć te nie używane. Zcommonować to.. */
-        //charts.add(new NoReferencePopulationChart(algorithmToShow));
-        charts.add(new HVChart<>(algorithmToShow, referenceFront));
-        //charts.add(new HVRChart(algorithmToShow));
-        charts.add(new IGDPlusChart<>(algorithmToShow, referenceFront));
-        //charts.add(new EvaluationHVRChart(algorithmToShow));
-        //charts.add(new EvaluationIGDPlusChart(algorithmToShow));
-//        for (int i = 0; i < numberOFDecisionVariablesToShow; i++) {
-//            charts.add(new SingleVariableChart(algorithmToShow, i));
-//        }
-        //charts.add(new LegendChart(algorithmToShow));
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.HYPERVOLUME_INDICATOR_TYPE));
+
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.INVERTED_GENERATIONAL_DISTANCE_PLUS_INDICATOR_TYPE));
+
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.INVERTED_GENERATIONAL_DISTANCE_INDICATOR_TYPE));
+
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.GENERATIONAL_DISTANCE_INDICATOR_TYPE));
+
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.EPISLON_INDICATOR_TYPE));
+
+        charts.add(new GenericIndicatorChart<>(algorithmToShow, referenceFront)
+                .withIndicator(Constants.SPREAD_INDICATOR_TYPE));
 
         charts.add(new MeetingsChart<>(algorithmToShow, MeetingType.I_AM_BETTER));
         charts.add(new MeetingsChart<>(algorithmToShow, MeetingType.NEITHER_IS_BETTER));
@@ -58,6 +64,18 @@ public class ChartWrapper<S extends Solution<?>> {
 
         wrapper = new SwingWrapper<>(charts.stream().map(BaseChart::getChart).collect(Collectors.toList()), 3, 3);
         wrapper.displayChartMatrix();
+
+        /*TODO: Usunąć te nie używane. Zcommonować to.. */
+//        charts.add(new IGDPlusChart<>(algorithmToShow, referenceFront));
+//        charts.add(new HVChart<>(algorithmToShow, referenceFront));
+//        charts.add(new HVRChart(algorithmToShow));
+//        charts.add(new NoReferencePopulationChart(algorithmToShow));
+//        charts.add(new EvaluationHVRChart(algorithmToShow));
+//        charts.add(new EvaluationIGDPlusChart(algorithmToShow));
+//        for (int i = 0; i < numberOFDecisionVariablesToShow; i++) {
+//            charts.add(new SingleVariableChart(algorithmToShow, i));
+//        }
+//        charts.add(new LegendChart(algorithmToShow));
     }
 
     private void initializeReferenceFronts()
