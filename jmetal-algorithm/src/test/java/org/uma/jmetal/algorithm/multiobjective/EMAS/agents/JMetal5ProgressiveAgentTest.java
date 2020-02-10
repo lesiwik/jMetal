@@ -88,7 +88,7 @@ public class JMetal5ProgressiveAgentTest {
     {
         int numberOfChildren = 2;
         List<JMetal5Agent<PointSolution>> expectedList = new ArrayList<>();
-        expectedList.add(betterOffspring); /* TODO: Should it really be only this one? */
+        expectedList.add(betterOffspring); /* TODO: Should it really be only this one? This test is supposed to fail before that is resolved. */
 
         System.out.println("\n== Checking if better offspring is returned from the list == \n ");
         List<JMetal5Agent<PointSolution>> resultedList = parent1.reproAct(numberOfChildren, parentList, betterOffspringsList);

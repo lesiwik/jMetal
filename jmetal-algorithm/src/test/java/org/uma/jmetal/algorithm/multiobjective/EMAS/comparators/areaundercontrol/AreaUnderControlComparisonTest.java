@@ -24,10 +24,10 @@ public class AreaUnderControlComparisonTest {
 
     public static void compareAgentsWithResult(JMetal5Agent<?> agent1, JMetal5Agent<?> agent2, final int EXPECTED_RESULT)
     {
-        final AreaUnderControlComparator COMPARATOR = new AreaUnderControlComparator<>();
+        final AreaUnderControlComparator<JMetal5Agent<?>> COMPARATOR = new AreaUnderControlComparator<>();
         int comparatorResult = COMPARATOR.compare(agent1, agent2);
         System.out.println(
-                ComparatorUtils.constructComparisonResultString(COMPARATOR, agent1, agent2, comparatorResult, Constants.NEITHER_IS_BETTER,
+                ComparatorUtils.constructComparisonResultString(COMPARATOR, agent1, agent2, comparatorResult, EXPECTED_RESULT,
                 ComparatorUtils.constructAreaUnderComparisonResultString(
                         COMPARATOR.getAgent2ToListComparisonResult(),
                         COMPARATOR.getAgent1ToListComparisonResult())));
@@ -43,14 +43,14 @@ public class AreaUnderControlComparisonTest {
                                                       final int EXPECTED_RESULT_LIST2)
     {
         agent1ListOfKnownNonDominated.forEach(agent -> {
-            AreaUnderControlComparator comparator = new AreaUnderControlComparator();
+            AreaUnderControlComparator<JMetal5Agent<PointSolution>> comparator = new AreaUnderControlComparator<>();
             int comparatorResult = comparator.compare(agent1, agent);
             System.out.println(ComparatorUtils.constructComparisonResultString(comparator, agent, agent1, comparatorResult, EXPECTED_RESULT_LIST1, ""));
             assertEquals(EXPECTED_RESULT_LIST1, comparatorResult);
         });
 
         agent2ListOfKnownNonDominated.forEach(agent -> {
-            AreaUnderControlComparator comparator = new AreaUnderControlComparator();
+            AreaUnderControlComparator<JMetal5Agent<PointSolution>> comparator = new AreaUnderControlComparator<>();
             int comparatorResult = comparator.compare(agent2, agent);
             System.out.println(ComparatorUtils.constructComparisonResultString(comparator, agent, agent2, comparatorResult, EXPECTED_RESULT_LIST2, ""));
             assertEquals(EXPECTED_RESULT_LIST2, comparatorResult);
