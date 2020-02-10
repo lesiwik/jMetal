@@ -27,15 +27,15 @@ public class AlgorithmFactory<S extends Solution<?>> {
     @Setter(AccessLevel.NONE)
     private final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
 
-    private List<Algorithm> algorithms;
+    private List<Algorithm<List<S>>> algorithms;
 
     public AlgorithmFactory() {
         algorithms = new ArrayList<>();
     }
 
-    public Algorithm getAlgorithm(int index) { return algorithms.get(index); }
+    public Algorithm<List<S>> getAlgorithm(int index) { return algorithms.get(index); }
 
-    public AlgorithmFactory addEMAS(String name) {
+    public AlgorithmFactory<S> addEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -46,7 +46,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addAreaEMAS(String name) {
+    public AlgorithmFactory<S> addAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -57,7 +57,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addNotWorseEMAS(String name) {
+    public AlgorithmFactory<S> addNotWorseEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -68,7 +68,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveEMAS(String name) {
+    public AlgorithmFactory<S> addReproductiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -79,7 +79,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveAreaEMAS(String name) {
+    public AlgorithmFactory<S> addReproductiveAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -90,7 +90,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addProgressiveEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -104,7 +104,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addProgressiveAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -118,7 +118,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addProgressiveAreaNotWorseEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveAreaNotWorseEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -132,7 +132,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -147,7 +147,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -162,18 +162,18 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
-    {
-        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,
-                Constants.XOP, Constants.MOP, initialPopulationSize)
-                .setSelectionOperator(
-                        new BinaryTournamentSelection<>(
-                                new RankingAndCrowdingDistanceComparator<>()))
-                .setMaxEvaluations(maxEvaluations)
-                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
-                .build());
-
-        return this;
-    }
+//    public AlgorithmFactory<S> addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+//    {
+//        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,
+//                Constants.XOP, Constants.MOP, initialPopulationSize)
+//                .setSelectionOperator(
+//                        new BinaryTournamentSelection<>(
+//                                new RankingAndCrowdingDistanceComparator<>()))
+//                .setMaxEvaluations(maxEvaluations)
+//                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
+//                .build());
+//
+//        return this;
+//    }
 
 }

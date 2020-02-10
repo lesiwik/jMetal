@@ -35,7 +35,7 @@ public class EvaluationHVRChart<S extends Solution<?>> extends ProgressBaseChart
         }
     }
 
-    public EvaluationHVRChart(List<Algorithm<S>> algorithmsToShow) {
+    public EvaluationHVRChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
         chart.setTitle("HVR (ewaluacja % " + Constants.HV_FREQUENCY + ")");
     }
@@ -62,7 +62,7 @@ public class EvaluationHVRChart<S extends Solution<?>> extends ProgressBaseChart
     }
 
     @Override
-    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
             xValues.get(seriesName).add(emas.getEvaluations());
             yValues.get(seriesName).add(hv.evaluate(

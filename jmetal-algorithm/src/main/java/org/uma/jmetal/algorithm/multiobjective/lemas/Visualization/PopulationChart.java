@@ -23,7 +23,7 @@ public class PopulationChart<S extends Solution<?>> extends BaseChart<S> {
     private final Problem<?> DEFAULT_PROBLEM = Constants.PROBLEM;
     private boolean invisiblePareto = false; /* So that both charts are always lined up in the same way. */
 
-    public PopulationChart(List<Algorithm<S>> algorithmToShow, boolean invisiblePareto)
+    public PopulationChart(List<Algorithm<List<S>>> algorithmToShow, boolean invisiblePareto)
     {
         super();
         this.invisiblePareto = invisiblePareto;
@@ -38,18 +38,18 @@ public class PopulationChart<S extends Solution<?>> extends BaseChart<S> {
         this.drawReferenceFront(DEFAULT_PROBLEM);
     }
 
-    public PopulationChart(List<Algorithm<S>> algorithmToShow) {
+    public PopulationChart(List<Algorithm<List<S>>> algorithmToShow) {
         super();
         initializeChart(algorithmToShow);
     }
 
-    private void initializeChart(List<Algorithm<S>> algorithmToShow)
+    private void initializeChart(List<Algorithm<List<S>>> algorithmToShow)
     {
         chart.getStyler().setLegendVisible(true);
         chart.setTitle("Population");
         chart.getStyler().setDefaultSeriesRenderStyle(XYSeries.XYSeriesRenderStyle.Scatter);
         chart.getStyler().setLegendPosition(Styler.LegendPosition.InsideNE);
-        for (Algorithm alg : algorithmToShow) {
+        for (Algorithm<List<S>> alg : algorithmToShow) {
 
             String name = alg.getName();
             chart.addSeries(name, new double[]{0}, new double[]{0});
@@ -58,10 +58,10 @@ public class PopulationChart<S extends Solution<?>> extends BaseChart<S> {
         drawReferenceFrontOrDefault(algorithmToShow.get(0));
     }
 
-    private void drawReferenceFrontOrDefault(Algorithm algorithm) {
+    private void drawReferenceFrontOrDefault(Algorithm<List<S>> algorithm) {
         Problem<?> problemConsidered = DEFAULT_PROBLEM;
-        if (algorithm instanceof JMetal5BaseEMAS<?>) {
-            JMetal5BaseEMAS<?> exemplaryAlgorithmCast = (JMetal5BaseEMAS<?>) algorithm;
+        if (algorithm instanceof JMetal5BaseEMAS) {
+            JMetal5BaseEMAS<?> exemplaryAlgorithmCast = (JMetal5BaseEMAS<S>) algorithm;
             problemConsidered = exemplaryAlgorithmCast.getProblem();
         }
 

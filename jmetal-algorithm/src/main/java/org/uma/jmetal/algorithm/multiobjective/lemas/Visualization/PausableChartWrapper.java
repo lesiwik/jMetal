@@ -22,7 +22,7 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
         return iterationSlider;
     }
 
-    public PausableChartWrapper(List<Algorithm<S>> algorithmToShow, int numberOFDecisionVariablesToShow) {
+    public PausableChartWrapper(List<Algorithm<List<S>>> algorithmToShow, int numberOFDecisionVariablesToShow) {
         super(algorithmToShow, numberOFDecisionVariablesToShow);
         iterationSlider = new IterationSlider<S>(algorithmToShow);
         iterationSlider.showForm();

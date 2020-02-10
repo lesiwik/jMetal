@@ -10,7 +10,7 @@ import java.util.List;
 public class PopulationSizeChart<S extends Solution<?>> extends ProgressBaseChart<Integer, S>{
 
 
-    public PopulationSizeChart(List<Algorithm<S>> algorithmsToShow) {
+    public PopulationSizeChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
         chart.setTitle("Population size");
     }
@@ -26,7 +26,7 @@ public class PopulationSizeChart<S extends Solution<?>> extends ProgressBaseChar
     }
 
     @Override
-    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas){
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas){
         if (isItTimeForUpdate(seriesName, Constants.POPULATION_SIZE_FREQUENCY)){
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             yValues.get(seriesName).add(emas.getPopulation().size());

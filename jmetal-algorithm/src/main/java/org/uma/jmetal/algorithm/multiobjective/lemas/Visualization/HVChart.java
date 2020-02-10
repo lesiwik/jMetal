@@ -12,7 +12,7 @@ import java.util.List;
 public class HVChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
     private PISAHypervolume<S> hv;
 
-    public HVChart(List<Algorithm<S>> algorithmsToShow, Front referenceFront) {
+    public HVChart(List<Algorithm<List<S>>> algorithmsToShow, Front referenceFront) {
         super(algorithmsToShow);
         chart.setTitle("Hypervolume");
         hv = new PISAHypervolume<>(referenceFront);

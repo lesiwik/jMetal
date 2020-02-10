@@ -15,7 +15,7 @@ import java.util.List;
 public class EvaluationIGDPlusChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
     private InvertedGenerationalDistancePlus igdPlus;
 
-    public EvaluationIGDPlusChart(List<Algorithm<S>> algorithmsToShow) {
+    public EvaluationIGDPlusChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
         this.getChart().setTitle("IGDPlus (ewaluacja % " + Constants.HV_FREQUENCY + ")");
 
@@ -49,7 +49,7 @@ public class EvaluationIGDPlusChart<S extends Solution<?>> extends ProgressBaseC
     }
 
     @Override
-    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
             xValues.get(seriesName).add(emas.getEvaluations());
             yValues.get(seriesName).add(igdPlus.evaluate(

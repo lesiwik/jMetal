@@ -243,7 +243,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
 
     @SuppressWarnings("unchecked")
-    public JMetal5BaseEMAS(Problem problem, String algorithmName, int whenAddOffspringToPopulation,
+    public JMetal5BaseEMAS(Problem<S> problem, String algorithmName, int whenAddOffspringToPopulation,
                            boolean allowKnowledgeExchange,
                            EmasDominanceComparator meetingComparator,
                            EmasDominanceComparator parentChildComparator) {

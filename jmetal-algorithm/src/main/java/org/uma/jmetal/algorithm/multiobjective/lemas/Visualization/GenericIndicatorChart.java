@@ -14,7 +14,7 @@ public class GenericIndicatorChart<S extends Solution<?>> extends ProgressBaseCh
     private GenericIndicator<S> currentMetric;
     private Front referenceFront;
 
-    public GenericIndicatorChart(List<Algorithm<S>> algorithmsToShow, Front referenceFront)
+    public GenericIndicatorChart(List<Algorithm<List<S>>> algorithmsToShow, Front referenceFront)
     {
         super(algorithmsToShow);
         this.referenceFront = referenceFront;

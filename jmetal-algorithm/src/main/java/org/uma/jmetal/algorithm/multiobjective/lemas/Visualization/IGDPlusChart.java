@@ -15,7 +15,7 @@ import java.util.List;
 public class IGDPlusChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
     private InvertedGenerationalDistancePlus<S> igdPlus;
 
-    public IGDPlusChart(List<Algorithm<S>> algorithmsToShow, Front referenceFront) {
+    public IGDPlusChart(List<Algorithm<List<S>>> algorithmsToShow, Front referenceFront) {
         super(algorithmsToShow);
         chart.setTitle("IGDPlus");
         igdPlus = new InvertedGenerationalDistancePlus<>(referenceFront);

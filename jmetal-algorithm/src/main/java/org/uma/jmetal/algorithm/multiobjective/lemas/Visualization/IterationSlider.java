@@ -33,10 +33,10 @@ public class IterationSlider<S extends Solution<?>> {
         List<Double> v0;
         List<Double> v1;
         String seriesName;
-        Algorithm<S> emas;
+        Algorithm<List<S>> emas;
         int seriesNumber;
 
-        public SavedState(List<S> data, String seriesName, Algorithm<S> emas, int seriesNumber) {
+        public SavedState(List<S> data, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
             this.v0 = data.stream().map(solution -> solution.getObjective(0)).collect(Collectors.toList());
             this.v1 = data.stream().map(solution -> solution.getObjective(1)).collect(Collectors.toList());
             this.data = data;
@@ -61,7 +61,7 @@ public class IterationSlider<S extends Solution<?>> {
             return seriesName;
         }
 
-        public Algorithm<S> getEmas() {
+        public Algorithm<List<S>> getEmas() {
             return emas;
         }
 
@@ -75,14 +75,14 @@ public class IterationSlider<S extends Solution<?>> {
         initComponents();
     }
 
-    public IterationSlider(Iterable<Algorithm<S>> algorithmsToShow) {
+    public IterationSlider(Iterable<Algorithm<List<S>>> algorithmsToShow) {
         sliderChanged.getAndSet(false);
         isPaused.getAndSet(false);
         savedStates = new HashMap<>();
         currentIterationEmas = new ArrayList<>();
-        algorithmsToShow.forEach(algorithm -> currentIterationEmas.add((JMetal5BaseEMAS) algorithm)); //TODO: Part of not including loading from same iteration.
+        algorithmsToShow.forEach(algorithm -> currentIterationEmas.add((JMetal5BaseEMAS<S>) algorithm)); //TODO: Part of not including loading from same iteration.
         initComponents();
-        for (Algorithm<S> alg : algorithmsToShow)
+        for (Algorithm<List<S>> alg : algorithmsToShow)
             initSeries(alg.getName());
     }
 
@@ -167,7 +167,7 @@ public class IterationSlider<S extends Solution<?>> {
         }
 
 
-        for (JMetal5BaseEMAS jMetal5BaseEMAS : currentIterationEmas) {
+        for (JMetal5BaseEMAS<S> jMetal5BaseEMAS : currentIterationEmas) {
             try {
                 jMetal5BaseEMAS.serializeGenotype(startingIteration, prevIterationsToSave);
             } catch (Exception e) {
@@ -238,7 +238,7 @@ public class IterationSlider<S extends Solution<?>> {
     }
 
 
-    public void update(List<S> data, String seriesName, Algorithm<S> emas, int seriesNumber) {
+    public void update(List<S> data, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
         if (isItTimeForUpdate(seriesName, SLIDER_FREQUENCY)) {
             int min = Collections.min(iterationCounter.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getValue();
             min = min - min % SLIDER_FREQUENCY;

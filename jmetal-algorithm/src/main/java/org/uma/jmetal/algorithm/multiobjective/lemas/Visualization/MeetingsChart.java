@@ -13,18 +13,16 @@ import java.util.List;
 public class MeetingsChart<S extends Solution<?>> extends ProgressBaseChart<Integer, S> {
     private final MeetingType meetingType;
 
-    public MeetingsChart(List<Algorithm<S>> algorithmsToShow, MeetingType meetingType) {
+    public MeetingsChart(List<Algorithm<List<S>>> algorithmsToShow, MeetingType meetingType) {
         super(algorithmsToShow);
         this.meetingType = meetingType;
         this.setupTitle();
     }
 
     private void setupTitle() {
-        StringBuilder title = new StringBuilder();
-        title.append(meetingType.name().toLowerCase().replace("_", " "));
-        title.append(" meetings");
-
-        chart.setTitle(title.toString());
+        String title = meetingType.name().toLowerCase().replace("_", " ") +
+                " meetings";
+        chart.setTitle(title);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class MeetingsChart<S extends Solution<?>> extends ProgressBaseChart<Inte
     }
 
     @Override
-    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas){
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas){
         if (isItTimeForUpdate(seriesName, Constants.MEETINGS_FREQUENCY)) {
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             yValues.get(seriesName).add(getMeetingCounterValue(emas));

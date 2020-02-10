@@ -40,7 +40,7 @@ public class HVRChart<S extends Solution<?>> extends ProgressBaseChart<Double, S
         chart.setTitle("HVR (iteracja % "+Constants.HV_FREQUENCY+")");
     }
 
-    public HVRChart(List<Algorithm<S>> algorithmsToShow) {
+    public HVRChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
         chart.setTitle("HVR (iteracja % "+Constants.HV_FREQUENCY+")");
     }

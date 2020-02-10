@@ -24,9 +24,9 @@ public abstract class ProgressBaseChart<E extends Number, S extends Solution<?>>
         initSeries(DEFAULT_SERIES_NAME);
     }
 
-    public ProgressBaseChart(List<Algorithm<S>> algorithmsToShow) {
+    public ProgressBaseChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super();
-        for (Algorithm<S> alg: algorithmsToShow)
+        for (Algorithm<List<S>> alg: algorithmsToShow)
             initSeries(alg.getName());
     }
 
