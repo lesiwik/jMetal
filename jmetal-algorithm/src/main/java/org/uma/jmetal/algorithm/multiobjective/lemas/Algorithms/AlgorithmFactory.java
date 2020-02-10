@@ -147,6 +147,21 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
     public AlgorithmFactory addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
         algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,

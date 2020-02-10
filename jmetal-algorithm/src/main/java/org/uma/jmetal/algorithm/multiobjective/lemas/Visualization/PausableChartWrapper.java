@@ -11,7 +11,7 @@ import java.util.List;
 public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S> {
 
     private IterationSlider<S> iterationSlider;
-    private final int NUMBER_OF_CHARTS_TO_UPDATE = 14;
+    private final int NUMBER_OF_CHARTS_TO_UPDATE = this.charts.size();
 
     public PausableChartWrapper() {
         super();
