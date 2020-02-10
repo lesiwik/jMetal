@@ -3,38 +3,33 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
+import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 
 import java.io.FileNotFoundException;
 import java.util.List;
 
 
-public class IGDPlusChart extends ProgressBaseChart<Double> {
-    private InvertedGenerationalDistancePlus igdPlus;
+public class IGDPlusChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
+    private InvertedGenerationalDistancePlus<S> igdPlus;
 
-    public IGDPlusChart(List<Algorithm> algorithmsToShow) {
+    public IGDPlusChart(List<Algorithm<S>> algorithmsToShow, Front referenceFront) {
         super(algorithmsToShow);
-        chart.setTitle("IGDPlus (iteracja % " + Constants.HV_FREQUENCY + ")");
-
-        try {
-            String fileName = Constants.REF_FRONT_DIR + Constants.PROBLEM.getName() + ".pf";
-            igdPlus = new InvertedGenerationalDistancePlus<DoubleSolution>(new ArrayFront(fileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        chart.setTitle("IGDPlus");
+        igdPlus = new InvertedGenerationalDistancePlus<>(referenceFront);
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         update(population, DEFAULT_SERIES_NAME);
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
-            yValues.get(seriesName).add(igdPlus.evaluate(
-                    getNonDominatedSolutions(population)));
+            yValues.get(seriesName).add(igdPlus.evaluate(population));
 
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             chart.updateXYSeries(

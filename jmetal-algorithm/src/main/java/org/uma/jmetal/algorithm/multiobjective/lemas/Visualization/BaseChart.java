@@ -6,12 +6,13 @@ import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 
 
-public abstract class BaseChart {
+public abstract class BaseChart<S extends Solution<?>> {
     protected final XYChart chart;
 
     public BaseChart() {
@@ -24,13 +25,13 @@ public abstract class BaseChart {
         return chart;
     }
 
-    public abstract void update(List<DoubleSolution> population);
+    public abstract void update(List<S> population);
 
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
         update(population, seriesName, emas);
     }
 
-    public void update(List<DoubleSolution> population, String seriesName, Algorithm emas, int seriesNumber) {
+    public void update(List<S> population, String seriesName, Algorithm emas, int seriesNumber) {
         if (this instanceof MeetingsChart || this instanceof PopulationSizeChart) {
             if (emas instanceof JMetal5BaseEMAS) {
                 update(population, seriesName, (JMetal5BaseEMAS) emas);
@@ -40,13 +41,13 @@ public abstract class BaseChart {
         }
     }
 
-    public abstract void update(List<DoubleSolution> population, String seriesName);
+    public abstract void update(List<S> population, String seriesName);
 
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS emas) {
         update(population, seriesName);
     }
 
-    public void update(List<DoubleSolution> population, String seriesName, Algorithm emas) {
+    public void update(List<S> population, String seriesName, Algorithm emas) {
         update(population, seriesName);
     }
 

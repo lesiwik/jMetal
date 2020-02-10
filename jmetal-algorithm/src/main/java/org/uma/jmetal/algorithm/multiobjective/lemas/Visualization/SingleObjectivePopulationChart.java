@@ -4,6 +4,7 @@ import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
@@ -14,7 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SingleObjectivePopulationChart extends BaseChart {
+public class SingleObjectivePopulationChart<S extends Solution<?>> extends BaseChart<S> {
 
 //    public SingleObjectivePopulationChart() {
 //        super();
@@ -24,7 +25,7 @@ public class SingleObjectivePopulationChart extends BaseChart {
 ////        this.drawReferenceFront();
 //    }
 
-    public SingleObjectivePopulationChart(List<Algorithm> algorithmToShow) {
+    public SingleObjectivePopulationChart(List<Algorithm<S>> algorithmToShow) {
         super();
         this.chart.getStyler().setLegendVisible(false);
         this.getChart().setTitle("Populacja");
@@ -63,7 +64,7 @@ public class SingleObjectivePopulationChart extends BaseChart {
 
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         chart.updateXYSeries(
                 "population",
                 population.stream().map(solution -> solution.getObjective(0)).collect(Collectors.toList()),
@@ -72,7 +73,7 @@ public class SingleObjectivePopulationChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         chart.updateXYSeries(
                 seriesName,
                 population.stream().map(solution -> solution.getVariable(0)).collect(Collectors.toList()),

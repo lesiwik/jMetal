@@ -2,14 +2,15 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 
 
-public class PausableChartWrapper extends ChartWrapper {
+public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S> {
 
-    private IterationSlider iterationSlider;
+    private IterationSlider<S> iterationSlider;
     private final int NUMBER_OF_CHARTS_TO_UPDATE = 14;
 
     public PausableChartWrapper() {
@@ -17,22 +18,22 @@ public class PausableChartWrapper extends ChartWrapper {
     }
 
 
-    public IterationSlider getIterationSlider() {
+    public IterationSlider<S> getIterationSlider() {
         return iterationSlider;
     }
 
-    public PausableChartWrapper(List<Algorithm> algorithmToShow, int numberOFDecisionVariablesToShow) {
+    public PausableChartWrapper(List<Algorithm<S>> algorithmToShow, int numberOFDecisionVariablesToShow) {
         super(algorithmToShow, numberOFDecisionVariablesToShow);
-        iterationSlider = new IterationSlider(algorithmToShow);
+        iterationSlider = new IterationSlider<S>(algorithmToShow);
         iterationSlider.showForm();
         new Thread(() -> {
             while (true) {
                 if (iterationSlider.isPaused.get() && iterationSlider.sliderChanged.get()) {
                     iterationSlider.sliderChanged.getAndSet(false);
-                    for (String seriesName : iterationSlider.getIterationCounter().keySet()) {
+                    for (Object seriesName : iterationSlider.getIterationCounter().keySet()) {
                         javax.swing.SwingUtilities.invokeLater(() -> {
                             for (int i = 0; i < NUMBER_OF_CHARTS_TO_UPDATE; i++) {
-                                IterationSlider.SavedState savedState = iterationSlider.getSavedState(seriesName);
+                                IterationSlider<S>.SavedState savedState = iterationSlider.getSavedState((String) seriesName);
                                 if(savedState != null) {
                                     charts.get(i).update(savedState.getData(), savedState.getSeriesName(), savedState.getEmas(), savedState.getSeriesNumber());
 
@@ -53,7 +54,7 @@ public class PausableChartWrapper extends ChartWrapper {
     }
 
 
-    public void updateChart(List<DoubleSolution> data, String seriesName, Algorithm emas, int seriesNumber) {
+    public void updateChart(List<S> data, String seriesName, Algorithm emas, int seriesNumber) {
         if (!iterationSlider.isPaused.get()) {
             iterationSlider.update(data, seriesName, emas, seriesNumber);
             javax.swing.SwingUtilities.invokeLater(() -> {

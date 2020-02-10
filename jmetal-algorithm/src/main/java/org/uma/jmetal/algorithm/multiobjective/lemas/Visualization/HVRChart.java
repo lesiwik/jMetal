@@ -4,6 +4,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
@@ -14,7 +15,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 
-public class HVRChart extends ProgressBaseChart<Double> {
+public class HVRChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
     Front normalizedReferenceFront = getNormalizedReferenceFront();//  frontNormalizer.normalize(referenceFront);
     PISAHypervolume hv = new PISAHypervolume(normalizedReferenceFront);
     double referenceHV = hv.evaluate(FrontUtils.convertFrontToSolutionList(normalizedReferenceFront));
@@ -39,18 +40,18 @@ public class HVRChart extends ProgressBaseChart<Double> {
         chart.setTitle("HVR (iteracja % "+Constants.HV_FREQUENCY+")");
     }
 
-    public HVRChart(List<Algorithm> algorithmsToShow) {
+    public HVRChart(List<Algorithm<S>> algorithmsToShow) {
         super(algorithmsToShow);
         chart.setTitle("HVR (iteracja % "+Constants.HV_FREQUENCY+")");
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         update(population, DEFAULT_SERIES_NAME);
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             yValues.get(seriesName).add(hv.evaluate(

@@ -2,6 +2,7 @@ package org.uma.jmetal.algorithm.impl;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.util.JMetalLogger;
 
 import java.util.List;
 

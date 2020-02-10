@@ -4,6 +4,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
-public class IterationSlider {
+public class IterationSlider<S extends Solution<?>> {
 
     private JFrame frame;
     private JSlider jSlider;
@@ -24,18 +25,18 @@ public class IterationSlider {
     protected Map<String, Integer> iterationCounter = new HashMap<>();
     public AtomicBoolean isPaused = new AtomicBoolean();
     private Map<String, SavedState> savedStates;
-    private List<JMetal5BaseEMAS> currentIterationEmas;
+    private List<JMetal5BaseEMAS<S>> currentIterationEmas;
     public AtomicBoolean sliderChanged = new AtomicBoolean();
 
     public class SavedState {
-        List<DoubleSolution> data;
+        List<S> data;
         List<Double> v0;
         List<Double> v1;
         String seriesName;
-        Algorithm emas;
+        Algorithm<S> emas;
         int seriesNumber;
 
-        public SavedState(List<DoubleSolution> data, String seriesName, Algorithm emas, int seriesNumber) {
+        public SavedState(List<S> data, String seriesName, Algorithm<S> emas, int seriesNumber) {
             this.v0 = data.stream().map(solution -> solution.getObjective(0)).collect(Collectors.toList());
             this.v1 = data.stream().map(solution -> solution.getObjective(1)).collect(Collectors.toList());
             this.data = data;
@@ -52,7 +53,7 @@ public class IterationSlider {
             return v1;
         }
 
-        public List<DoubleSolution> getData() {
+        public List<S> getData() {
             return data;
         }
 
@@ -60,7 +61,7 @@ public class IterationSlider {
             return seriesName;
         }
 
-        public Algorithm getEmas() {
+        public Algorithm<S> getEmas() {
             return emas;
         }
 
@@ -74,14 +75,14 @@ public class IterationSlider {
         initComponents();
     }
 
-    public IterationSlider(Iterable<Algorithm> algorithmsToShow) {
+    public IterationSlider(Iterable<Algorithm<S>> algorithmsToShow) {
         sliderChanged.getAndSet(false);
         isPaused.getAndSet(false);
         savedStates = new HashMap<>();
         currentIterationEmas = new ArrayList<>();
         algorithmsToShow.forEach(algorithm -> currentIterationEmas.add((JMetal5BaseEMAS) algorithm)); //TODO: Part of not including loading from same iteration.
         initComponents();
-        for (Algorithm alg : algorithmsToShow)
+        for (Algorithm<S> alg : algorithmsToShow)
             initSeries(alg.getName());
     }
 
@@ -237,7 +238,7 @@ public class IterationSlider {
     }
 
 
-    public void update(List<DoubleSolution> data, String seriesName, Algorithm emas, int seriesNumber) {
+    public void update(List<S> data, String seriesName, Algorithm<S> emas, int seriesNumber) {
         if (isItTimeForUpdate(seriesName, SLIDER_FREQUENCY)) {
             int min = Collections.min(iterationCounter.entrySet(), Comparator.comparingInt(Map.Entry::getValue)).getValue();
             min = min - min % SLIDER_FREQUENCY;

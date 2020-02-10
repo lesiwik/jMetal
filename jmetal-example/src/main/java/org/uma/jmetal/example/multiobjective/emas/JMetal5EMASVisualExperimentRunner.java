@@ -11,16 +11,18 @@ import org.uma.jmetal.util.AbstractAlgorithmRunner;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.measure.Measurable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 
-
+     @SuppressWarnings("unchecked")
      public static void main(String[] args) throws JMetalException {
 
-         @SuppressWarnings("unchecked")
-         List<Algorithm> algorithmsToRun = new AlgorithmFactory<>()
+
+         List<Algorithm<DoubleSolution>> algorithmsToRun = new AlgorithmFactory<>()
 //                 .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
 //                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
@@ -43,15 +45,21 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
                  .getAlgorithms();
 
          //Slider execution
-         PausableChartWrapper chartWrapper = new PausableChartWrapper(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
+         PausableChartWrapper<DoubleSolution> chartWrapper = new PausableChartWrapper<>(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
          algorithmsToRun.forEach(algorithm -> ((Measurable) algorithm).getMeasureManager()
                  .getPushMeasure("currentPopulation")
                  .register(population ->
                          chartWrapper.updateChart((List<DoubleSolution>) population, algorithm.getName(),algorithm,algorithmsToRun.indexOf(algorithm))));
 
+         Map<String, AlgorithmRunner> algorithmRunners = new HashMap<>();
          algorithmsToRun
                  .parallelStream()
-                 .forEach(algorithm -> new AlgorithmRunner.Executor(algorithm)
-                         .execute());
+                 .forEach(algorithm -> algorithmRunners.put(algorithm.getName(), new AlgorithmRunner.Executor(algorithm)
+                         .execute()));
+
+         algorithmRunners.forEach((name, algorithmRunner) -> {
+             long computingTime = algorithmRunner.getComputingTime();
+             System.out.println("[" + name + "] Total execution time: " + computingTime/60 + "s");
+         });
     }
 }

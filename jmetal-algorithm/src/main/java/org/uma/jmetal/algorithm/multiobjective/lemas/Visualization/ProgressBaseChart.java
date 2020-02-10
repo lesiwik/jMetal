@@ -3,6 +3,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.BaseChart;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.SolutionListUtils;
 
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class ProgressBaseChart<E extends Number> extends BaseChart {
+public abstract class ProgressBaseChart<E extends Number, S extends Solution<?>> extends BaseChart<S> {
     protected final String DEFAULT_SERIES_NAME = "Default Algorithm Name";
     protected Map<String, Integer> iterationCounter = new HashMap<>();
     protected Map<String, List<Integer>> xValues = new HashMap<>();
@@ -23,9 +24,9 @@ public abstract class ProgressBaseChart<E extends Number> extends BaseChart {
         initSeries(DEFAULT_SERIES_NAME);
     }
 
-    public ProgressBaseChart(List<Algorithm> algorithmsToShow) {
+    public ProgressBaseChart(List<Algorithm<S>> algorithmsToShow) {
         super();
-        for (Algorithm alg: algorithmsToShow)
+        for (Algorithm<S> alg: algorithmsToShow)
             initSeries(alg.getName());
     }
 
@@ -40,7 +41,7 @@ public abstract class ProgressBaseChart<E extends Number> extends BaseChart {
         return (iterationCounter.get(seriesName) % relatedConstant == 0);
     }
 
-    protected List<DoubleSolution> getNonDominatedSolutions(List<DoubleSolution> solutionList) {
+    protected List<S> getNonDominatedSolutions(List<S> solutionList) {
         return SolutionListUtils.getNonDominatedSolutions(solutionList);
     }
 

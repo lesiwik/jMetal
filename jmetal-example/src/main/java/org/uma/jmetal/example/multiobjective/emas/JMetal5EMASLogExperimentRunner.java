@@ -16,10 +16,12 @@ import static org.uma.jmetal.util.AbstractAlgorithmRunner.printQualityIndicators
 
 public class JMetal5EMASLogExperimentRunner {
 
+    @SuppressWarnings("unchecked")
     public static void main(String[] args) throws JMetalException, FileNotFoundException {
 
-        Algorithm<List<DoubleSolution>> algorithm = new AlgorithmFactory()
-                .addAreaEMAS("AreaEMAS").getAlgorithm(0);
+        Algorithm<List<DoubleSolution>> algorithm = new AlgorithmFactory<>()
+                .addAreaEMAS("AreaEMAS")
+                .getAlgorithm(0);
 
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                 .execute();
