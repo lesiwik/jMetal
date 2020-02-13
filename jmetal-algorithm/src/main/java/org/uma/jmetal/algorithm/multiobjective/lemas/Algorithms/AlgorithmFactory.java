@@ -147,6 +147,19 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory<S> addAreaCountingEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(BASE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COUNTER_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+
     public AlgorithmFactory<S> addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(

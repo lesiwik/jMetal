@@ -33,7 +33,7 @@ public class ListMergeTest {
     private ArrayList<JMetal5Agent<PointSolution>> a1_list;
     private ArrayList<JMetal5Agent<PointSolution>> a2_list;
     private ArrayList<JMetal5Agent<PointSolution>> expectedMergedList; /* TODO: Implemented and decide how it should look like. */
-    private final String COMPARATOR_TYPE = Constants.AREA_UNDER_CONTROL_EXTENDED_COMPARATOR;
+    private final String COMPARATOR_TYPE = Constants.AREA_UNDER_CONTROL_COMPARATOR;
     private final String AGENT_TYPE = Constants.BASE_AGENT;
 
     /**
@@ -63,8 +63,6 @@ public class ListMergeTest {
         a2_list.add(a2_2);
         a2Comparator.setListOfKnownNonDominatedAgents(a2_list);
     }
-
-
 
     @Test
     public void mergeLists()
