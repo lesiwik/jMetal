@@ -6,6 +6,8 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.StrictMath.abs;
+
 @Setter
 @Getter
 public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> extends EmasDominanceComparator<Agent>
@@ -44,13 +46,31 @@ public class AreaUnderControlComparatorVersion1<Agent extends JMetal5Agent<?>> e
                         for (int i = 0; i < agent1.genotype.getNumberOfObjectives(); i++) {
                                 double objValue1 = agent1.genotype.getObjective(i),
                                         objValue2 = agent2.genotype.getObjective(i);
-                                double diff = objValue2 - objValue1;
-                                double threshold = diff > 0 ? objValue1/objValue2 : objValue2/objValue1;
+                                double diff, threshold, normalize;
+                                       // = objValue2 - objValue1;
+                                if(objValue1 > 0 && objValue2 > 0 ){
+                                        diff = objValue2 - objValue1;
+                                        threshold = diff > 0 ? objValue1/objValue2 : objValue2/objValue1;
+                                }
+                                else if(objValue1 < 0 && objValue2 < 0){
+                                        diff = objValue2 - objValue1;
+                                        threshold = diff > 0 ? objValue1/objValue2 : objValue2/objValue1;
 
-                                if(diff > 0 && diff > threshold)
-                                        agent1Score++;
-                                else if(diff < 0 && diff < -threshold)
-                                        agent2Score++;
+                                }
+                                else
+                                {
+                                        diff = objValue2 - objValue1;
+                                        threshold = diff > 0 ? -objValue1/objValue2 : -objValue2/objValue1;
+                                }
+                                normalize = (abs(objValue1) + abs(objValue2))/abs(objValue1)*abs(objValue2);
+
+                                if(normalize > 0.7 && normalize < 0.8){
+                                        if(diff > 0)
+                                                agent1Score++;
+                                                // agent2 better function value
+                                        else if(diff < 0)
+                                                agent2Score++;
+                                }
                         }
 
                         if(agent1Score > agent2Score){
