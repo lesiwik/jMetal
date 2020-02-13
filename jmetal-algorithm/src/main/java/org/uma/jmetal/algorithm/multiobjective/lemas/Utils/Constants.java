@@ -78,6 +78,7 @@ public class Constants {
     public static final int INDICATOR_FREQUENCY = 50;
     public static final int POP_FREQUENCY = 1;
     public static final int MEETINGS_FREQUENCY = 50;
+    public static final int EVALUATION_FREQUENCY = 50;
     public static final int POPULATION_SIZE_FREQUENCY = 50;
     public static final int NUMBER_OF_DECISION_VARIABLES_TO_SHOW = 3;
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;

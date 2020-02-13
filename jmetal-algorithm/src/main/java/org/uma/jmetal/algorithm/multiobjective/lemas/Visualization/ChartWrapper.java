@@ -59,6 +59,7 @@ public class ChartWrapper<S extends Solution<?>> {
         charts.add(new MeetingsChart<S>(algorithmToShow, MeetingType.I_AM_BETTER));
         charts.add(new MeetingsChart<S>(algorithmToShow, MeetingType.NEITHER_IS_BETTER));
         charts.add(new PopulationSizeChart<S>(algorithmToShow));
+        charts.add(new EvaluationsChart<S>(algorithmToShow));
 
         charts.forEach(chart -> chart.getChart().getStyler().setToolTipsEnabled(true));
 
@@ -96,7 +97,7 @@ public class ChartWrapper<S extends Solution<?>> {
         });
     }
 
-    public void updateChart(List<S> data, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
+    public void updateChart(List<S> data, String seriesName, JMetal5BaseEMAS<S> emas, int seriesNumber) {
         SwingUtilities.invokeLater(() -> {
             for (int i = 0; i < charts.size(); i++) {
                 charts.get(i).update(data, seriesName, emas, seriesNumber);
@@ -106,7 +107,7 @@ public class ChartWrapper<S extends Solution<?>> {
     }
 
 
-    public void updateChart(List<S> data, String seriesName, Algorithm emas, int seriesNumber) {
+    public void updateChart(List<S> data, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
         SwingUtilities.invokeLater(() -> {
             for (int i = 0; i < charts.size(); i++) {
                 charts.get(i).update(data, seriesName, emas, seriesNumber);

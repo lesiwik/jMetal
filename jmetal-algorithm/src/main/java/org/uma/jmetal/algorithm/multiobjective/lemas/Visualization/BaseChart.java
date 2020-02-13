@@ -31,7 +31,7 @@ public abstract class BaseChart<S extends Solution<?>> {
     }
 
     public void update(List<S> population, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
-        if (this instanceof MeetingsChart || this instanceof PopulationSizeChart) {
+        if (this instanceof MeetingsChart || this instanceof PopulationSizeChart || this instanceof EvaluationsChart) {
             if (emas instanceof JMetal5BaseEMAS) {
                 update(population, seriesName, (JMetal5BaseEMAS<S>) emas);
             }

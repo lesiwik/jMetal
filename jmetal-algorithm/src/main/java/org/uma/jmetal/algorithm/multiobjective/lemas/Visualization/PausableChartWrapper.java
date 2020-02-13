@@ -54,7 +54,7 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
     }
 
 
-    public void updateChart(List<S> data, String seriesName, Algorithm emas, int seriesNumber) {
+    public void updateChart(List<S> data, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
         if (!iterationSlider.isPaused.get()) {
             iterationSlider.update(data, seriesName, emas, seriesNumber);
             javax.swing.SwingUtilities.invokeLater(() -> {
