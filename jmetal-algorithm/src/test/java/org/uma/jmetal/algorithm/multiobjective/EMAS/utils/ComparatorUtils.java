@@ -29,7 +29,7 @@ public class ComparatorUtils {
         comparatorResultToString(firstComparison), comparatorResultToString(secondComparison));
     }
 
-    public static String constructComparisonResultString(final EmasDominanceComparator comparator,
+    public static String constructComparisonResultString(final EmasDominanceComparator<?> comparator,
                                                          final JMetal5Agent<?> a1,
                                                          final JMetal5Agent<?> a2,
                                                          final int comparatorResult,

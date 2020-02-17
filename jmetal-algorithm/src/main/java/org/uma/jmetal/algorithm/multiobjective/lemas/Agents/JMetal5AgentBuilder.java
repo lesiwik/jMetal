@@ -113,6 +113,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
+            case Constants.RADIUS_AGENT:
+                agent = new JMetal5RadiusAgent<>(0);
+                break;
         }
         agent.setGenotype(genotype);
         agent.setResourceLevel(initialResourcesValue);

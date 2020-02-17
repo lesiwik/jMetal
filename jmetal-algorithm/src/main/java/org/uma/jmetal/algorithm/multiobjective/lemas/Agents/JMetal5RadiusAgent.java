@@ -1,5 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.Solution;
 
@@ -12,6 +14,8 @@ import java.util.List;
  * @since 17/02/2020
  * @param <S> is {@link Solution} where <?> can be <Double>, <Integer>, etc.
  * */
+@Setter
+@Getter
 public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
 
     private double radius;
@@ -56,7 +60,7 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
     }
 
 
-    private double getMeetingRatio() { return (double) metAgentsInRadius/metAgents; }
+    public double getMeetingRatio() { return (double) metAgentsInRadius/metAgents; }
 
     private void updateMetAgents(JMetal5RadiusAgent<S> metAgent)
     {
@@ -70,7 +74,7 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
             metAgent.metAgentsInRadius++;
     }
 
-    private boolean isAgentInRadius(JMetal5RadiusAgent<S> agent)
+    public boolean isAgentInRadius(JMetal5RadiusAgent<S> agent)
     {
         double centerX = getGenotype().getObjective(0);
         double centerY = getGenotype().getObjective(1);
