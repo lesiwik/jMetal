@@ -5,9 +5,11 @@ import lombok.Data;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAIIBuilder;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
 import java.util.ArrayList;
@@ -175,18 +177,42 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-//    public AlgorithmFactory<S> addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
-//    {
-//        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,
-//                Constants.XOP, Constants.MOP, initialPopulationSize)
-//                .setSelectionOperator(
-//                        new BinaryTournamentSelection<>(
-//                                new RankingAndCrowdingDistanceComparator<>()))
-//                .setMaxEvaluations(maxEvaluations)
-//                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
-//                .build());
-//
-//        return this;
-//    }
+    public AlgorithmFactory<S> addRadiusBaseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addRadiusAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+    {
+        return new NSGAIIBuilder<>(Constants.PROBLEM,
+                Constants.XOP, Constants.MOP, initialPopulationSize)
+                .setSelectionOperator(
+                        new BinaryTournamentSelection<>(
+                                new RankingAndCrowdingDistanceComparator<>()))
+                .setMaxEvaluations(maxEvaluations)
+                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
+                .build();
+    }
 
 }

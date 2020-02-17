@@ -125,7 +125,6 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * @see EmasDominanceComparator
      * @see #baseComparatorType
      * */
-    //TODO: Resolve issue of doubling list and its access in 'smarter' comparators.
     private String parentToChildComparatorType;
 
     /* Variables */
@@ -228,6 +227,13 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * TODO: Uzywac tego dalej czy nie? Moze wywalic
      * */
     public List<JMetal5Agent<S>> agentsRecords;
+
+
+    /**
+     * Used specifically to set uniformed radius for every agent.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5RadiusAgent
+     * */
+    private double radiusToCheckMetAgentsIn;
 
     /**
      * Builder constructor.
@@ -542,7 +548,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         if(isDebugMode) {
             JMetal5Agent.saveRandom(iterations);
             JMetal5Agent.saveJMetalRandom(iterations);
-            JMetal5BaseEMASSaver saver = new JMetal5BaseEMASSaver();
+            JMetal5BaseEMASSaver<S> saver = new JMetal5BaseEMASSaver<S>();
             saver.save(this);
             emasSavers.add(saver);
 

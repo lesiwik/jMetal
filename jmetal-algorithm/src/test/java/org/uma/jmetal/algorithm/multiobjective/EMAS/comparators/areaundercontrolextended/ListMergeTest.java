@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.areaundercontrol.AreaUnderControlComparisonTest;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.comparators.emasdominance.EmasDominanceComparisonTest;
 import org.uma.jmetal.algorithm.multiobjective.EMAS.utils.AgentUtils;
-import org.uma.jmetal.algorithm.multiobjective.EMAS.utils.ComparatorUtils;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.AreaUnderControlComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;

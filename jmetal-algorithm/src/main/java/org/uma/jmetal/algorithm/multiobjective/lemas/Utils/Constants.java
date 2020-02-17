@@ -31,10 +31,11 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 1000;
-    public static int MAX_EVALUATIONS = 2500;
-    public static int NUMBER_OF_ISLANDS = 1;
-    public static int MAX_KNOWLEDGE_CAPACITY = 100;
+    public static final int MAX_ITERATIONS = 1000;
+    public static final int MAX_EVALUATIONS = 2500;
+    public static final int NUMBER_OF_ISLANDS = 1;
+    public static final int MAX_KNOWLEDGE_CAPACITY = 100;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.1;
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;
@@ -61,6 +62,7 @@ public class Constants {
     public final static String BASE_AGENT = "JMetal5BaseAgent";
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
+    public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
 
     /* EMAS types */
     public final static String BASE_EMAS = "JMetal5BaseEMAS";

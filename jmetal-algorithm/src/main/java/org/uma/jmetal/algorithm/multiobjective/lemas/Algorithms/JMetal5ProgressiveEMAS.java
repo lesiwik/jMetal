@@ -17,7 +17,7 @@ import java.util.Optional;
  * @since 8/27/2018
  * TODO: Usunac ta klase.
  * */
-public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEMAS {
+public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<S> {
 
 
     public JMetal5ProgressiveEMAS(String algorithmName,
@@ -30,7 +30,7 @@ public class JMetal5ProgressiveEMAS<S extends Solution<?>> extends JMetal5BaseEM
         agentType = Constants.PROGRESSIVE_AGENT;
     }
 
-    public JMetal5ProgressiveEMAS(Problem problem, String algorithmName,
+    public JMetal5ProgressiveEMAS(Problem<S> problem, String algorithmName,
                                   int whenAddOffspringToPopulation,
                                   boolean allowKnowledgeExchange,
                                   EmasDominanceComparator comparator,

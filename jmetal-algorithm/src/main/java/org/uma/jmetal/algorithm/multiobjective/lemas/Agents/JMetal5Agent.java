@@ -321,7 +321,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
      * @param agent1 agent to compare to agent2
      * @param agent2 agent to compare to agent1
      * */
-    private int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
+    protected int compareAgents(JMetal5Agent<S> agent1, JMetal5Agent<S> agent2) {
         if(agent1.getClass() != agent2.getClass()
                 || agent1.getComparator().getClass() != agent2.getComparator().getClass())
             throw new RuntimeException("Regular comparator: Type mismatch of comparator or agent!");

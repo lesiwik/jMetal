@@ -42,6 +42,7 @@ public class EMASBuilder<S extends Solution<?>> {
     private double initialAgentResourceLevel;
     private double transferAgentResourceLevel;
     private ReproCondition reproCondition;
+    private double radiusToCheckMetAgentsIn;
 
 
     @SuppressWarnings("unchecked")
@@ -98,6 +99,7 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setAllowKnowledgeExchange(allowKnowledgeExchange);
         emas.setTransferAgentResourceLevel(transferAgentResourceLevel);
         emas.setReproCondition(reproCondition);
+        emas.setRadiusToCheckMetAgentsIn(radiusToCheckMetAgentsIn);
     }
 
     public EMASBuilder<S> agentType(String agentType)
@@ -128,6 +130,12 @@ public class EMASBuilder<S extends Solution<?>> {
     public EMASBuilder<S> strongMutationOperator(MutationOperator<S> strongMutationOperator)
     {
         this.strongMutationOperator = strongMutationOperator;
+        return this;
+    }
+
+    public EMASBuilder<S> radiusToCheckMetAgentsIn(double radiusToCheckMetAgentsIn)
+    {
+        this.radiusToCheckMetAgentsIn = radiusToCheckMetAgentsIn;
         return this;
     }
 
