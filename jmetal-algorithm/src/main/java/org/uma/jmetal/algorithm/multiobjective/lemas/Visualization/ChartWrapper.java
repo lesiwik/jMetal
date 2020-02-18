@@ -38,23 +38,26 @@ public class ChartWrapper<S extends Solution<?>> {
         charts.add(new PopulationChart<S>(algorithmToShow));
         charts.add(new PopulationChart<S>(algorithmToShow, true));
 
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.HYPERVOLUME_INDICATOR_TYPE));
+        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+                Constants.HYPERVOLUME_INDICATOR_TYPE));
 
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.INVERTED_GENERATIONAL_DISTANCE_PLUS_INDICATOR_TYPE));
+        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+                Constants.HYPERVOLUME_INDICATOR_TYPE).withNormalizedIndicator());
 
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.INVERTED_GENERATIONAL_DISTANCE_INDICATOR_TYPE));
+        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+                Constants.INVERTED_GENERATIONAL_DISTANCE_PLUS_INDICATOR_TYPE));
 
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.GENERATIONAL_DISTANCE_INDICATOR_TYPE));
+        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+                Constants.INVERTED_GENERATIONAL_DISTANCE_INDICATOR_TYPE));
 
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.EPISLON_INDICATOR_TYPE));
-
-        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront)
-                .withIndicator(Constants.SPREAD_INDICATOR_TYPE));
+//        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+//                Constants.GENERATIONAL_DISTANCE_INDICATOR_TYPE));
+//
+//        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+//                Constants.EPISLON_INDICATOR_TYPE));
+//
+//        charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
+//                Constants.SPREAD_INDICATOR_TYPE));
 
         charts.add(new MeetingsChart<S>(algorithmToShow, MeetingType.I_AM_BETTER));
         charts.add(new MeetingsChart<S>(algorithmToShow, MeetingType.NEITHER_IS_BETTER));
