@@ -71,7 +71,7 @@ public class GenericIndicatorChart<S extends Solution<?>> extends ProgressBaseCh
         Front normalizedFront = frontNormalizer.normalize(referenceFront);
         normalizedMetric = this.<PointSolution>withMetric(indicatorType);
         referenceIndicator = normalizedMetric.evaluate(FrontUtils.convertFrontToSolutionList(normalizedFront));
-        chart.setTitle(indicatorType + " (N)");
+        chart.setTitle(indicatorType + "Ratio (N)");
         return this;
     }
 
@@ -86,11 +86,10 @@ public class GenericIndicatorChart<S extends Solution<?>> extends ProgressBaseCh
 
             if(isNormalizedMode)
             {
-                // TODO: Zapytać o normalizację.
                 Front normalizedCalculatedFront = frontNormalizer.normalize(new ArrayFront(population));
                 List<PointSolution> pointSolutions = FrontUtils.convertFrontToSolutionList(normalizedCalculatedFront);
-                //yValues.get(seriesName).add(normalizedMetric.evaluate(pointSolutions));
-                yValues.get(seriesName).add(currentMetric.evaluate(population) / referenceIndicator);
+                yValues.get(seriesName).add(normalizedMetric.evaluate(pointSolutions) / referenceIndicator);
+//                yValues.get(seriesName).add(currentMetric.evaluate(population) / referenceIndicator);
             }
             else
                 yValues.get(seriesName).add(currentMetric.evaluate(population));

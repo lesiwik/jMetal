@@ -9,7 +9,6 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.config.MeetingType;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
-import org.uma.jmetal.util.front.util.FrontNormalizer;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
@@ -68,18 +67,6 @@ public class ChartWrapper<S extends Solution<?>> {
 
         wrapper = new SwingWrapper<>(charts.stream().map(BaseChart::getChart).collect(Collectors.toList()), 3, 3);
         wrapper.displayChartMatrix();
-
-        /*TODO: Usunąć te nie używane. Zcommonować to.. */
-//        charts.add(new IGDPlusChart<>(algorithmToShow, referenceFront));
-//        charts.add(new HVChart<>(algorithmToShow, referenceFront));
-//        charts.add(new HVRChart(algorithmToShow));
-//        charts.add(new NoReferencePopulationChart(algorithmToShow));
-//        charts.add(new EvaluationHVRChart(algorithmToShow));
-//        charts.add(new EvaluationIGDPlusChart(algorithmToShow));
-//        for (int i = 0; i < numberOFDecisionVariablesToShow; i++) {
-//            charts.add(new SingleVariableChart(algorithmToShow, i));
-//        }
-//        charts.add(new LegendChart(algorithmToShow));
     }
 
     private void initializeReferenceFronts()

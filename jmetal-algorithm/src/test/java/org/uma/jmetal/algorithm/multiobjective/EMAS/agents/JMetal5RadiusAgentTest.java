@@ -84,10 +84,10 @@ public class JMetal5RadiusAgentTest {
 
         System.out.println("\n== Checking if do meeting works as expected with insideRadius agent. == \n ");
         int doMeetingResult = mainAgent.doMeeting(Collections.singletonList(insideRadius), 1.0);
-        assertEquals(Constants.FIRST_IS_BETTER, doMeetingResult);
+        assertEquals(Constants.SECOND_IS_BETTER, doMeetingResult);
         System.out.println("\n== Checking if resources were transferred properly. == \n");
-        assertEquals( INITIAL_RESOURCE_LEVEL + 1, mainAgent.getResourceLevel(), 0.001);
-        assertEquals( INITIAL_RESOURCE_LEVEL - 1, insideRadius.getResourceLevel(), 0.001);
+        assertEquals( INITIAL_RESOURCE_LEVEL - 1, mainAgent.getResourceLevel(), 0.001);
+        assertEquals( INITIAL_RESOURCE_LEVEL + 1, insideRadius.getResourceLevel(), 0.001);
         System.out.println("\n== Checking if meetings were upgraded accordingly. == \n");
         assertEquals(initialNumberOfAgentsInRadius[0] + 1, mainAgent.getMetAgentsInRadius());
         assertEquals(initialNumberOfMetAgents[0] + 1, mainAgent.getMetAgents());
@@ -97,9 +97,9 @@ public class JMetal5RadiusAgentTest {
 
         System.out.println("\n== Checking if do meeting works as expected with outsideRadius agent. == \n ");
         doMeetingResult = mainAgent.doMeeting(Collections.singletonList(outsideRadius), 1.0);
-        assertEquals(Constants.SECOND_IS_BETTER, doMeetingResult);
+        assertEquals(Constants.FIRST_IS_BETTER, doMeetingResult);
         System.out.println("\n== Checking if resources were transferred properly. == \n");
-        assertEquals( INITIAL_RESOURCE_LEVEL + 1 , outsideRadius.getResourceLevel(), 0.001);
+        assertEquals( INITIAL_RESOURCE_LEVEL - 1 , outsideRadius.getResourceLevel(), 0.001);
         assertEquals( INITIAL_RESOURCE_LEVEL, mainAgent.getResourceLevel(), 0.001);
         System.out.println("\n== Checking if meetings were upgraded accordingly. == \n");
         assertEquals(initialNumberOfAgentsInRadius[0] + 1, mainAgent.getMetAgentsInRadius());

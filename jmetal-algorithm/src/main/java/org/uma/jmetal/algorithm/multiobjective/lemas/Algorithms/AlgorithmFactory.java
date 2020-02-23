@@ -203,6 +203,19 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory<S> addRadiusNotWorseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(NOT_WORSE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
     public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
         return new NSGAIIBuilder<>(Constants.PROBLEM,
