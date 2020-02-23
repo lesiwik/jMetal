@@ -161,6 +161,19 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory<S> addAreaCountingRadiusEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COUNTER_COMPARATOR)
+                        .build());
+        return this;
+    }
+
 
     public AlgorithmFactory<S> addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
     {

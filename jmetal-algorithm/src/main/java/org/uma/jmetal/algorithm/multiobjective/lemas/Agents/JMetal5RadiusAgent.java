@@ -42,6 +42,13 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
         updateMetAgents(meetingPartner);
 
         int comparatorResult = compareAgents(this, meetingPartner);
+
+        if((this.isAgentInRadius(meetingPartner) && meetingPartner.isAgentInRadius(this))
+            && comparatorResult == Constants.NEITHER_IS_BETTER)
+        {
+            return Constants.NEITHER_IS_BETTER;
+        }
+
         if (comparatorResult == Constants.NEITHER_IS_BETTER)
         {
             /* Promoting agent which has lower meetingRatio (and therefore is less crowded around him). */
