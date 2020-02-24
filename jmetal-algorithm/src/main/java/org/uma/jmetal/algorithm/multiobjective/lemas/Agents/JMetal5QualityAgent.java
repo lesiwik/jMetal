@@ -2,6 +2,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.Solution;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,9 @@ public class JMetal5QualityAgent<S extends Solution<?>> extends JMetal5Agent<S> 
             meetingPartner.dominatedMeetings++;
         }
 
-        updateAverages(this, meetingPartner);
+        if(this.currentQualityType == QualityTypes.AVERAGE)
+            updateAverages(this, meetingPartner);
+
         if (comparatorResult != NEITHER_IS_BETTER) {
             this.setMet(true);
             meetingPartner.setMet(true);
@@ -81,10 +84,10 @@ public class JMetal5QualityAgent<S extends Solution<?>> extends JMetal5Agent<S> 
 
     private void updateAverages(JMetal5QualityAgent<S> agent1, JMetal5QualityAgent<S> agent2)
     {
-        agent1.qualitySum += agent2.averageQuality;
+        agent1.qualitySum += agent2.getQualityRatio();
         agent1.averageQuality = agent1.qualitySum / agent1.totalMeetings;
 
-        agent2.qualitySum += agent1.averageQuality;
+        agent2.qualitySum += agent1.getQualityRatio();
         agent2.averageQuality = agent2.qualitySum / agent2.totalMeetings;
     }
 
@@ -137,6 +140,10 @@ public class JMetal5QualityAgent<S extends Solution<?>> extends JMetal5Agent<S> 
         return comparisonResult;
     }
 
+    @Override
+    public String getAgentType() {
+        return Constants.QUALITY_AGENT;
+    }
 
     public double getQualityRatio(){ return (double) dominatedMeetings / totalMeetings;}
 }

@@ -235,6 +235,25 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     private double radiusToCheckMetAgentsIn;
 
+
+    /**
+     * Used to specify what kind of quality type checking is going to be done on agents.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private Constants.QualityTypes currentQualityType;
+
+    /**
+     * Used to specify below what constant the difference of qualities will be accepted.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private double differenceConstant;
+
+    /**
+     * Used to specify threshold constant above which qualities will be accepted.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private double qualityThreshold;
+
     /**
      * Builder constructor.
      * */
@@ -251,8 +270,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     @SuppressWarnings("unchecked")
     public JMetal5BaseEMAS(Problem<S> problem, String algorithmName, int whenAddOffspringToPopulation,
                            boolean allowKnowledgeExchange,
-                           EmasDominanceComparator meetingComparator,
-                           EmasDominanceComparator parentChildComparator) {
+                           EmasDominanceComparator<?> meetingComparator,
+                           EmasDominanceComparator<?> parentChildComparator) {
 
         /* Operators */
         this.crossoverOperator = (CrossoverOperator<S>) Constants.XOP;

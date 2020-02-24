@@ -146,6 +146,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
+            case Constants.QUALITY_AGENT:
+                agent = new JMetal5QualityAgent<>(EMAS.getCurrentQualityType());
+                break;
             case Constants.RADIUS_AGENT:
                 agent = new JMetal5RadiusAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
                 break;

@@ -229,6 +229,47 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory<S> addQualityConstantAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.ABOVE_CONSTANT)
+                        .qualityThreshold(ABOVE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addQualityDifferenceAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.DIFFERENCE)
+                        .differenceConstant(DIFFERENCE_CONSTANT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addQualityAverageAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.AVERAGE)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
     public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
         return new NSGAIIBuilder<>(Constants.PROBLEM,

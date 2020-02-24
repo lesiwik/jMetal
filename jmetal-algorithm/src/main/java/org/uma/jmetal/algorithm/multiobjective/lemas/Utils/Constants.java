@@ -38,6 +38,8 @@ public class Constants {
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
     public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
+    public static final double DIFFERENCE_CONSTANT = 10; //TODO: Nie mam pojecia.
+    public static final double ABOVE_THRESHOLD = 0.2; //TODO: Nie mam pojecia v2.
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;
@@ -65,6 +67,7 @@ public class Constants {
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
     public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
+    public final static String QUALITY_AGENT  = "JMetal5QualityAgent";
 
     /* EMAS types */
     public final static String BASE_EMAS = "JMetal5BaseEMAS";

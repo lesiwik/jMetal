@@ -43,6 +43,9 @@ public class EMASBuilder<S extends Solution<?>> {
     private double transferAgentResourceLevel;
     private ReproCondition reproCondition;
     private double radiusToCheckMetAgentsIn;
+    private Constants.QualityTypes currentQualityType;
+    private double differenceConstant;
+    private double qualityThreshold;
 
 
     @SuppressWarnings("unchecked")
@@ -100,6 +103,28 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setTransferAgentResourceLevel(transferAgentResourceLevel);
         emas.setReproCondition(reproCondition);
         emas.setRadiusToCheckMetAgentsIn(radiusToCheckMetAgentsIn);
+        emas.setQualityThreshold(qualityThreshold);
+        emas.setDifferenceConstant(differenceConstant);
+        emas.setCurrentQualityType(currentQualityType);
+    }
+
+
+    public EMASBuilder<S> qualityType(Constants.QualityTypes qualityTypes)
+    {
+        this.currentQualityType = qualityTypes;
+        return this;
+    }
+
+    public EMASBuilder<S> differenceConstant(double differenceConstant)
+    {
+        this.differenceConstant = differenceConstant;
+        return this;
+    }
+
+    public EMASBuilder<S> qualityThreshold(double qualityThreshold)
+    {
+        this.qualityThreshold = qualityThreshold;
+        return this;
     }
 
     public EMASBuilder<S> agentType(String agentType)

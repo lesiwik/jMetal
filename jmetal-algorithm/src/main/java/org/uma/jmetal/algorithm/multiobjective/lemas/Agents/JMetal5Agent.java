@@ -237,7 +237,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         List<S> off = crossoverOperator.execute(argList);
 
         List<? extends JMetal5Agent<S>> offspringList = off.stream().map(genotype ->
-                builder.build(EMAS, genotype, getAgentType(), EMAS.getInitialOffspringResourceLevel(), reproCondition))
+                builder.build(EMAS, genotype, EMAS.getAgentType(), EMAS.getInitialOffspringResourceLevel(), reproCondition))
                 .collect(Collectors.toList());
 
         return (this.equals(matingPartner))
