@@ -36,6 +36,8 @@ public class Constants {
     public static final int NUMBER_OF_ISLANDS = 1;
     public static final int MAX_KNOWLEDGE_CAPACITY = 100;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
+    public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;
