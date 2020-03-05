@@ -18,6 +18,8 @@ import org.uma.jmetal.util.point.PointSolution;
 
 import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 
@@ -52,6 +54,27 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         runner.initializeAlgorithms();
         runner.initializeIndicators();
         runner.runAlgorithms();
+        runner.averageResults();
+        runner.saveResults();
+    }
+
+    private void saveResults()
+    {
+        //TODO: Save results
+        System.out.println(Stream.of(indicators, normalizedIndicators).flatMap(Collection::stream).map(GenericIndicator::getName).collect(Collectors.toList()));
+        for(int algorithmIndex = 0 ; algorithmIndex < algorithmsToRun.size() ; algorithmIndex++)
+        {
+
+        }
+    }
+
+    private void averageResults(){
+        evaluatedIndicators.parallelStream().forEach(indicatorMap ->
+            indicatorMap.forEach(
+                    (indicator, value) -> value = value / NUMBER_OF_RUNS)
+        );
+
+        evaluations = evaluations.stream().map(value -> value / NUMBER_OF_RUNS).collect(Collectors.toList());
     }
 
 
@@ -63,18 +86,44 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
                 JMetal5BaseEMAS<Solution<?>> emasRef = (JMetal5BaseEMAS<Solution<?>>) algorithm;
                 AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(emasRef)
                         .execute();
-                List<Solution<?>> population = emasRef.getResult();
-                evaluateSolution((List<S>) population);
                 long computingTime = algorithmRunner.getComputingTime();
-                System.out.println("[" + emasRef.getName() + "] Total execution time: " + computingTime/60 + "s");
-
-
+                System.out.println("[" + emasRef.getName() + "] [Run " + (i+1) + "/5] Total execution time: " + computingTime/60 + "s");
+                updateMetrics(emasRef);
                 emasRef.resetState();
             }
         });
-
     }
 
+    private void updateMetrics(JMetal5BaseEMAS<Solution<?>> algorithm)
+    {
+        List<S> population = (List<S>) algorithm.getResult();
+        int algorithmIndex = algorithmsToRun.indexOf(algorithm);
+        evaluations.set(algorithmIndex, evaluations.get(algorithmIndex) + algorithm.getEvaluations());
+
+        Map<GenericIndicator<?>, Double> indicatorsForAlgorithm = evaluatedIndicators.get(algorithmIndex);
+
+        indicators.forEach(indicator ->
+        {
+            double oldValue = indicatorsForAlgorithm.get(indicator);
+            indicatorsForAlgorithm.put(indicator, oldValue + indicator.evaluate(population));
+        });
+
+
+        Front normalizedFront = frontNormalizer.normalize(new ArrayFront(population));
+        List<PointSolution> normalizedPopulation = FrontUtils.convertFrontToSolutionList(normalizedFront);
+
+        for(int indicatorIndex = 0; indicatorIndex < normalizedIndicators.size() ; indicatorIndex++)
+        {
+            GenericIndicator<PointSolution> normalizedIndicator = normalizedIndicators.get(indicatorIndex);
+            double oldValue           = indicatorsForAlgorithm.get(normalizedIndicator);
+            double referenceIndicator = referenceIndicators.get(algorithmIndex).get(indicatorIndex);
+            double evaluationValue    = normalizedIndicator.evaluate(normalizedPopulation);
+            if(Double.compare(referenceIndicator, 0) != 0)
+                evaluationValue = evaluationValue / referenceIndicator;
+            indicatorsForAlgorithm.put(normalizedIndicator, oldValue + evaluationValue);
+        }
+
+    }
 
     private void initializeAlgorithms()
     {
@@ -92,10 +141,10 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
                  .addEMAS("BaseEMAS")
-                 .addEMAS("BaseEMAS1")
-                 .addEMAS("BaseEMAS2")
-                 .addEMAS("BaseEMAS3")
-                 .addEMAS("BaseEMAS4")
+//                 .addEMAS("BaseEMAS1")
+//                 .addEMAS("BaseEMAS2")
+//                 .addEMAS("BaseEMAS3")
+//                 .addEMAS("BaseEMAS4")
 //                 .addNotWorseEMAS("NotWorseEMAS")
 //                 .addAreaEMAS("AreaEMAS")
 //                 .addRadiusBaseEMAS("RadiusEMAS")
@@ -115,6 +164,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         {
             evaluatedIndicators.add(new HashMap<>());
             referenceIndicators.add(new ArrayList<>());
+            evaluations.add(0);
         }
     }
 
@@ -156,10 +206,6 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
             }
 
         }
-    }
-
-    private void evaluateSolution(List<S> population)
-    {
     }
 
     /**
