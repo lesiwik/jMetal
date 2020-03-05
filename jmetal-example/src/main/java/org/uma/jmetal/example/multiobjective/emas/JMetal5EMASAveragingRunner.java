@@ -2,7 +2,9 @@ package org.uma.jmetal.example.multiobjective.emas;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.example.AlgorithmRunner;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.*;
 import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
@@ -27,20 +29,12 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 
     private List<GenericIndicator<S>> indicators;
     private List<GenericIndicator<PointSolution>> normalizedIndicators;
-    private List<Double> referenceIndicators;
+    private List<List<Double>> referenceIndicators;
     private List<Integer> evaluations;
 
     private static final int NUMBER_OF_RUNS = 5;
-    private Map<GenericIndicator<?>, Double> evaluatedIndicators;
+    private List<Map<GenericIndicator<?>, Double>> evaluatedIndicators;
     private List<Algorithm<List<Solution<?>>>> algorithmsToRun;
-
-    public static void main(String[] args)
-            throws FileNotFoundException {
-        JMetal5EMASAveragingRunner<?> runner = new JMetal5EMASAveragingRunner<>();
-        runner.initializeFronts();
-        runner.initializeIndicators();
-        runner.initializeAlgorithms();
-    }
 
     private JMetal5EMASAveragingRunner()
     {
@@ -48,8 +42,39 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         normalizedIndicators = new ArrayList<>();
         evaluations          = new ArrayList<>();
         referenceIndicators  = new ArrayList<>();
-        evaluatedIndicators  = new HashMap<>();
+        evaluatedIndicators  = new ArrayList<>();
     }
+
+    public static void main(String[] args)
+            throws FileNotFoundException {
+        JMetal5EMASAveragingRunner<?> runner = new JMetal5EMASAveragingRunner<>();
+        runner.initializeFronts();
+        runner.initializeAlgorithms();
+        runner.initializeIndicators();
+        runner.runAlgorithms();
+    }
+
+
+    private void runAlgorithms()
+    {
+        algorithmsToRun.parallelStream().forEach(algorithm -> {
+            for(int i = 0; i < NUMBER_OF_RUNS; i++)
+            {
+                JMetal5BaseEMAS<Solution<?>> emasRef = (JMetal5BaseEMAS<Solution<?>>) algorithm;
+                AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(emasRef)
+                        .execute();
+                List<Solution<?>> population = emasRef.getResult();
+                evaluateSolution((List<S>) population);
+                long computingTime = algorithmRunner.getComputingTime();
+                System.out.println("[" + emasRef.getName() + "] Total execution time: " + computingTime/60 + "s");
+
+
+                emasRef.resetState();
+            }
+        });
+
+    }
+
 
     private void initializeAlgorithms()
     {
@@ -66,7 +91,11 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_ALWAYS", Constants.ALWAYS)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
-//                 .addEMAS("BaseEMAS")
+                 .addEMAS("BaseEMAS")
+                 .addEMAS("BaseEMAS1")
+                 .addEMAS("BaseEMAS2")
+                 .addEMAS("BaseEMAS3")
+                 .addEMAS("BaseEMAS4")
 //                 .addNotWorseEMAS("NotWorseEMAS")
 //                 .addAreaEMAS("AreaEMAS")
 //                 .addRadiusBaseEMAS("RadiusEMAS")
@@ -76,11 +105,17 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 //                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")
 //                 .addQualityAverageAreaEMAS("QualityAverageAreaEMAS")
 //                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
-                .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
+//                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
 //                 .addReproductiveEMAS("ReproductiveEMAS")
 //                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
                 .getAlgorithms();
+
+        for(int i = 0; i < algorithmsToRun.size() ; i++)
+        {
+            evaluatedIndicators.add(new HashMap<>());
+            referenceIndicators.add(new ArrayList<>());
+        }
     }
 
     private void initializeFronts()
@@ -108,16 +143,24 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
                         invertedGenerationalDistanceRatio,
                         invertedGenerationalDistancePlusRatio));
 
-        normalizedIndicators.forEach(indicator ->
+        for(int i = 0; i < algorithmsToRun.size() ; i++)
         {
-            double referenceIndicator = indicator.evaluate(FrontUtils.convertFrontToSolutionList(normalizedReferenceFront));
-            referenceIndicators.add(referenceIndicator);
-            evaluatedIndicators.put(indicator, 0. );
-        });
-        indicators.forEach(indicator -> evaluatedIndicators.put(indicator, 0.));
+            for(int j = 0; j < normalizedIndicators.size() ; j++)
+            {
+                GenericIndicator<S> indicator                       = indicators.get(j);
+                GenericIndicator<PointSolution> normalizedIndicator = normalizedIndicators.get(j);
+                double referenceIndicator = normalizedIndicator.evaluate(FrontUtils.convertFrontToSolutionList(normalizedReferenceFront));
+                referenceIndicators.get(i).add(referenceIndicator);
+                evaluatedIndicators.get(i).put(indicator, 0.);
+                evaluatedIndicators.get(i).put(normalizedIndicator, 0.);
+            }
+
+        }
     }
 
-
+    private void evaluateSolution(List<S> population)
+    {
+    }
 
     /**
      * Print all the available quality indicators
@@ -144,6 +187,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
                 new InvertedGenerationalDistancePlus<S>(referenceFront).evaluate(population) + "\n";
 
         JMetalLogger.logger.info(outputString);
+        System.out.println(outputString);
         return outputString;
     }
 }

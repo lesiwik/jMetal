@@ -438,6 +438,18 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     }
 
     /**
+     * Resets state of EMAS Algorithm.
+     * */
+    public void resetState()
+    {
+        population = null;
+        agentsRecords.clear();
+        iterations = 0;
+        evaluations = 0;
+        resetMeetingStatistics();
+    }
+
+    /**
      * Checks if algorithm reached stopping condition.
      * @return {@link JMetal5BaseEMAS#iterations} >= {@link JMetal5BaseEMAS#maxNumberOfIterations}
      * */
@@ -494,7 +506,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     private void populationLOG(String preamble) {
         if (Constants.LOG_LEVEL == 2) {
             System.out.println(preamble);
-            for (JMetal5Agent a : population) {
+            for (JMetal5Agent<S> a : population) {
                 System.out.println(a.toString() + " " + a.genotype.getObjective(0) + " " + a.genotype.getObjective(1) + " " + a.getResourceLevel());
             }
         }
