@@ -9,17 +9,18 @@ import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.*;
 import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.front.Front;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.PointSolution;
 
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 
@@ -38,13 +39,16 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
     private List<Map<GenericIndicator<?>, Double>> evaluatedIndicators;
     private List<Algorithm<List<Solution<?>>>> algorithmsToRun;
 
+    private List<List<String>> listOfResults;
+
     private JMetal5EMASAveragingRunner()
     {
+        listOfResults        = new ArrayList<>();
         indicators           = new ArrayList<>();
         normalizedIndicators = new ArrayList<>();
-        evaluations          = new ArrayList<>();
+        evaluations          = new CopyOnWriteArrayList<>();
         referenceIndicators  = new ArrayList<>();
-        evaluatedIndicators  = new ArrayList<>();
+        evaluatedIndicators  = new CopyOnWriteArrayList<>();
     }
 
     public static void main(String[] args)
@@ -56,25 +60,87 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         runner.runAlgorithms();
         runner.averageResults();
         runner.saveResults();
+        runner.saveToFile();
+    }
+
+    private void saveToFile(){
+        StringBuilder csvFormatData = new StringBuilder();
+        for(int lineIndex = 0; lineIndex < listOfResults.size() ; lineIndex++)
+        {
+            for (int wordIndex = 0 ; wordIndex < listOfResults.get(lineIndex).size() ; wordIndex++)
+            {
+                String word = listOfResults.get(lineIndex).get(wordIndex);
+                csvFormatData.append(word);
+                if (wordIndex < listOfResults.get(lineIndex).size() - 1)
+                    csvFormatData.append(',');
+            }
+            csvFormatData.append('\n');
+        }
+        System.out.println(csvFormatData.toString());
+
+        File csvFolders = new File(System.getProperty("user.dir") + "/emas_results/average/");
+        boolean isPathValid = csvFolders.mkdirs();
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        DateFormat df = new SimpleDateFormat("MM-dd - HH;mm");
+        df.setTimeZone(tz);
+        String fileName = "/" + df.format(new Date()) + ".csv";
+        try (FileWriter fileWriter = new FileWriter(csvFolders + fileName)) {
+            fileWriter.write(csvFormatData.toString());
+            fileWriter.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void saveResults()
     {
-        //TODO: Save results
-        System.out.println(Stream.of(indicators, normalizedIndicators).flatMap(Collection::stream).map(GenericIndicator::getName).collect(Collectors.toList()));
+        List<String> indicatorHeaders = indicators.stream().map(GenericIndicator::getName).collect(Collectors.toList());
+        indicatorHeaders.addAll(normalizedIndicators.stream().map(GenericIndicator::toString).map(string -> string = string + "(R+N)").collect(Collectors.toList()));
+        indicatorHeaders.add(0, "Name");
+        indicatorHeaders.add("Evaluations");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        printDataRow(indicatorHeaders);
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        listOfResults.add(indicatorHeaders);
         for(int algorithmIndex = 0 ; algorithmIndex < algorithmsToRun.size() ; algorithmIndex++)
         {
-
+            List<String> results = new ArrayList<>(indicatorHeaders.size() + 2);
+            JMetal5BaseEMAS<Solution<?>> emasAlgorithm = (JMetal5BaseEMAS<Solution<?>>) algorithmsToRun.get(algorithmIndex);
+            Map<GenericIndicator<?>, Double> algorithmIndicators = evaluatedIndicators.get(algorithmIndex);
+            Integer numberOfEvaluations = evaluations.get(algorithmIndex);
+            results.add(emasAlgorithm.getName());
+            indicators.forEach(indicator -> {
+                double indicatorValue = algorithmIndicators.get(indicator);
+                results.add(String.format("%.5f", indicatorValue));
+            });
+            normalizedIndicators.forEach(normalizedIndicator -> {
+                double indicatorValue = algorithmIndicators.get(normalizedIndicator);
+                results.add(String.format("%.5f", indicatorValue));
+            });
+            results.add(numberOfEvaluations.toString());
+            listOfResults.add(results);
+            printDataRow(results);
         }
     }
 
-    private void averageResults(){
-        evaluatedIndicators.parallelStream().forEach(indicatorMap ->
-            indicatorMap.forEach(
-                    (indicator, value) -> value = value / NUMBER_OF_RUNS)
-        );
+    private void printDataRow(List<String> data)
+    {
+        String format = new String(new char[data.size()]).replace("\0", "%20s");
+        System.out.printf(format.trim(), data.toArray());
+        System.out.println();
+    }
 
-        evaluations = evaluations.stream().map(value -> value / NUMBER_OF_RUNS).collect(Collectors.toList());
+    private void averageResults(){
+        evaluatedIndicators = evaluatedIndicators.stream().map(indicatorMap -> {
+            indicatorMap = indicatorMap.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            Map.Entry::getKey,
+                            entry -> entry.getValue() / NUMBER_OF_RUNS));
+            return indicatorMap;
+        }).collect(Collectors.toList());
+
+        evaluations = evaluations.parallelStream().map(value -> value / NUMBER_OF_RUNS).collect(Collectors.toList());
     }
 
 
@@ -206,34 +272,5 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
             }
 
         }
-    }
-
-    /**
-     * Print all the available quality indicators
-     * @param population population based on which indicators will be calculated.
-     */
-    public String constructQualityIndicatorsString(List<S> population) {
-
-        Front normalizedFront = frontNormalizer.normalize(new ArrayFront(population)) ;
-        List<PointSolution> normalizedPopulation = FrontUtils
-                .convertFrontToSolutionList(normalizedFront) ;
-
-        String outputString = "\n" ;
-        outputString += "Hypervolume (N) : " +
-                new PISAHypervolume<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-        outputString += "Hypervolume     : " +
-                new PISAHypervolume<S>(referenceFront).evaluate(population) + "\n";
-        outputString += "IGD (N)         : " +
-                new InvertedGenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-        outputString +="IGD             : " +
-                new InvertedGenerationalDistance<S>(referenceFront).evaluate(population) + "\n";
-        outputString += "IGD+ (N)        : " +
-                new InvertedGenerationalDistancePlus<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-        outputString += "IGD+            : " +
-                new InvertedGenerationalDistancePlus<S>(referenceFront).evaluate(population) + "\n";
-
-        JMetalLogger.logger.info(outputString);
-        System.out.println(outputString);
-        return outputString;
     }
 }
