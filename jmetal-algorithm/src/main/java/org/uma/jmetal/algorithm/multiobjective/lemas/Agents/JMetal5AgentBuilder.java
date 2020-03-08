@@ -110,6 +110,12 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.GLOBAL_RANK_AGENT:
                 agent = new JMetal5GlobalRankAgent<>();
                 break;
+            case Constants.MEETING_AGENT:
+                agent = new JMetal5MeetingAgent<>();
+                break;
+            case Constants.QUALITY_AGENT:
+                agent = new JMetal5QualityAgent<>(EMAS.getCurrentQualityType());
+                break;
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
@@ -146,6 +152,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
+            case Constants.MEETING_AGENT:
+                agent = new JMetal5MeetingAgent<>();
+                break;
             case Constants.QUALITY_AGENT:
                 agent = new JMetal5QualityAgent<>(EMAS.getCurrentQualityType());
                 break;
@@ -158,7 +167,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
         agent.setResourceLevel(initialResourceLevel);
         agent.setCrossoverOperator(EMAS.getCrossoverOperator());
         agent.setEMAS(EMAS);
-        agent.addToAgentRecords();
+        //agent.addToAgentRecords();
         agent.setComparator(buildComparator(EMAS.getBaseComparatorType()));
         agent.setParentToChildComparator(buildComparator(EMAS.getParentToChildComparatorType()));
         agent.setMutationOperator(EMAS.getMutationOperator());

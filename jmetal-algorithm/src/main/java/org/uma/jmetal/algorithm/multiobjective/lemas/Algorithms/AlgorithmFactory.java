@@ -270,6 +270,32 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
+    public AlgorithmFactory<S> addMeetingBaseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(MEETING_EMAS)
+                        .agentType(MEETING_AGENT)
+                        .matingDifferenceThreshold(MATING_DIFFERENCE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addMeetingAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(MEETING_EMAS)
+                        .agentType(MEETING_AGENT)
+                        .matingDifferenceThreshold(MATING_DIFFERENCE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
     public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
         return new NSGAIIBuilder<>(Constants.PROBLEM,

@@ -63,7 +63,7 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
     /**
      * Random instance for mutations and reproductions.
      * */
-    private static Random random = new Random();
+    static Random random = new Random();
 
 
     /* Variables */
@@ -208,15 +208,6 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         return comparatorResult;
     }
 
-    private void meetingLog(String preamble, JMetal5Agent agent1, JMetal5Agent agent2, int dominance, int isBetter) {
-        if (Constants.LOG_LEVEL == 2) {
-            System.out.println(preamble);
-            System.out.println(agent1.genotype.getObjective(0) + " " + agent1.genotype.getObjective(1) + " " + agent1.getResourceLevel());
-            System.out.println(agent2.genotype.getObjective(0) + " " + agent2.genotype.getObjective(1) + " " + agent2.getResourceLevel());
-            System.out.println("dominance result: " + dominance + ". Extended dominance result: " + isBetter);
-        }
-    }
-
     /**
      * Function to reproduce Agents. It creates new agent with genotype that is based on crossover ({@link JMetal5Agent#crossoverOperator}) of its parents genotypes.
      * It creates either 1 or 2 new Agents.
@@ -264,7 +255,6 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
             JMetal5Agent<S> parent = parentList.get(index);
             offSpring.mutate();
             offSpring.evaluate(EMAS.getProblem());
-
             offSpring.transferResourcesFrom(parent, EMAS.getInitialAgentResourceLevel());
             listOfOffspringToBeReturned.add(offSpring);
 
@@ -382,6 +372,14 @@ public class JMetal5Agent<S extends Solution<?>> implements Serializable {
         return c;
     }
 
+    private void meetingLog(String preamble, JMetal5Agent agent1, JMetal5Agent agent2, int dominance, int isBetter) {
+        if (Constants.LOG_LEVEL == 2) {
+            System.out.println(preamble);
+            System.out.println(agent1.genotype.getObjective(0) + " " + agent1.genotype.getObjective(1) + " " + agent1.getResourceLevel());
+            System.out.println(agent2.genotype.getObjective(0) + " " + agent2.genotype.getObjective(1) + " " + agent2.getResourceLevel());
+            System.out.println("dominance result: " + dominance + ". Extended dominance result: " + isBetter);
+        }
+    }
 
     /**
      * Saves random seed with key provided as parameter that should correspond to appropriate iteration.

@@ -76,7 +76,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Sets value of resource that is transferred to agent that "won" comparison showdown. Used in {@link JMetal5Agent#doMeeting(List, double)}.
      * Set to {@link Constants#TRANSFER_RESOURCE_VALUE} = {@value Constants#TRANSFER_RESOURCE_VALUE}
      * */
-    private double transferAgentResourceLevel;
+    protected double transferAgentResourceLevel;
 
     /* Operators */
     /**
@@ -461,7 +461,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     /**
      * Resets {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} and {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} to 0.
      * */
-    private void resetMeetingStatistics() {
+    protected void resetMeetingStatistics() {
         this.imBetterMeetingTypeCounter = 0;
         this.neitherIsBetterMeetingTypeCounter = 0;
     }
@@ -470,7 +470,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Increments {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} or {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} depending on meeting result.
      * @param meetingResult meeting result of two Agents.
      * */
-    private void updateMeetingStatistics(int meetingResult) {
+    protected void updateMeetingStatistics(int meetingResult) {
         if (meetingResult == 0)
             neitherIsBetterMeetingTypeCounter++;
         else

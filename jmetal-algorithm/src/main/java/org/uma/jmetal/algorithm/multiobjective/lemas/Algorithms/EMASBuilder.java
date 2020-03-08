@@ -46,6 +46,7 @@ public class EMASBuilder<S extends Solution<?>> {
     private Constants.QualityTypes currentQualityType;
     private double differenceConstant;
     private double qualityThreshold;
+    private int matingDifferenceThreshold;
 
 
     @SuppressWarnings("unchecked")
@@ -80,6 +81,9 @@ public class EMASBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_EMAS:
                 emas = new JMetal5ProgressiveEMAS<>();
                 break;
+            case Constants.MEETING_EMAS:
+                emas = new MeetingRoomEMAS<>(matingDifferenceThreshold);
+                break;
         }
         setBaseFields(emas);
         return emas;
@@ -108,6 +112,11 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setCurrentQualityType(currentQualityType);
     }
 
+    public EMASBuilder<S> matingDifferenceThreshold(int matingDifferenceThreshold)
+    {
+        this.matingDifferenceThreshold = matingDifferenceThreshold;
+        return this;
+    }
 
     public EMASBuilder<S> qualityType(Constants.QualityTypes qualityTypes)
     {
