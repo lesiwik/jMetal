@@ -714,6 +714,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         }
     }
 
+    public List<JMetal5Agent<S>> getAgents() { return population; }
+
     @Override
     public int getIteration() {
         return iterations;

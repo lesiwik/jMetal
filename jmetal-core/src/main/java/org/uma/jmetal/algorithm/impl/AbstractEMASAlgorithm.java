@@ -162,8 +162,7 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
             }
 //           try {
 //                Thread.sleep(1);
-//            } catch (InterruptedException e) {
-//            }
+//            } catch (InterruptedException e) { }
         }
     }
 }

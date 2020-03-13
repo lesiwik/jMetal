@@ -3,6 +3,7 @@ package org.uma.jmetal.example.multiobjective.emas;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.TimeFormatter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.PausableChartWrapper;
 import org.uma.jmetal.example.AlgorithmRunner;
 import org.uma.jmetal.solution.Solution;
@@ -44,9 +45,9 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
 //                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
-//                 .addReproductiveEMAS("ReproductiveEMAS")
+                 .addReproductiveEMAS("ReproductiveEMAS")
 //                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
-//                 .addMeetingBaseEMAS("MeetingBaseEMAS")
+                 .addMeetingBaseEMAS("MeetingBaseEMAS")
                  .addMeetingAreaEMAS("MeetingAreaEMAS")
                  .getAlgorithms();
 
@@ -62,9 +63,11 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
                  .forEach(algorithm -> algorithmRunners.put(algorithm.getName(), new AlgorithmRunner.Executor(algorithm)
                          .execute()));
 
+         chartWrapper.displayAdditionalStatistics();
+
          algorithmRunners.forEach((name, algorithmRunner) -> {
              long computingTime = algorithmRunner.getComputingTime();
-             System.out.println("[" + name + "] Total execution time: " + computingTime/60 + "s");
+             System.out.println("[" + name + "] Total execution time: " + TimeFormatter.msToTime(computingTime));
          });
     }
 }

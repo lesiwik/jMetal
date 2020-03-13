@@ -2,10 +2,11 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
 
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.solution.Solution;
-import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S> {
@@ -32,8 +33,8 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
                     iterationSlider.sliderChanged.getAndSet(false);
                     for (Object seriesName : iterationSlider.getIterationCounter().keySet()) {
                         javax.swing.SwingUtilities.invokeLater(() -> {
+                            IterationSlider<S>.SavedState savedState = iterationSlider.getSavedState((String) seriesName);
                             for (int i = 0; i < NUMBER_OF_CHARTS_TO_UPDATE; i++) {
-                                IterationSlider<S>.SavedState savedState = iterationSlider.getSavedState((String) seriesName);
                                 if(savedState != null) {
                                     charts.get(i).update(savedState.getData(), savedState.getSeriesName(), savedState.getEmas(), savedState.getSeriesNumber());
 
@@ -45,7 +46,6 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
                                     wrapper.repaintChart(i);
                                 }
                             }
-
                         });
                     }
                 }
@@ -66,7 +66,10 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
                     }
                     wrapper.repaintChart(i);
                 }
-
+                for (int j = 0; j < algorithmStatistics.size() ; j++)
+                {
+                    algorithmStatistics.get(j).updateStats((JMetal5BaseEMAS<S>) emas);
+                }
             });
         }
 //        } else {
@@ -79,5 +82,22 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
 //
 //            });
 //        }
+    }
+
+
+    public void displayAdditionalStatistics()
+    {
+        Optional<AlgorithmStatistics<S>> dominationStats = this.getAlgorithmStatistics()
+                .stream()
+                .filter(s-> s.getTitle().equals("Domination"))
+                .findFirst();
+        if(dominationStats.isPresent())
+        {
+            StatisticsWindow<S> dominationHistogram = new StatisticsWindow<>("Domination Levels");
+            dominationHistogram.setXAxisTitle("Domination Level");
+            dominationHistogram.setYAxisTitle("Number of times domination level was achieved");
+            dominationHistogram.addData(dominationStats.get(), AlgorithmStatistics.StatisticsType.DOMINATION_LEVEL);
+            dominationHistogram.drawBarGraph();
+        }
     }
 }

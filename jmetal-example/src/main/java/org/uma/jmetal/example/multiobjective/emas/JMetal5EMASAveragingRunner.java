@@ -4,6 +4,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.AlgorithmFactory;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.TimeFormatter;
 import org.uma.jmetal.example.AlgorithmRunner;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.qualityindicator.impl.*;
@@ -76,7 +77,8 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
             }
             csvFormatData.append('\n');
         }
-        System.out.println(csvFormatData.toString());
+
+//        System.out.println("\n\n\n\nCSV File:\n"+ csvFormatData.toString());
 
         File csvFolders = new File(System.getProperty("user.dir") + "/emas_results/average/");
         boolean isPathValid = csvFolders.mkdirs();
@@ -86,6 +88,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         String fileName = "/" + df.format(new Date()) + ".csv";
         try (FileWriter fileWriter = new FileWriter(csvFolders + fileName)) {
             fileWriter.write(csvFormatData.toString());
+            System.out.println("\n\nCSV File created at: " + csvFolders + fileName);
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -111,11 +114,11 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
             results.add(emasAlgorithm.getName());
             indicators.forEach(indicator -> {
                 double indicatorValue = algorithmIndicators.get(indicator);
-                results.add(String.format("%.5f", indicatorValue));
+                results.add(String.format("%.5f", indicatorValue).replace(",", "."));
             });
             normalizedIndicators.forEach(normalizedIndicator -> {
                 double indicatorValue = algorithmIndicators.get(normalizedIndicator);
-                results.add(String.format("%.5f", indicatorValue));
+                results.add(String.format("%.5f", indicatorValue).replace(",", "."));
             });
             results.add(numberOfEvaluations.toString());
             listOfResults.add(results);
@@ -153,7 +156,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
                 AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(emasRef)
                         .execute();
                 long computingTime = algorithmRunner.getComputingTime();
-                System.out.println("[" + emasRef.getName() + "] [Run " + (i+1) + "/5] Total execution time: " + computingTime/60 + "s");
+                System.out.println("[" + emasRef.getName() + "] [Run " + (i+1) + "/5] Total execution time: " + TimeFormatter.msToTime(computingTime));
                 updateMetrics(emasRef);
                 emasRef.resetState();
             }

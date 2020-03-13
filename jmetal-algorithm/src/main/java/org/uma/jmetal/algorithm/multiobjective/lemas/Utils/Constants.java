@@ -40,7 +40,7 @@ public class Constants {
     public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
     public static final double DIFFERENCE_CONSTANT = 10; //TODO: Nie mam pojecia.
     public static final double ABOVE_THRESHOLD = 0.2; //TODO: Nie mam pojecia v2.
-    public static final int MATING_DIFFERENCE_THRESHOLD = 3; //TODO: Parametr wedlug ktorego dobierani sa MATING partnerzy
+    public static final int MATING_DIFFERENCE_THRESHOLD = 1; //TODO: Parametr wedlug ktorego dobierani sa MATING partnerzy
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;

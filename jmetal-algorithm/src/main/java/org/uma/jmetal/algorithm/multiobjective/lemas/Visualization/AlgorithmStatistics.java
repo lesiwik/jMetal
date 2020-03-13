@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.knowm.xchart.CategoryChart;
 import org.knowm.xchart.CategoryChartBuilder;
+import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5MeetingAgent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
@@ -16,56 +17,64 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class HistogramChart<S extends Solution<?>> {
+public class AlgorithmStatistics<S extends Solution<?>> {
 
     @Setter
     @Getter
     private CategoryChart chart;
 
     @Getter
-    private Map<String, Number> series;
+    private Map<String, Map<String, Number>> series;
 
+    private StatisticsType statisticsType;
 
-    private HistogramType histogramType;
+    @Getter
+    @Setter
+    private String title;
 
-    public enum HistogramType {
-        DOMINATION_LEVEL_TYPE,
+    public enum StatisticsType {
+        DOMINATION_LEVEL,
 
     }
 
-
-    public HistogramChart(String title, HistogramType histogramType) {
+    public AlgorithmStatistics(List<Algorithm<List<S>>> algorithms, String title, StatisticsType statisticsType) {
         series = new ConcurrentHashMap<>();
-        this.histogramType = histogramType;
+        this.statisticsType = statisticsType;
         this.chart = new CategoryChartBuilder().width(500).height(300).theme(Constants.CHART_THEME).build();
         this.chart.getStyler().setLegendVisible(true);
         this.chart.setTitle(title);
+        this.title = title;
+        algorithms.forEach(algorithm -> series.putIfAbsent(algorithm.getName(), new HashMap<>()));
     }
 
 
-    public void updateSeries(JMetal5BaseEMAS<S> EMAS)
+    public void updateStats(JMetal5BaseEMAS<S> EMAS)
     {
-        switch(histogramType)
+        switch(statisticsType)
         {
-            case DOMINATION_LEVEL_TYPE:
+            case DOMINATION_LEVEL:
                 updateDominationLevels(EMAS);
                 break;
             default:
                 throw new IllegalArgumentException("Enum type not specified");
         }
 
-        List<Number> data = new ArrayList<>(series.values());
     }
 
     private void updateDominationLevels(JMetal5BaseEMAS<S> EMAS)
     {
         List<JMetal5Agent<S>> agents = EMAS.getAgents();
-        agents.forEach(agent ->
+        /* Avoids conversion errors for different EMAS algorithms. */
+        if(!agents.isEmpty() && !(agents.get(0) instanceof JMetal5MeetingAgent))
+            return;
+
+        Map<String, Number> dataRef = series.get(EMAS.getName());
+        for(int index = 0; index < agents.size(); index++)
         {
-            JMetal5MeetingAgent<S> meetingAgentRef = (JMetal5MeetingAgent<S>) agent;
+            JMetal5MeetingAgent<S> meetingAgentRef = (JMetal5MeetingAgent<S>) agents.get(index);
             int dominationLevel = meetingAgentRef.getDominationLevel();
-            int oldValue = series.getOrDefault(Integer.toString(dominationLevel), 0).intValue();
-            series.put(Integer.toString(dominationLevel), ++oldValue);
-        });
+            int oldValue = dataRef.getOrDefault(Integer.toString(dominationLevel), 0).intValue();
+            dataRef.put(Integer.toString(dominationLevel), ++oldValue);
+        }
     }
 }

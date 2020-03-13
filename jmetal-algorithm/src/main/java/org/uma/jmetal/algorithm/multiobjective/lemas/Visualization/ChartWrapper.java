@@ -1,5 +1,6 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
+import lombok.Getter;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.XYChart;
 import org.uma.jmetal.algorithm.Algorithm;
@@ -22,6 +23,10 @@ public class ChartWrapper<S extends Solution<?>> {
 
     protected Front referenceFront;
     protected final String FRONT_FILE_NAME = Constants.REF_FRONT_DIR + Constants.PROBLEM.getName() + ".pf";
+
+
+    @Getter
+    protected List<AlgorithmStatistics<S>> algorithmStatistics;
 
     public ChartWrapper() {
         charts = new ArrayList<>();
@@ -64,9 +69,11 @@ public class ChartWrapper<S extends Solution<?>> {
         charts.add(new EvaluationsChart<S>(algorithmToShow));
 
         charts.forEach(chart -> chart.getChart().getStyler().setToolTipsEnabled(true));
-
         wrapper = new SwingWrapper<>(charts.stream().map(BaseChart::getChart).collect(Collectors.toList()), 3, 3);
         wrapper.displayChartMatrix();
+
+        algorithmStatistics = new ArrayList<>();
+        algorithmStatistics.add(new AlgorithmStatistics<S>(algorithmToShow,"Domination", AlgorithmStatistics.StatisticsType.DOMINATION_LEVEL));
     }
 
     private void initializeReferenceFronts()
