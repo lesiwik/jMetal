@@ -116,6 +116,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.RADIUS_AGENT:
                 agent = new JMetal5RadiusAgent<>(0);
                 break;
+            case Constants.FACTORS_AGENT:
+                agent = new JMetal5FactorsAgent<>(0);
+                break;
         }
         agent.setGenotype(genotype);
         agent.setResourceLevel(initialResourcesValue);
@@ -148,6 +151,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
                 break;
             case Constants.RADIUS_AGENT:
                 agent = new JMetal5RadiusAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
+                break;
+            case Constants.FACTORS_AGENT:
+                agent = new JMetal5FactorsAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
                 break;
         }
         agent.setReproCondition(reproCondition);

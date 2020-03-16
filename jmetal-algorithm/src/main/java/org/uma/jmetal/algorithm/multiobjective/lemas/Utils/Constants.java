@@ -63,6 +63,7 @@ public class Constants {
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
     public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
+    public final static String FACTORS_AGENT  = "JMetal5FactorsAgent";
 
     /* EMAS types */
     public final static String BASE_EMAS = "JMetal5BaseEMAS";

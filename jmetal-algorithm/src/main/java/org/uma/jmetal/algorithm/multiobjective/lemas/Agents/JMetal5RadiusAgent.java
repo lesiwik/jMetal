@@ -20,7 +20,7 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
 
     private double radius;
 
-    private int metAgents = 0;
+    protected int metAgents = 0;
     private int metAgentsInRadius = 0;
 
     public JMetal5RadiusAgent(final double radius)
@@ -44,7 +44,7 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
         int comparatorResult = compareAgents(this, meetingPartner);
         if (comparatorResult == Constants.NEITHER_IS_BETTER)
         {
-            comparatorResult = Double.compare(getMeetingRatio(),meetingPartner.getMeetingRatio());
+            comparatorResult = secondaryCompare(meetingPartner);
         }
         if (comparatorResult == Constants.FIRST_IS_BETTER) {
             transferResourcesFrom(meetingPartner, transferResourceValue);
@@ -59,10 +59,13 @@ public class JMetal5RadiusAgent<S extends Solution<?>> extends JMetal5Agent<S>{
         return comparatorResult;
     }
 
+    protected int secondaryCompare(JMetal5RadiusAgent<S> meetingPartner) {
+        return Double.compare(getMeetingRatio(),meetingPartner.getMeetingRatio());
+    }
 
     public double getMeetingRatio() { return (double) metAgentsInRadius/metAgents; }
 
-    private void updateMetAgents(JMetal5RadiusAgent<S> metAgent)
+    protected void updateMetAgents(JMetal5RadiusAgent<S> metAgent)
     {
         metAgents++;
         metAgent.metAgents++;
