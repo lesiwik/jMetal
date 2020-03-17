@@ -36,7 +36,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
     private List<List<Double>> referenceIndicators;
     private List<Integer> evaluations;
 
-    private static final int NUMBER_OF_RUNS = 5;
+    private static final int NUMBER_OF_RUNS = 30;
     private List<Map<GenericIndicator<?>, Double>> evaluatedIndicators;
     private List<Algorithm<List<Solution<?>>>> algorithmsToRun;
 
@@ -156,7 +156,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
                 AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(emasRef)
                         .execute();
                 long computingTime = algorithmRunner.getComputingTime();
-                System.out.println("[" + emasRef.getName() + "] [Run " + (i+1) + "/5] Total execution time: " + TimeFormatter.msToTime(computingTime));
+                System.out.println("[" + emasRef.getName() + "] [Run " + (i+1) + "/" + NUMBER_OF_RUNS + "] Total execution time: " + TimeFormatter.msToTime(computingTime));
                 updateMetrics(emasRef);
                 emasRef.resetState();
             }
@@ -210,14 +210,10 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
                  .addEMAS("BaseEMAS")
-//                 .addEMAS("BaseEMAS1")
-//                 .addEMAS("BaseEMAS2")
-//                 .addEMAS("BaseEMAS3")
-//                 .addEMAS("BaseEMAS4")
-//                 .addNotWorseEMAS("NotWorseEMAS")
-//                 .addAreaEMAS("AreaEMAS")
-//                 .addRadiusBaseEMAS("RadiusEMAS")
-//                 .addRadiusAreaEMAS("RadiusAreaEMAS")
+                 .addNotWorseEMAS("NotWorseEMAS")
+                 .addAreaEMAS("AreaEMAS")
+                 .addRadiusBaseEMAS("RadiusEMAS")
+                 .addRadiusAreaEMAS("RadiusAreaEMAS")
 //                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
 //                 .addAreaCountingEMAS("AreaCountingEMAS")
 //                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")

@@ -3,18 +3,15 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import lombok.Getter;
 import lombok.Setter;
 import org.knowm.xchart.CategoryChart;
-import org.knowm.xchart.CategoryChartBuilder;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5MeetingAgent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
-import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.Solution;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.List;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class AlgorithmStatistics<S extends Solution<?>> {
@@ -40,11 +37,13 @@ public class AlgorithmStatistics<S extends Solution<?>> {
     public AlgorithmStatistics(List<Algorithm<List<S>>> algorithms, String title, StatisticsType statisticsType) {
         series = new ConcurrentHashMap<>();
         this.statisticsType = statisticsType;
-        this.chart = new CategoryChartBuilder().width(500).height(300).theme(Constants.CHART_THEME).build();
-        this.chart.getStyler().setLegendVisible(true);
-        this.chart.setTitle(title);
+//        this.chart = new CategoryChartBuilder().width(500).height(300).theme(Constants.CHART_THEME).build();
+//        this.chart.getStyler().setLegendVisible(true);
+//        this.chart.setTitle(title);
         this.title = title;
-        algorithms.forEach(algorithm -> series.putIfAbsent(algorithm.getName(), new HashMap<>()));
+        algorithms.forEach(algorithm -> {
+            series.putIfAbsent(algorithm.getName(), new HashMap<>());
+        });
     }
 
 

@@ -2,7 +2,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 
 import lombok.Getter;
 import org.knowm.xchart.SwingWrapper;
-import org.knowm.xchart.XYChart;
+import org.knowm.xchart.internal.chartpart.Chart;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ChartWrapper<S extends Solution<?>> {
-    protected final SwingWrapper<XYChart> wrapper;
+    protected final SwingWrapper<Chart<?,?>> wrapper;
     protected List<BaseChart<S>> charts;
 
     protected Front referenceFront;
@@ -71,6 +71,10 @@ public class ChartWrapper<S extends Solution<?>> {
         charts.forEach(chart -> chart.getChart().getStyler().setToolTipsEnabled(true));
         wrapper = new SwingWrapper<>(charts.stream().map(BaseChart::getChart).collect(Collectors.toList()), 3, 3);
         wrapper.displayChartMatrix();
+//        List<Chart<?, ?>> test = charts.stream().map(BaseChart::getChart).collect(Collectors.toList());
+//        test.add(new AlgorithmStatistics<S>(algorithmToShow, "t", AlgorithmStatistics.StatisticsType.DOMINATION_LEVEL).getChart());
+//        wrapper = new SwingWrapper<>(test);
+//        wrapper.displayChartMatrix();
 
         algorithmStatistics = new ArrayList<>();
         algorithmStatistics.add(new AlgorithmStatistics<S>(algorithmToShow,"Domination", AlgorithmStatistics.StatisticsType.DOMINATION_LEVEL));

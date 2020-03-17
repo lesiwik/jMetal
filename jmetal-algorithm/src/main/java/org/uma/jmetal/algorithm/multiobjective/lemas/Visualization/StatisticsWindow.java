@@ -45,7 +45,6 @@ public class StatisticsWindow<S extends Solution<?>> extends ApplicationFrame {
             algorithmData.forEach((key, value) ->
                 dataCategorySet.addValue(value, key, algorithmName));
         });
-
     }
 
 
@@ -60,6 +59,10 @@ public class StatisticsWindow<S extends Solution<?>> extends ApplicationFrame {
     }
 
     public void drawBarGraph() {
+
+        if(dataCategorySet.getRowCount() == 0)
+            return;
+
         JFreeChart barChart = ChartFactory.createBarChart(
                 getTitle(),
                 xAxisTitle,
