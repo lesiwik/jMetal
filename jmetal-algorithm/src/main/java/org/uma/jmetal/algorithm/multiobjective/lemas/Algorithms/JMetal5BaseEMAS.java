@@ -1,6 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import lombok.*;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
@@ -732,18 +733,23 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
 
         int lastTimeChecked = 0;
+        Queue<Integer> lastEvals= new LinkedList<Integer>();
+        for(int i=0;i<5;i++){lastEvals.add(-1);}
         while (!isStoppingConditionReached()) {
             saveIteration(getIteration());
             meetStep();
             reproStep();
             deadStep();
-            results.add(getNonDominatedSolutions(getPopulation()));
             if (evaluations > lastTimeChecked+100) {
+                results.add(getNonDominatedSolutions(getPopulation()));
                 updateProgress();
                 lastTimeChecked+=100;
 
                 System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             }
+            if(lastEvals.poll()==evaluations)
+                break;
+            lastEvals.add(evaluations);
         }
 /*           try {
                 Thread.sleep(100);

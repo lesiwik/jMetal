@@ -31,7 +31,7 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 1000;
+    public static int MAX_ITERATIONS = 50;
     public static int MAX_EVALUATIONS = 2500;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;

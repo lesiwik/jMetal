@@ -59,12 +59,13 @@ public class ZDT1 extends AbstractDoubleProblem {
     for (int i = 1; i < solution.getNumberOfVariables(); i++) {
       g += solution.getVariable(i );
     }
-    int x=2;
+    double x=0.1;
     for (int i=0;i<10000000;i++)
     {
       x*=2;
+      x/=2.0000000001;
     }
-    System.out.print(x);
+    System.out.print(x>2 ? 0 : 1);
     double constant = 9.0 / (solution.getNumberOfVariables() - 1);
 
     return constant * g + 1.0;

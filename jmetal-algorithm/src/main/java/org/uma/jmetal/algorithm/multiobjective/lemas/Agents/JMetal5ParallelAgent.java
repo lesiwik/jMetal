@@ -118,8 +118,8 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
                 matingQueue.add(this);
                 try {
                     //              print("MATING: stoję w kolejce");
-                    while (!picked)
-                        matingQueue.wait();
+                    while (!picked && !stopCondition)
+                        matingQueue.wait(1000);
                 } catch (InterruptedException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
@@ -138,10 +138,10 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             objectTosynchronise = this;
         synchronized (objectTosynchronise) {
             if (objectTosynchronise == this)
-                while (!picked2)
+                while (!picked2 && !stopCondition)
                     try {
                         // print("MATING: czekam na doReproduce");
-                        objectTosynchronise.wait();
+                        objectTosynchronise.wait(1000);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -179,8 +179,8 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
                 meetingQueue.add(this);
                 try {
 //                     print("MEETING: stoję w kolejce");
-                    while (!picked)
-                        meetingQueue.wait();
+                    while (!picked && !stopCondition)
+                        meetingQueue.wait(1000);
                 } catch (InterruptedException e) {
                 }
             } else {
@@ -197,10 +197,10 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             objectTosynchronise = this;
         synchronized (objectTosynchronise) {
             if (objectTosynchronise == this) {
-                while (!picked2)
+                while (!picked2 && !stopCondition)
                     try {
                         // print("MEETING: czekam na doMeeting");
-                        objectTosynchronise.wait();
+                        objectTosynchronise.wait(1000);
                     } catch (InterruptedException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
