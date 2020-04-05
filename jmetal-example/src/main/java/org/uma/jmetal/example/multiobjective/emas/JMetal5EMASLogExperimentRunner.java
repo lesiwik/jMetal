@@ -36,13 +36,13 @@ public class JMetal5EMASLogExperimentRunner {
 
             AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                     .execute();
-            JMetal5BaseEMAS<DoubleSolution> emas = (JMetal5BaseEMAS<DoubleSolution>) algorithm;
-            List<List<DoubleSolution>> results = emas.getResults();
-            List<DoubleSolution> population = results.get(results.size()-1);
+            //JMetal5BaseEMAS<Solution<>> emas =  algorithm;
+            //List<List<DoubleSolution>> results = emas.getResults();
+            //List<DoubleSolution> population = results.get(results.size()-1);
             long computingTime = algorithmRunner.getComputingTime();
 
         List<Solution<?>> population = algorithm.getResult();
-        long computingTime = algorithmRunner.getComputingTime();
+        //long computingTime = algorithmRunner.getComputingTime();
 
 //            try(FileWriter fw = new FileWriter(fileName, true);
 //                BufferedWriter bw = new BufferedWriter(fw);

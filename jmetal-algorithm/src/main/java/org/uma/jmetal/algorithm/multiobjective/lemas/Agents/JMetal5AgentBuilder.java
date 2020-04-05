@@ -153,10 +153,8 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
-<<<<<<< HEAD
             case Constants.PARALLEL_AGENT:
                 agent = new JMetal5ParallelAgent<>();
-=======
             case Constants.MEETING_AGENT:
                 agent = new JMetal5MeetingAgent<>();
                 break;
@@ -165,7 +163,6 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
                 break;
             case Constants.RADIUS_AGENT:
                 agent = new JMetal5RadiusAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
->>>>>>> MKasprzyk
                 break;
         }
         agent.setReproCondition(reproCondition);
