@@ -7,12 +7,11 @@ import org.uma.jmetal.solution.Solution;
 
 import java.util.List;
 
-public class PopulationSizeChart<S extends Solution<?>> extends ProgressBaseChart<Integer, S>{
+public class EvaluationsChart<S extends Solution<?>> extends ProgressBaseChart<Integer, S> {
 
-
-    public PopulationSizeChart(List<Algorithm<List<S>>> algorithmsToShow) {
+    public EvaluationsChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
-        chart.setTitle("Population size");
+        chart.setTitle("Evaluations Chart");
     }
 
     @Override
@@ -26,10 +25,10 @@ public class PopulationSizeChart<S extends Solution<?>> extends ProgressBaseChar
     }
 
     @Override
-    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas){
-        if (isItTimeForUpdate(seriesName, Constants.POPULATION_SIZE_FREQUENCY)){
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas) {
+        if (isItTimeForUpdate(seriesName, Constants.EVALUATION_FREQUENCY)) {
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
-            yValues.get(seriesName).add(emas.getPopulation().size());
+            yValues.get(seriesName).add(emas.getEvaluations());
 
             getChart().updateXYSeries(
                     seriesName,

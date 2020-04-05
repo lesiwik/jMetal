@@ -35,6 +35,12 @@ public class Constants {
     public static int MAX_EVALUATIONS = 2500;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
+    public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
+    public static final double DIFFERENCE_CONSTANT = 10; //TODO: Nie mam pojecia.
+    public static final double ABOVE_THRESHOLD = 0.2; //TODO: Nie mam pojecia v2.
+    public static final int MATING_DIFFERENCE_THRESHOLD = 1; //TODO: Parametr wedlug ktorego dobierani sa MATING partnerzy
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;
@@ -54,19 +60,25 @@ public class Constants {
     public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
     public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
     public final static String THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR = "ThreadSafeAreaUnderControlComparator";
+    public final static String AREA_UNDER_CONTROL_COUNTER_COMPARATOR = "AreaUnderControlCounterComparator";
     public final static String AREA_UNDER_CONTROL_EXTENDED_COMPARATOR = "AreaUnderControlExtendedComparator";
+    public final static String NOT_WORSE_COMPARATOR = "NotWorseComparator";
 
     /* Agent types */
     public final static String BASE_AGENT = "JMetal5BaseAgent";
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
     public final static String PARALLEL_AGENT  = "JMetal5ParallelAgent";
+    public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
+    public final static String QUALITY_AGENT  = "JMetal5QualityAgent";
+    public final static String MEETING_AGENT  = "JMetal5MeetingAgent";
 
     /* EMAS types */
     public final static String BASE_EMAS = "JMetal5BaseEMAS";
     public final static String GLOBAL_RANK_EMAS = "JMetal5GlobalRankEMAS";
     public final static String PROGRESSIVE_EMAS = "JMetal5ProgressiveEMAS";
     public final static String PARALLEL_EMAS = "JMetal5ParallelEMAS";
+    public final static String MEETING_EMAS = "MeetingRoomEMAS";
 
     /* Reproduction levels */
     public final static ReproCondition PROGRESSIVE_REPRODUCTION_LEVEL =
@@ -80,8 +92,20 @@ public class Constants {
     public static final int POP_FREQUENCY = 1;
     public static final int MEETINGS_FREQUENCY = 10;
     public static final int POPULATION_SIZE_FREQUENCY = 10;
+
+    public static final int INDICATOR_FREQUENCY = 50;
+    public static final int EVALUATION_FREQUENCY = 50;
+
     public static final int NUMBER_OF_DECISION_VARIABLES_TO_SHOW = 3;
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
+
+    /* Indicators */
+    public static final String HYPERVOLUME_INDICATOR_TYPE = "HyperVolume";
+    public static final String EPISLON_INDICATOR_TYPE = "Epsilon";
+    public static final String GENERATIONAL_DISTANCE_INDICATOR_TYPE = "GD";
+    public static final String INVERTED_GENERATIONAL_DISTANCE_INDICATOR_TYPE = "IDG";
+    public static final String INVERTED_GENERATIONAL_DISTANCE_PLUS_INDICATOR_TYPE = "IDGPlus";
+    public static final String SPREAD_INDICATOR_TYPE = "Spread";
 
     /* Problems */
     public static final ZDT1 PROBLEM = new ZDT1();
@@ -119,6 +143,8 @@ public class Constants {
 
     //    public static Color REFERENCE_COLOR = Color.GREEN;
     //    public static boolean WITH_VISUALIZATION = true;
+
+
 
 
     /* NSGAII Constants */

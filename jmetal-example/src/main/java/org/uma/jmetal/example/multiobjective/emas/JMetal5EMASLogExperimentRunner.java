@@ -8,6 +8,7 @@ import org.uma.jmetal.qualityindicator.impl.ErrorRatio;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistance;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
 import org.uma.jmetal.util.JMetalLogger;
 import org.uma.jmetal.util.front.Front;
@@ -29,8 +30,9 @@ public class JMetal5EMASLogExperimentRunner {
         for(int i=0;i<1;i++) {
             String fileName = String.format (emasName + "%05d.out", i);
 
-            Algorithm<List<DoubleSolution>> algorithm = new AlgorithmFactory()
-                    .addEMAS(emasName).getAlgorithm(0);
+        Algorithm<List<Solution<?>>> algorithm = new AlgorithmFactory<>()
+                .addAreaEMAS("AreaEMAS")
+                .getAlgorithm(0);
 
             AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                     .execute();
@@ -39,8 +41,8 @@ public class JMetal5EMASLogExperimentRunner {
             List<DoubleSolution> population = results.get(results.size()-1);
             long computingTime = algorithmRunner.getComputingTime();
 
-            JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-            printFinalSolutionSet(population);
+        List<Solution<?>> population = algorithm.getResult();
+        long computingTime = algorithmRunner.getComputingTime();
 
 //            try(FileWriter fw = new FileWriter(fileName, true);
 //                BufferedWriter bw = new BufferedWriter(fw);

@@ -5,39 +5,38 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.config.MeetingType;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Visualization.ProgressBaseChart;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 
-public class MeetingsChart extends ProgressBaseChart<Integer> {
+public class MeetingsChart<S extends Solution<?>> extends ProgressBaseChart<Integer, S> {
     private final MeetingType meetingType;
 
-    public MeetingsChart(List<Algorithm> algorithmsToShow, MeetingType meetingType) {
+    public MeetingsChart(List<Algorithm<List<S>>> algorithmsToShow, MeetingType meetingType) {
         super(algorithmsToShow);
         this.meetingType = meetingType;
         this.setupTitle();
     }
 
     private void setupTitle() {
-        StringBuilder title = new StringBuilder();
-        title.append(meetingType.name().toLowerCase().replace("_", " "));
-        title.append(" meetings");
-
-        chart.setTitle(title.toString());
+        String title = meetingType.name().toLowerCase().replace("_", " ") +
+                " meetings";
+        chart.setTitle(title);
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         throw new UnsupportedOperationException("Requires reference to algorithm object");
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         throw new UnsupportedOperationException("Requires reference to algorithm object");
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas){
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas){
         if (isItTimeForUpdate(seriesName, Constants.MEETINGS_FREQUENCY)) {
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             yValues.get(seriesName).add(getMeetingCounterValue(emas));
@@ -51,7 +50,7 @@ public class MeetingsChart extends ProgressBaseChart<Integer> {
         incrementIterationCounterFor(seriesName);
     }
 
-    private int getMeetingCounterValue(JMetal5BaseEMAS emas) {
+    private int getMeetingCounterValue(JMetal5BaseEMAS<S> emas) {
         if (meetingType.isIAmBetter())
             return emas.getImBetterMeetingTypeCounter();
         else if (meetingType.isNeitherIsBetter())

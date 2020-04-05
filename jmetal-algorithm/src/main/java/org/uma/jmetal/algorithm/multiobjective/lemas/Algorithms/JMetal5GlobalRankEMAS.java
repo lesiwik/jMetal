@@ -16,7 +16,7 @@ import java.util.Optional;
  * @author dr inż. Siwik Leszek siwik@agh.edu.pl
  * @since 8/27/2018
  * */
-public class JMetal5GlobalRankEMAS<S extends Solution<?>> extends JMetal5BaseEMAS {
+public class JMetal5GlobalRankEMAS<S extends Solution<?>> extends JMetal5BaseEMAS<S> {
 
 
 

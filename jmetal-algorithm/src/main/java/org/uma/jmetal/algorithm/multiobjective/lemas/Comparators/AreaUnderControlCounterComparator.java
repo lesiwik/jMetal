@@ -5,19 +5,17 @@ import lombok.Setter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 /**
- * Area under control comparator for agents in EMAS algorithms.
+ * Area under control comparator with counting agents that got got dominated for agents in EMAS algorithms.
  * @author M. Kasprzyk <michal0kasprzyk@gmail.com>
  * @since 8/27/2018
  * */
 @Setter
 @Getter
-public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends EmasDominanceComparator<Agent> {
+public class AreaUnderControlCounterComparator<Agent extends JMetal5Agent<?>> extends EmasDominanceComparator<Agent> {
 
 
 
@@ -25,13 +23,18 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
     private int agent1ToListComparisonResult;
     private int agent2ToListComparisonResult;
 
-    public AreaUnderControlComparator() { listOfKnownNonDominatedAgents = new ArrayList<>(); }
+    private Map<Integer, List<Agent>> meetingResults;
+
+    public AreaUnderControlCounterComparator() {
+        listOfKnownNonDominatedAgents = new ArrayList<>();
+        meetingResults = initializeMeetingMap();
+    }
 
 
     /**
      * Compares to given agent based. First it makes call to {@link EmasDominanceComparator#compare(JMetal5Agent, JMetal5Agent)}.
      * If result is 0 (both are equal) then it calls {@link AreaUnderControlComparator#isPartnerUnderControl(Agent, Agent)}.
-     * If again both are equal, then it updates Non Dominated lists {@link #updateListOfKnownNondominatedAgents(Agent, Agent)}.
+     * If again both are equal, then it updates Non Dominated lists {@link #updateListOfKnownNonDominatedAgents(Agent, Agent)}.
      * @param agent1 agent to compare.
      * @param agent2 agent to compare.
      * @return result of comparison.
@@ -42,6 +45,12 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
         if (isBetter == Constants.NEITHER_IS_BETTER) {
             int firstComparison = isPartnerUnderControl(agent1, agent2);
             int secondComparison = isPartnerUnderControl(agent2, agent1);
+            Map<Integer, List<Agent>> agent1MeetingResults = getMeetingResults(agent1);
+            Map<Integer, List<Agent>> agent2MeetingResults = getMeetingResults(agent2);
+
+            /* Fetch only those who got dominated during meeting. */
+            removeDominatedAgents(agent1, agent2MeetingResults.get(Constants.SECOND_IS_BETTER));
+            removeDominatedAgents(agent2, agent1MeetingResults.get(Constants.SECOND_IS_BETTER));
 
             agent2ToListComparisonResult = firstComparison;
             agent1ToListComparisonResult = secondComparison;
@@ -51,7 +60,7 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
                 {
                     case Constants.SECOND_IS_BETTER: //2-2
                     case Constants.NEITHER_IS_BETTER: //3-3
-                        updateListOfKnownNondominatedAgents(agent1, agent2);
+                        updateListOfKnownNonDominatedAgents(agent1, agent2);
                     case Constants.FIRST_IS_BETTER: //1-1
                         return Constants.NEITHER_IS_BETTER;
                 }
@@ -93,28 +102,66 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
      * */
     protected int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
 
-        //TODO: A co w przypadku w którym w liscie jest [niedominowany, dominowany, dominujacy] ?
-        //TODO II: Wywalac przy okazji te dominowane raczej nie?
-        //TODO III: Co zrobic z dominujacymi?
+        /*
+        * TODO: Co w przypadku w którym listy są równej wielkości?
+        * TODO: Dopracować pomysł -> przypadki kiedy listy sa spotkan sa rowne, roznia sie ale nie sa niezerowe itd.
+        * */
 
         List<Agent> listOfKnownNonDominatedAgents = getListOfKnownNonDominatedAgents(agentToFetchList);
+        if( listOfKnownNonDominatedAgents.size() == 0 )
+            return Constants.NEITHER_IS_BETTER;
+
+        Map<Integer, List<Agent>> meetingMap = getMeetingResults(agentToCompareTo);
+        meetingMap.values().forEach(List::clear);
+
         for (Agent agent:  listOfKnownNonDominatedAgents) {
             int isPartnerUnderControl = super.compare(agent, agentToCompareTo);
-            if (isPartnerUnderControl != Constants.NEITHER_IS_BETTER)
-                return isPartnerUnderControl;
+            meetingMap.get(isPartnerUnderControl).add(agent);
         }
-        return Constants.NEITHER_IS_BETTER;
+
+        int currentMax = 0;
+        int highestMeetingType = Constants.NEITHER_IS_BETTER;
+        for (Map.Entry<Integer, List<Agent>> entry : meetingMap.entrySet())
+        {
+            if (entry.getValue().size() > currentMax) {
+                currentMax = entry.getValue().size();
+                highestMeetingType = entry.getKey();
+            }
+        }
+        return highestMeetingType;
     }
 
+    private Map<Integer, List<Agent>> initializeMeetingMap()
+    {
+        Map<Integer, List<Agent>> map = new HashMap<>();
+        map.put(Constants.NEITHER_IS_BETTER, new ArrayList<>());
+        map.put(Constants.FIRST_IS_BETTER, new ArrayList<>());
+        map.put(Constants.SECOND_IS_BETTER, new ArrayList<>());
+        return map;
+    }
+
+
+    private void removeDominatedAgents(Agent agent, List<Agent> dominatedAgents)
+    {
+        List<Agent> listOfKnownNonDominatedAgents = getListOfKnownNonDominatedAgents(agent);
+        listOfKnownNonDominatedAgents.removeAll(dominatedAgents);
+    }
 
 
     /**
      * Updates {@link #listOfKnownNonDominatedAgents} by adding agent in parameter if its not present already.
      * @param meetingPartner agent to check.
      * */
-    protected void updateListOfKnownNondominatedAgents(Agent thisAgent, Agent meetingPartner) {
-        List<Agent> thisAgentList = getListOfKnownNonDominatedAgents(thisAgent);
-        List<Agent> meetingPartnerList = getListOfKnownNonDominatedAgents(meetingPartner);
+    protected void updateListOfKnownNonDominatedAgents(Agent thisAgent, Agent meetingPartner) {
+
+        Set<Agent> union = new LinkedHashSet<>(getListOfKnownNonDominatedAgents(thisAgent));
+        union.addAll(getListOfKnownNonDominatedAgents(meetingPartner));
+
+        List<Agent> thisAgentList = new ArrayList<>(union);
+        List<Agent> meetingPartnerList = new ArrayList<>(union);
+
+        setListOfKnownNonDominatedAgents(meetingPartner, meetingPartnerList);
+        setListOfKnownNonDominatedAgents(thisAgent, thisAgentList);
 
         if (!thisAgentList.contains(meetingPartner)) {
             if(checkIfAgentIsGoodEnough(thisAgentList, meetingPartner))
@@ -136,33 +183,35 @@ public class AreaUnderControlComparator<Agent extends JMetal5Agent<?>> extends E
      * */
     private boolean checkIfAgentIsGoodEnough(List<Agent> listOfKnownNonDominatedAgents, Agent agentToAdd)
     {
-        boolean isAgentDominated = listOfKnownNonDominatedAgents.stream().anyMatch(agent ->{
-           int comparison_result =  super.compare(agent, agentToAdd);
-           return comparison_result == Constants.FIRST_IS_BETTER;
+        return listOfKnownNonDominatedAgents.stream().anyMatch(agent ->{
+            int comparison_result =  super.compare(agent, agentToAdd);
+            return comparison_result != Constants.FIRST_IS_BETTER;
         });
-
-        if(isAgentDominated)
-            return false;
-
-        List<Agent> dominatedAgents = listOfKnownNonDominatedAgents.stream().filter(agent ->
-        {
-            int comparison_result = super.compare(agent, agentToAdd);
-            return comparison_result == Constants.SECOND_IS_BETTER;
-        }).collect(Collectors.toList());
-
-        listOfKnownNonDominatedAgents.removeAll(dominatedAgents);
-
-        return true;
     }
+
 
     public List<Agent> getListOfKnownNonDominatedAgents(Agent agent)
     {
-        AreaUnderControlComparator<Agent> agentComparator = (AreaUnderControlComparator<Agent>) agent.getComparator();
+        AreaUnderControlCounterComparator<Agent> agentComparator = (AreaUnderControlCounterComparator<Agent>) agent.getComparator();
         return agentComparator.getListOfKnownNonDominatedAgents();
+    }
+
+
+    public Map<Integer, List<Agent>> getMeetingResults(Agent agent)
+    {
+        AreaUnderControlCounterComparator<Agent> agentComparator = (AreaUnderControlCounterComparator<Agent>) agent.getComparator();
+        return agentComparator.getMeetingResults();
     }
 
     public List<Agent> getListOfKnownNonDominatedAgents()
     {
         return listOfKnownNonDominatedAgents;
+    }
+
+
+    public void setListOfKnownNonDominatedAgents(Agent agent, List<Agent> nonDominatedList)
+    {
+        AreaUnderControlCounterComparator<Agent> agentComparator = (AreaUnderControlCounterComparator<Agent>) agent.getComparator();
+        agentComparator.setListOfKnownNonDominatedAgents(nonDominatedList);
     }
 }

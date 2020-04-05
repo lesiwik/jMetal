@@ -2,6 +2,7 @@ package org.uma.jmetal.algorithm.impl;
 
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.problem.Problem;
+import org.uma.jmetal.util.JMetalLogger;
 
 import java.util.List;
 
@@ -159,10 +160,9 @@ public abstract class AbstractEMASAlgorithm<Solution, Result> implements Algorit
                 updateProgress();
                // System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             }
-/*           try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-            }*/
+//           try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e) { }
         }
     }
 }

@@ -78,7 +78,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Sets value of resource that is transferred to agent that "won" comparison showdown. Used in {@link JMetal5Agent#doMeeting(List, double)}.
      * Set to {@link Constants#TRANSFER_RESOURCE_VALUE} = {@value Constants#TRANSFER_RESOURCE_VALUE}
      * */
-    private double transferAgentResourceLevel;
+    protected double transferAgentResourceLevel;
 
     /* Operators */
     /**
@@ -127,7 +127,6 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * @see EmasDominanceComparator
      * @see #baseComparatorType
      * */
-    //TODO: Resolve issue of doubling list and its access in 'smarter' comparators.
     private String parentToChildComparatorType;
 
     /* Variables */
@@ -231,6 +230,32 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     public List<JMetal5Agent<S>> agentsRecords;
 
+
+    /**
+     * Used specifically to set uniformed radius for every agent.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5RadiusAgent
+     * */
+    private double radiusToCheckMetAgentsIn;
+
+
+    /**
+     * Used to specify what kind of quality type checking is going to be done on agents.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private Constants.QualityTypes currentQualityType;
+
+    /**
+     * Used to specify below what constant the difference of qualities will be accepted.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private double differenceConstant;
+
+    /**
+     * Used to specify threshold constant above which qualities will be accepted.
+     * @see org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5QualityAgent
+     * */
+    private double qualityThreshold;
+
     /**
      * Builder constructor.
      * */
@@ -245,10 +270,10 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
 
     @SuppressWarnings("unchecked")
-    public JMetal5BaseEMAS(Problem problem, String algorithmName, int whenAddOffspringToPopulation,
+    public JMetal5BaseEMAS(Problem<S> problem, String algorithmName, int whenAddOffspringToPopulation,
                            boolean allowKnowledgeExchange,
-                           EmasDominanceComparator meetingComparator,
-                           EmasDominanceComparator parentChildComparator) {
+                           EmasDominanceComparator<?> meetingComparator,
+                           EmasDominanceComparator<?> parentChildComparator) {
 
         /* Operators */
         this.crossoverOperator = (CrossoverOperator<S>) Constants.XOP;
@@ -415,6 +440,18 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     }
 
     /**
+     * Resets state of EMAS Algorithm.
+     * */
+    public void resetState()
+    {
+        population = null;
+        agentsRecords.clear();
+        iterations = 0;
+        evaluations = 0;
+        resetMeetingStatistics();
+    }
+
+    /**
      * Checks if algorithm reached stopping condition.
      * @return {@link JMetal5BaseEMAS#iterations} >= {@link JMetal5BaseEMAS#maxNumberOfIterations}
      * */
@@ -426,7 +463,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     /**
      * Resets {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} and {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} to 0.
      * */
-    private void resetMeetingStatistics() {
+    protected void resetMeetingStatistics() {
         this.imBetterMeetingTypeCounter = 0;
         this.neitherIsBetterMeetingTypeCounter = 0;
     }
@@ -435,7 +472,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * Increments {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} or {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} depending on meeting result.
      * @param meetingResult meeting result of two Agents.
      * */
-    private void updateMeetingStatistics(int meetingResult) {
+    protected void updateMeetingStatistics(int meetingResult) {
         if (meetingResult == 0)
             neitherIsBetterMeetingTypeCounter++;
         else
@@ -471,7 +508,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
     private void populationLOG(String preamble) {
         if (Constants.LOG_LEVEL == 2) {
             System.out.println(preamble);
-            for (JMetal5Agent a : population) {
+            for (JMetal5Agent<S> a : population) {
                 System.out.println(a.toString() + " " + a.genotype.getObjective(0) + " " + a.genotype.getObjective(1) + " " + a.getResourceLevel());
             }
         }
@@ -544,7 +581,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         if(isDebugMode) {
             JMetal5Agent.saveRandom(iterations);
             JMetal5Agent.saveJMetalRandom(iterations);
-            JMetal5BaseEMASSaver saver = new JMetal5BaseEMASSaver();
+            JMetal5BaseEMASSaver<S> saver = new JMetal5BaseEMASSaver<S>();
             saver.save(this);
             emasSavers.add(saver);
 
@@ -678,6 +715,8 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
             agent.setGenotype(genotype.get(genotypeIndex++));
         }
     }
+
+    public List<JMetal5Agent<S>> getAgents() { return population; }
 
     @Override
     public int getIteration() {

@@ -5,9 +5,11 @@ import lombok.Data;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAIIBuilder;
 import org.uma.jmetal.operator.selection.impl.BinaryTournamentSelection;
 import org.uma.jmetal.solution.Solution;
+import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.comparator.RankingAndCrowdingDistanceComparator;
 
 import java.util.ArrayList;
@@ -27,15 +29,15 @@ public class AlgorithmFactory<S extends Solution<?>> {
     @Setter(AccessLevel.NONE)
     private final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
 
-    private List<Algorithm> algorithms;
+    private List<Algorithm<List<S>>> algorithms;
 
     public AlgorithmFactory() {
         algorithms = new ArrayList<>();
     }
 
-    public Algorithm getAlgorithm(int index) { return algorithms.get(index); }
+    public Algorithm<List<S>> getAlgorithm(int index) { return algorithms.get(index); }
 
-    public AlgorithmFactory addEMAS(String name) {
+    public AlgorithmFactory<S> addEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -58,7 +60,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addAreaEMAS(String name) {
+    public AlgorithmFactory<S> addAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .agentType(BASE_AGENT)
@@ -69,7 +71,18 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveEMAS(String name) {
+    public AlgorithmFactory<S> addNotWorseEMAS(String name) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(BASE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(NOT_WORSE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addReproductiveEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -80,7 +93,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveAreaEMAS(String name) {
+    public AlgorithmFactory<S> addReproductiveAreaEMAS(String name) {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
                         .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
@@ -91,7 +104,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addProgressiveEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -105,7 +118,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addProgressiveAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -119,7 +132,21 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
+    public AlgorithmFactory<S> addProgressiveAreaNotWorseEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .parentToChildComparator(NOT_WORSE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addReproductiveProgressiveAreaEMAS(String name, int whenToAddOffspring)
     {
         algorithms.add(
                 EMAS_BUILDER.emasType(BASE_EMAS)
@@ -134,18 +161,163 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+    public AlgorithmFactory<S> addAreaCountingEMAS(String name)
     {
-        algorithms.add(new NSGAIIBuilder<>(Constants.PROBLEM,
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(BASE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COUNTER_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addAreaCountingRadiusEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COUNTER_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+
+    public AlgorithmFactory<S> addReproductiveProgressiveBaseEMAS(String name, int whenToAddOffspring)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(PROGRESSIVE_AGENT)
+                        .reproCondition(PROGRESSIVE_REPRODUCTION_LEVEL)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .parentToChildComparator(EMAS_DOMINANCE_COMPARATOR)
+                        .whenAddOffspringToPopulation(whenToAddOffspring)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addRadiusBaseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addRadiusAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addRadiusNotWorseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(RADIUS_AGENT)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(NOT_WORSE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addQualityConstantAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.ABOVE_CONSTANT)
+                        .qualityThreshold(ABOVE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addQualityDifferenceAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.DIFFERENCE)
+                        .differenceConstant(DIFFERENCE_CONSTANT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addQualityAverageAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(QUALITY_AGENT)
+                        .qualityType(QualityTypes.AVERAGE)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addMeetingBaseEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(MEETING_EMAS)
+                        .agentType(MEETING_AGENT)
+                        .matingDifferenceThreshold(MATING_DIFFERENCE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addMeetingAreaEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(MEETING_EMAS)
+                        .agentType(MEETING_AGENT)
+                        .matingDifferenceThreshold(MATING_DIFFERENCE_THRESHOLD)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(AREA_UNDER_CONTROL_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+    {
+        return new NSGAIIBuilder<>(Constants.PROBLEM,
                 Constants.XOP, Constants.MOP, initialPopulationSize)
                 .setSelectionOperator(
                         new BinaryTournamentSelection<>(
                                 new RankingAndCrowdingDistanceComparator<>()))
                 .setMaxEvaluations(maxEvaluations)
                 .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
-                .build());
-
-        return this;
+                .build();
     }
 
 }

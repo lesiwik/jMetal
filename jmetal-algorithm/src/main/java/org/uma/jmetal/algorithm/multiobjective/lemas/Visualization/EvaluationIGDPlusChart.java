@@ -4,6 +4,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.qualityindicator.impl.InvertedGenerationalDistancePlus;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.front.imp.ArrayFront;
 
@@ -11,10 +12,10 @@ import java.io.FileNotFoundException;
 import java.util.List;
 
 
-public class EvaluationIGDPlusChart extends ProgressBaseChart<Double> {
+public class EvaluationIGDPlusChart<S extends Solution<?>> extends ProgressBaseChart<Double, S> {
     private InvertedGenerationalDistancePlus igdPlus;
 
-    public EvaluationIGDPlusChart(List<Algorithm> algorithmsToShow) {
+    public EvaluationIGDPlusChart(List<Algorithm<List<S>>> algorithmsToShow) {
         super(algorithmsToShow);
         this.getChart().setTitle("IGDPlus (ewaluacja % " + Constants.HV_FREQUENCY + ")");
 
@@ -27,12 +28,12 @@ public class EvaluationIGDPlusChart extends ProgressBaseChart<Double> {
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         update(population, DEFAULT_SERIES_NAME);
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
             xValues.get(seriesName).add(iterationCounter.get(seriesName));
             yValues.get(seriesName).add(igdPlus.evaluate(
@@ -48,7 +49,7 @@ public class EvaluationIGDPlusChart extends ProgressBaseChart<Double> {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas) {
         if (isItTimeForUpdate(seriesName, Constants.HV_FREQUENCY)) {
             xValues.get(seriesName).add(emas.getEvaluations());
             yValues.get(seriesName).add(igdPlus.evaluate(

@@ -4,13 +4,14 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.knowm.xchart.XYSeries;
 import org.knowm.xchart.style.Styler;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 
-public class LegendChart extends BaseChart {
+public class LegendChart<S extends Solution<?>> extends BaseChart<S>{
 
-    public LegendChart(List<Algorithm> algorithmToShow) {
+    public LegendChart(List<Algorithm<S>> algorithmToShow) {
         super();
         this.chart.getStyler().setLegendVisible(true);
 
@@ -24,11 +25,11 @@ public class LegendChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
     }
 }
 

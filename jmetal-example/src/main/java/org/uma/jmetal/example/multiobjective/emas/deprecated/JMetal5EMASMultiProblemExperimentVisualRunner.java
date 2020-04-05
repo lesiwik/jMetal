@@ -1,4 +1,4 @@
-package org.uma.jmetal.runner.multiobjective.rewera;/*
+package org.uma.jmetal.example.multiobjective.emas.deprecated;/*
 package org.uma.jmetal.runner.multiobjective.rewera;
 
 import org.uma.jmetal.algorithm.Algorithm;

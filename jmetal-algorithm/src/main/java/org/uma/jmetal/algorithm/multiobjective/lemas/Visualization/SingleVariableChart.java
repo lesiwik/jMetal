@@ -4,17 +4,18 @@ import org.knowm.xchart.XYSeries;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
+import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class SingleVariableChart extends BaseChart {
+public class SingleVariableChart<S extends Solution<?>> extends BaseChart<S> {
 
     private int indexOFVariableToShow = 0;
 
-    public SingleVariableChart(List<Algorithm> algorithmToShow, int indexOFVariableToShow) {
+    public SingleVariableChart(List<Algorithm<S>> algorithmToShow, int indexOFVariableToShow) {
         super();
         this.chart.getStyler().setLegendVisible(false);
         this.indexOFVariableToShow = indexOFVariableToShow;
@@ -28,7 +29,7 @@ public class SingleVariableChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population) {
+    public void update(List<S> population) {
         chart.updateXYSeries(
                 "variable",
                 population.stream().map(solution -> solution.getObjective(0)).collect(Collectors.toList()),
@@ -37,7 +38,7 @@ public class SingleVariableChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName) {
+    public void update(List<S> population, String seriesName) {
         chart.updateXYSeries(
                 seriesName,
                 population.stream().map(solution -> solution.getVariable(0)).collect(Collectors.toList()),
@@ -46,7 +47,7 @@ public class SingleVariableChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas) {
         if (emas.getIteration() < Constants.MAX_ITERATIONS) {
             chart.updateXYSeries(
                     seriesName,
@@ -57,7 +58,7 @@ public class SingleVariableChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName, JMetal5BaseEMAS emas, int seriesNumber) {
+    public void update(List<S> population, String seriesName, JMetal5BaseEMAS<S> emas, int seriesNumber) {
         if (emas.getIteration() < Constants.MAX_ITERATIONS) {
             chart.updateXYSeries(
                     seriesName,
@@ -68,7 +69,7 @@ public class SingleVariableChart extends BaseChart {
     }
 
     @Override
-    public void update(List<DoubleSolution> population, String seriesName, Algorithm emas, int seriesNumber) {
+    public void update(List<S> population, String seriesName, Algorithm<List<S>> emas, int seriesNumber) {
 //        if (emas.getIterations() < Constants.MAX_ITERATIONS) {
         chart.updateXYSeries(
                 seriesName,

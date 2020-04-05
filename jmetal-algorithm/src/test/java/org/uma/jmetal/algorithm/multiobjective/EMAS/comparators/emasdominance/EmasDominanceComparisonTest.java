@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class EmasDominanceComparisonTest {
 
-    private static final EmasDominanceComparator COMPARATOR = new EmasDominanceComparator();
+    private static final EmasDominanceComparator<JMetal5Agent<?>> COMPARATOR = new EmasDominanceComparator<>();
 
     public static void compareAgentWithResult(JMetal5Agent<?> agent1, JMetal5Agent<?> agent2, final int EXPECTED_RESULT)
     {
@@ -25,11 +25,11 @@ public class EmasDominanceComparisonTest {
     {
         for(int i = 0; i < nonDominatedList.size(); i++)
         {
-            JMetal5Agent a1 = nonDominatedList.get(i);
+            JMetal5Agent<PointSolution> a1 = nonDominatedList.get(i);
             for (int j = 0; j < nonDominatedList.size(); j++) {
                 if (j == i)
                     continue;
-                JMetal5Agent a2 = nonDominatedList.get(j);
+                JMetal5Agent<PointSolution> a2 = nonDominatedList.get(j);
                 compareAgentWithResult(a1, a2 , Constants.NEITHER_IS_BETTER);
             }
         }
