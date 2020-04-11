@@ -765,12 +765,9 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     @Override
     public void run() {
-
-
-            createInitialPopulation();
-            initProgress();
-
-
+        int progressUpdateStep = 100;
+        createInitialPopulation();
+        initProgress();
         int lastTimeChecked = 0;
         Queue<Integer> lastEvals= new LinkedList<Integer>();
         for(int i=0;i<5;i++){lastEvals.add(-1);}
@@ -779,10 +776,10 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
             meetStep();
             reproStep();
             deadStep();
-            if (evaluations > lastTimeChecked+100) {
+            if (evaluations > lastTimeChecked + progressUpdateStep) {
                 results.add(getNonDominatedSolutions(getPopulation()));
                 updateProgress();
-                lastTimeChecked+=100;
+                lastTimeChecked += progressUpdateStep;
 
                 System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
             }
@@ -790,11 +787,5 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
                 break;
             lastEvals.add(evaluations);
         }
-/*           try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-            }*/
-
     }
-
 }

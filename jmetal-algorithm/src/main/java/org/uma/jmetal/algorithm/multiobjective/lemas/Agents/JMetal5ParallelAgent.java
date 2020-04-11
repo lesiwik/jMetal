@@ -35,25 +35,23 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
     protected @Getter String agentType = "JMetal5ParallelAgent";
 
     /**
-     * Increments {@link JMetal5BaseEMAS#neitherIsBetterMeetingTypeCounter} or
-     * {@link JMetal5BaseEMAS#imBetterMeetingTypeCounter} depending on meeting
-     * result.
+     * Registers itself in the population injected via {@link JMetal5ParallelAgent#setPopulation}
      *
-     * @param meetingResult meeting result of two agents.
      */
-
     private void register() {
         synchronized (population) {
             id = staticId.incrementAndGet();
-//            print("register");
             if(!population.contains(this))
                 population.add(this);
         }
     }
 
+    /**
+     * Deregisters itself in the population injected via {@link JMetal5ParallelAgent#setPopulation}
+     *
+     */
     private void deregister() {
         synchronized (population) {
-//            print("deregister");
             population.remove(this);
         }
     }
@@ -70,42 +68,33 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
         return "JMetal5ParallelAgent";
     }
 
-    private void print(String text) {
-        System.out.println(id.toString() + ": " + text);
-    };
-
-    private void echo() {
-        System.out.println(id.toString() + ": ECHO");
-    };
-
+    /**
+     * Registers itself, runs in loop until is dead or algorithm has been stopped.
+     * Then passes its stats to hypervisor and deregisters itself
+     */
     public void run() {
         register();
-        Optional<JMetal5ParallelAgent<S>> secondAgent = Optional.empty();
-        JMetal5ParallelAgent<S> objectTosynchronise = null;
-        //print("hello from agent");
         while (isAlive() && !stopCondition) {
             meet();
             if (canReproduce()) {
                 reproduce();
             }
-
             setMet(false);
             setHasAlreadyReproduced(false);
-//            try {
-//                //Thread.sleep(100);
-//            } catch (InterruptedException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
         }
-//        print("bye from agent " + new Integer(imBetterMeetingCounter).toString() + " " + new Integer(neitherIsBetterMeetingCounter).toString() + " " + timesMated.toString());
-
         hypervisor.imBetterMeetingCounter.addAndGet(imBetterMeetingCounter);
         hypervisor.neitherIsBetterMeetingCounter.addAndGet(neitherIsBetterMeetingCounter);
-
         deregister();
     }
 
+    /**
+     * This method finds and reproduces with another agent.
+     * If someone is waiting in mating queue, agent picks him up and they reproduce.
+     * Otherwise agent adds himself to queue and waits for another agent
+     *
+     * During reproduction agents are synchronised on agent who previously waited in queue.
+     * The same agent waits again, while second one performs reproduction action
+     */
     private void reproduce() {
         Optional<JMetal5ParallelAgent<S>> secondAgent;
         JMetal5ParallelAgent<S> objectTosynchronise;
@@ -117,15 +106,12 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             if (matingQueue.size() == 0) {
                 matingQueue.add(this);
                 try {
-                    //              print("MATING: stoję w kolejce");
                     while (!picked && !stopCondition)
                         matingQueue.wait(1000);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             } else {
-                //         print("MATING: ciągnę z kolejki");
                 secondAgent = Optional.of(matingQueue.get(0));
                 matingQueue.clear();
                 secondAgent.get().picked = true;
@@ -140,16 +126,13 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             if (objectTosynchronise == this)
                 while (!picked2 && !stopCondition)
                     try {
-                        // print("MATING: czekam na doReproduce");
                         objectTosynchronise.wait(1000);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
             else {
                 List<? extends JMetal5Agent<S>> newBorn = this
                         .doReproduce(Arrays.asList(secondAgent.get(), this));
-                // print("MATING: robię doReproduce");
                 objectTosynchronise.picked2 = true;
                 objectTosynchronise.notify();
                 for (JMetal5Agent<S> jMetal5Agent : newBorn) {
@@ -160,13 +143,17 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
                     parallelAgent.setMeetingQueuesNumber(meetingQueuesNumber);
                     parallelAgent.setMatingQueuesNumber(matingQueuesNumber);
                     parallelAgent.setHypervisor(hypervisor);
-//                            parallelAgent.setStopCondition(stopCondition);
                     new Thread(parallelAgent).start();
                 }
             }
         }
     }
 
+    /**
+     * Finds and meets another agent,
+     *
+     * Synchronisation mechanisms are similar to these in reproduce()
+     */
     private void meet() {
         Optional<JMetal5ParallelAgent<S>> secondAgent;
         JMetal5ParallelAgent<S> objectTosynchronise;
@@ -178,13 +165,11 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             if (meetingQueue.size() == 0) {
                 meetingQueue.add(this);
                 try {
-//                     print("MEETING: stoję w kolejce");
                     while (!picked && !stopCondition)
                         meetingQueue.wait(1000);
                 } catch (InterruptedException e) {
                 }
             } else {
-                //    print("MEETING: ciągnę z kolejki");
                 secondAgent = Optional.of(meetingQueue.get(0));
                 meetingQueue.clear();
                 secondAgent.get().picked = true;
@@ -199,22 +184,17 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
             if (objectTosynchronise == this) {
                 while (!picked2 && !stopCondition)
                     try {
-                        // print("MEETING: czekam na doMeeting");
                         objectTosynchronise.wait(1000);
                     } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
             } else {
-                // print("MEETING: robie domeeting");
                 int meetingResult = this.doMeeting(Arrays.asList(secondAgent.get()),
                         Constants.TRANSFER_RESOURCE_VALUE);
-                // print(new Integer(meetingResult).toString());
                 secondAgent.get().picked2 = true;
                 objectTosynchronise.notify();
                 updateMeetingStatistics(meetingResult);
             }
-            // print("MEETING: koniec meetingu");
         }
     }
 

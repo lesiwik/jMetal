@@ -1,22 +1,20 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import lombok.Setter;
+import lombok.Getter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5ParallelAgent;
-import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.Solution;
 
-import lombok.Getter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS<S> {
 
     private int meetingQueuesNumber = 8;
     private int matingQueuesNumber = 2;
+    private final int maxEvaluations = 5000;
+    private final int statsUpdateStep = 100;
     private List<List<JMetal5ParallelAgent<S>>> matingQueues = new ArrayList<>();
     private List<List<JMetal5ParallelAgent<S>>> meetingQueues = new ArrayList<>();
     private ParallelEMASHypervisor hypervisor = new ParallelEMASHypervisor();
@@ -48,7 +46,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
             });
         }
         int lastEvaluationCount = 0;
-        for (; getEvaluations() < 5000;) {
+        for (; getEvaluations() < maxEvaluations;) {
             setNeitherIsBetterMeetingTypeCounter(hypervisor.neitherIsBetterMeetingCounter.get());
             setImBetterMeetingTypeCounter(hypervisor.imBetterMeetingCounter.get());
             if(lastEvaluationCount==getEvaluations() && lastEvaluationCount!=0)
@@ -64,27 +62,23 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
 
         JMetal5ParallelAgent.stopCondition = true;
-//        for (Object o : meetingQueues) {o.notify();}
-//        for (Object o : matingQueues) {o.notify();}
         long stop = System.nanoTime();
-//        System.out.println(stop-start);
     }
 
     @Override
     public void updateEvaluationsCounter() {
          {
-             if(getEvaluations() > 5000)
+             if(getEvaluations() > maxEvaluations)
                  JMetal5ParallelAgent.stopCondition = true;
             int evals = getEvaluations();
              synchronized (this) {
                  this.setEvaluations(evals + 1);
-                 if (evals % 100 == 0) {
+                 if (evals % statsUpdateStep == 0) {
                      iterationUpdate(evals);
                  }
              }
@@ -94,12 +88,6 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
 
     private void iterationUpdate(int evals) {
         synchronized (population) {
-//            System.out.println(getEvaluations());
-//            Double sum = population.stream().map(JMetal5Agent::getResourceLevel).reduce(Double::sum).get();
-//            System.out.println("energy sum: " + sum.toString());
-            StringBuilder ids = new StringBuilder();
-//            population.forEach(x -> ids.append(x.getId()).append(" "));
-//            System.out.println(ids);
             System.out.println(evals);
             updateProgress();
             results.add(getNonDominatedSolutions(getPopulation()));
@@ -108,11 +96,9 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
 
     @Override
     public List<S> getPopulation() {
-    {
         synchronized(population)
         {
             return population.stream().map(JMetal5Agent::getGenotype).collect(Collectors.toList());
         }
-    }
     }
 }
