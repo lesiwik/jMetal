@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 
 
 /**
- * Area under control comparator for agents in EMAS algorithms.
- * @author dr inż. Siwik Leszek siwik@agh.edu.pl
- * @since 8/27/2018
+ * This is just a copy of {@link AreaUnderControlComparator}
+ * The only difference is, each agent keeps list of copies of solutions instead of agents' references.
+ * This allows to use/change the list, asynchronously to other agents.
  * */
 @Setter
 @Getter
@@ -30,15 +30,6 @@ public class ThreadSafeAreaUnderControlComparator<Agent extends JMetal5Agent<?>>
 
     public ThreadSafeAreaUnderControlComparator() { listOfKnownNonDominatedAgents = new CopyOnWriteArrayList<>(); }
 
-
-    /**
-     * Compares to given agent based. First it makes call to {@link EmasDominanceComparator#compare(JMetal5Agent, JMetal5Agent)}.
-     * If result is 0 (both are equal) then it calls {@link ThreadSafeAreaUnderControlComparator#isPartnerUnderControl(Agent, Agent)}.
-     * If again both are equal, then it updates Non Dominated lists {@link #updateListOfKnownNondominatedAgents(Agent, Agent)}.
-     * @param agent1 agent to compare.
-     * @param agent2 agent to compare.
-     * @return result of comparison.
-     * */
     @Override
     public int compare(Agent agent1, Agent agent2) {
         int isBetter = super.compare(agent1, agent2);
@@ -87,19 +78,7 @@ public class ThreadSafeAreaUnderControlComparator<Agent extends JMetal5Agent<?>>
         return isBetter;
     }
 
-    /**
-     * Fetches {@link #listOfKnownNonDominatedAgents} from agentToFetchList and
-     * then for every agent in that list, it compares them to agentToCompareTo using {@link EmasDominanceComparator}.
-     * @param agentToFetchList agent to fetch list from.
-     * @param agentToCompareTo agent to compare agents from list to.
-     * @return result of comparison.
-     * */
     protected int isPartnerUnderControl(Agent agentToFetchList, Agent agentToCompareTo) {
-
-        //TODO: A co w przypadku w którym w liscie jest [niedominowany, dominowany, dominujacy] ?
-        //TODO II: Wywalac przy okazji te dominowane raczej nie?
-        //TODO III: Co zrobic z dominujacymi?
-
         List<Solution> listOfKnownNonDominatedAgents = getListOfKnownNonDominatedAgents(agentToFetchList);
         for (Solution agent:  listOfKnownNonDominatedAgents) {
             int isPartnerUnderControl = super.compare(agent, agentToCompareTo.genotype);
@@ -109,12 +88,6 @@ public class ThreadSafeAreaUnderControlComparator<Agent extends JMetal5Agent<?>>
         return Constants.NEITHER_IS_BETTER;
     }
 
-
-
-    /**
-     * Updates {@link #listOfKnownNonDominatedAgents} by adding agent in parameter if its not present already.
-     * @param meetingPartner agent to check.
-     * */
     protected void updateListOfKnownNondominatedAgents(Agent thisAgent, Agent meetingPartner) {
         /* TODO: Tutaj trzeba by sie przejsc po liscie i sprawdzic czy ten dodawany nie dominuje ktoregos jesli dominuje to wywalic te dominowane,
         od razu sprawdzic czy nie jest przez ktoregos dominowany jesli jest to nie dodajemy */
@@ -132,13 +105,6 @@ public class ThreadSafeAreaUnderControlComparator<Agent extends JMetal5Agent<?>>
         }
     }
 
-
-    /**
-     * Checks if agent is non dominated by other agents in the list, so that he can  be added to listOfKnownNonDominatedAgents.
-     * It also checks if agents in the list are not dominated by him, and if they are removes them.
-     * @param agentToAdd agent to be compared to list.
-     * @param listOfKnownNonDominatedAgents list to compare to.
-     * */
     private boolean checkIfAgentIsGoodEnough(List<Solution> listOfKnownNonDominatedAgents, Agent agentToAdd)
     {
         boolean isAgentDominated = listOfKnownNonDominatedAgents.stream().anyMatch(agent ->{
@@ -159,7 +125,6 @@ public class ThreadSafeAreaUnderControlComparator<Agent extends JMetal5Agent<?>>
 
         return true;
     }
-
 
     @SuppressWarnings("unchecked")
     public List<Solution> getListOfKnownNonDominatedAgents(Agent agent)
