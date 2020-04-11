@@ -54,38 +54,37 @@ public abstract class AbstractAlgorithmRunner {
         .convertFrontToSolutionList(normalizedFront) ;
 
     String outputString = "\n" ;
-//    outputString += "Hypervolume (N) : " +
-//        new PISAHypervolume<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-//    outputString += "Hypervolume     : " +
-//        new PISAHypervolume<S>(referenceFront).evaluate(population) + "\n";
-//    outputString += "Epsilon (N)     : " +
-//        new Epsilon<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) +
-//        "\n" ;
-//    outputString += "Epsilon         : " +
-//        new Epsilon<S>(referenceFront).evaluate(population) + "\n" ;
-//    outputString += "GD (N)          : " +
-//        new GenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-//    outputString += "GD              : " +
-//        new GenerationalDistance<S>(referenceFront).evaluate(population) + "\n";
-//    outputString += "IGD (N)         : " +
-//        new InvertedGenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-//    outputString +="IGD             : " +
-//        new InvertedGenerationalDistance<S>(referenceFront).evaluate(population) + "\n";
-//    outputString += "IGD+ (N)        : " +
-//        new InvertedGenerationalDistancePlus<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-//    outputString += "IGD+            : " +
-//        new InvertedGenerationalDistancePlus<S>(referenceFront).evaluate(population) + "\n";
-//    outputString += "Spread (N)      : " +
-//        new Spread<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
-//    outputString += "Spread          : " +
-//        new Spread<S>(referenceFront).evaluate(population) + "\n";
+    outputString += "Hypervolume (N) : " +
+        new PISAHypervolume<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
+    outputString += "Hypervolume     : " +
+        new PISAHypervolume<S>(referenceFront).evaluate(population) + "\n";
+    outputString += "Epsilon (N)     : " +
+        new Epsilon<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) +
+        "\n" ;
+    outputString += "Epsilon         : " +
+        new Epsilon<S>(referenceFront).evaluate(population) + "\n" ;
+    outputString += "GD (N)          : " +
+        new GenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
+    outputString += "GD              : " +
+        new GenerationalDistance<S>(referenceFront).evaluate(population) + "\n";
+    outputString += "IGD (N)         : " +
+        new InvertedGenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
+    outputString +="IGD             : " +
+        new InvertedGenerationalDistance<S>(referenceFront).evaluate(population) + "\n";
+    outputString += "IGD+ (N)        : " +
+        new InvertedGenerationalDistancePlus<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
+    outputString += "IGD+            : " +
+        new InvertedGenerationalDistancePlus<S>(referenceFront).evaluate(population) + "\n";
+    outputString += "Spread (N)      : " +
+        new Spread<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation) + "\n";
+    outputString += "Spread          : " +
+        new Spread<S>(referenceFront).evaluate(population) + "\n";
 //    outputString += "R2 (N)          : " +
 //        new R2<List<DoubleSolution>>(normalizedReferenceFront).runAlgorithm(normalizedPopulation) + "\n";
 //    outputString += "R2              : " +
 //        new R2<List<? extends Solution<?>>>(referenceFront).runAlgorithm(population) + "\n";
-//    outputString += "Error ratio     : " +
-//        new ErrorRatio<List<? extends Solution<?>>>(referenceFront).evaluate(population) + "\n";
-    System.out.println(new InvertedGenerationalDistance<PointSolution>(normalizedReferenceFront).evaluate(normalizedPopulation));
-//    JMetalLogger.logger.info(outputString);
+    outputString += "Error ratio     : " +
+        new ErrorRatio<List<? extends Solution<?>>>(referenceFront).evaluate(population) + "\n";
+    JMetalLogger.logger.info(outputString);
   }
 }
