@@ -54,8 +54,6 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addMeetingAreaEMAS("MeetingAreaEMAS")
                  .getAlgorithms();
 
-
-         //Slider execution
          PausableChartWrapper<Solution<?>> chartWrapper = new PausableChartWrapper<Solution<?>>(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
          algorithmsToRun.forEach(algorithm -> ((Measurable) algorithm).getMeasureManager()
                  .getPushMeasure("currentPopulation")

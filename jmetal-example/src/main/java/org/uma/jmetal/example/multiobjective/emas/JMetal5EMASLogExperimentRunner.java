@@ -26,9 +26,9 @@ public class JMetal5EMASLogExperimentRunner {
 
         List<Solution<?>> population = algorithm.getResult();
         long computingTime = algorithmRunner.getComputingTime();
-            JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
-            printFinalSolutionSet(population);
-            printQualityIndicators(population, "referenceFronts/ZDT1.pf");
-        }
+        JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
+        printFinalSolutionSet(population);
+        printQualityIndicators(population, "referenceFronts/ZDT1.pf");
     }
 }
+
