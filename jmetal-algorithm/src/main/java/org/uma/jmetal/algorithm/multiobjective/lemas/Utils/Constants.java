@@ -31,10 +31,10 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static final int MAX_ITERATIONS = 1000;
-    public static final int MAX_EVALUATIONS = 2500;
-    public static final int NUMBER_OF_ISLANDS = 1;
-    public static final int MAX_KNOWLEDGE_CAPACITY = 100;
+    public static int MAX_ITERATIONS = 50;
+    public static int MAX_EVALUATIONS = 2500;
+    public static int NUMBER_OF_ISLANDS = 1;
+    public static int MAX_KNOWLEDGE_CAPACITY = 100;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
     public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
@@ -59,6 +59,7 @@ public class Constants {
     /* Comparator types */
     public final static String EMAS_DOMINANCE_COMPARATOR = "EmasDominanceComparator";
     public final static String AREA_UNDER_CONTROL_COMPARATOR = "AreaUnderControlComparator";
+    public final static String THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR = "ThreadSafeAreaUnderControlComparator";
     public final static String AREA_UNDER_CONTROL_COUNTER_COMPARATOR = "AreaUnderControlCounterComparator";
     public final static String AREA_UNDER_CONTROL_EXTENDED_COMPARATOR = "AreaUnderControlExtendedComparator";
     public final static String NOT_WORSE_COMPARATOR = "NotWorseComparator";
@@ -67,6 +68,7 @@ public class Constants {
     public final static String BASE_AGENT = "JMetal5BaseAgent";
     public final static String GLOBAL_RANK_AGENT = "JMetal5GlobalRankAgent";
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
+    public final static String PARALLEL_AGENT  = "JMetal5ParallelAgent";
     public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
     public final static String QUALITY_AGENT  = "JMetal5QualityAgent";
     public final static String MEETING_AGENT  = "JMetal5MeetingAgent";
@@ -75,6 +77,7 @@ public class Constants {
     public final static String BASE_EMAS = "JMetal5BaseEMAS";
     public final static String GLOBAL_RANK_EMAS = "JMetal5GlobalRankEMAS";
     public final static String PROGRESSIVE_EMAS = "JMetal5ProgressiveEMAS";
+    public final static String PARALLEL_EMAS = "JMetal5ParallelEMAS";
     public final static String MEETING_EMAS = "MeetingRoomEMAS";
 
     /* Reproduction levels */
@@ -85,12 +88,14 @@ public class Constants {
             (double resourceLevel) -> resourceLevel >= Constants.REPRODUCTION_LEVEL_VALUE;
 
     /* Charts */
-    public static final int HV_FREQUENCY = 50;
-    public static final int INDICATOR_FREQUENCY = 50;
+    public static final int HV_FREQUENCY = 10;
     public static final int POP_FREQUENCY = 1;
-    public static final int MEETINGS_FREQUENCY = 50;
+    public static final int MEETINGS_FREQUENCY = 10;
+    public static final int POPULATION_SIZE_FREQUENCY = 10;
+
+    public static final int INDICATOR_FREQUENCY = 50;
     public static final int EVALUATION_FREQUENCY = 50;
-    public static final int POPULATION_SIZE_FREQUENCY = 50;
+
     public static final int NUMBER_OF_DECISION_VARIABLES_TO_SHOW = 3;
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
 

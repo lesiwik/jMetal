@@ -13,7 +13,6 @@ import java.util.List;
 import static org.uma.jmetal.util.AbstractAlgorithmRunner.printFinalSolutionSet;
 import static org.uma.jmetal.util.AbstractAlgorithmRunner.printQualityIndicators;
 
-
 public class JMetal5EMASLogExperimentRunner {
 
     public static void main(String[] args) throws JMetalException, FileNotFoundException {
@@ -27,9 +26,9 @@ public class JMetal5EMASLogExperimentRunner {
 
         List<Solution<?>> population = algorithm.getResult();
         long computingTime = algorithmRunner.getComputingTime();
-
         JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
         printFinalSolutionSet(population);
         printQualityIndicators(population, "referenceFronts/ZDT1.pf");
     }
 }
+

@@ -81,6 +81,9 @@ public class EMASBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_EMAS:
                 emas = new JMetal5ProgressiveEMAS<>();
                 break;
+            case Constants.PARALLEL_EMAS:
+                emas = new JMetal5ParallelEMAS2<>();
+                break;
             case Constants.MEETING_EMAS:
                 emas = new MeetingRoomEMAS<>(matingDifferenceThreshold);
                 break;

@@ -3,6 +3,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Agents;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.Utils.ReproCondition;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.*;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms.JMetal5BaseEMAS;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.ThreadSafeAreaUnderControlComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.mutation.MutationOperator;
@@ -152,6 +153,8 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.PROGRESSIVE_AGENT:
                 agent = new JMetal5ProgressiveAgent<>();
                 break;
+            case Constants.PARALLEL_AGENT:
+                agent = new JMetal5ParallelAgent<>();
             case Constants.MEETING_AGENT:
                 agent = new JMetal5MeetingAgent<>();
                 break;
@@ -207,6 +210,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
                 break;
             case Constants.AREA_UNDER_CONTROL_COMPARATOR:
                 comparator = new AreaUnderControlComparator<>();
+                break;
+            case Constants.THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR:
+                comparator = new ThreadSafeAreaUnderControlComparator<>();
                 break;
             default:
             case Constants.EMAS_DOMINANCE_COMPARATOR:
