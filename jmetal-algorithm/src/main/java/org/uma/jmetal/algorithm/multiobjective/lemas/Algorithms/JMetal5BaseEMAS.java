@@ -1,6 +1,7 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import lombok.*;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
@@ -40,6 +41,7 @@ import java.util.stream.Stream;
 @EqualsAndHashCode(callSuper=false) /* Used due to lombok warning. */
 public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorithm<S, List<S>> implements Measurable{
 
+    protected List<List<S>> results = new ArrayList<>();
 
     /**
      * Agent type used by builder to determine what kind of agent to build.
@@ -729,7 +731,7 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         return getNonDominatedSolutions(getPopulation());
     }
 
-    private List<S> getNonDominatedSolutions(List<S> solutionList) {
+    protected List<S> getNonDominatedSolutions(List<S> solutionList) {
         return SolutionListUtils.getNonDominatedSolutions(solutionList);
     }
 
@@ -761,4 +763,29 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
         this.agentType = Optional.ofNullable(agentType).orElse(Constants.BASE_AGENT);
     }
 
+    @Override
+    public void run() {
+        int progressUpdateStep = 100;
+        createInitialPopulation();
+        initProgress();
+        int lastTimeChecked = 0;
+        Queue<Integer> lastEvals= new LinkedList<Integer>();
+        for(int i=0;i<5;i++){lastEvals.add(-1);}
+        while (!isStoppingConditionReached()) {
+            saveIteration(getIteration());
+            meetStep();
+            reproStep();
+            deadStep();
+            if (evaluations > lastTimeChecked + progressUpdateStep) {
+                results.add(getNonDominatedSolutions(getPopulation()));
+                updateProgress();
+                lastTimeChecked += progressUpdateStep;
+
+                System.out.println(" [ Population size: " + getPopulation().size() + " || Iteration: " + getIteration() + " ||  Name: " + getName() + " ]");
+            }
+            if(lastEvals.poll()==evaluations)
+                break;
+            lastEvals.add(evaluations);
+        }
+    }
 }

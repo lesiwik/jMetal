@@ -34,6 +34,9 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
+                 .addParallelEMAS("ParallelEMAS")
+                 .addAreaEMAS("AreaEMAS")
+//                 .addEMAS("BaseEMAS")
 //                 .addNotWorseEMAS("NotWorseEMAS")
 //                 .addAreaEMAS("AreaEMAS")
 //                 .addRadiusBaseEMAS("RadiusEMAS")
@@ -45,10 +48,10 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 //                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
 //                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
-                 .addReproductiveEMAS("ReproductiveEMAS")
+//                 .addReproductiveEMAS("ReproductiveEMAS")
 //                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
-                 .addMeetingBaseEMAS("MeetingBaseEMAS")
-                 .addMeetingAreaEMAS("MeetingAreaEMAS")
+//                 .addMeetingBaseEMAS("MeetingBaseEMAS")
+//                 .addMeetingAreaEMAS("MeetingAreaEMAS")
                  .getAlgorithms();
 
          PausableChartWrapper<Solution<?>> chartWrapper = new PausableChartWrapper<Solution<?>>(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);

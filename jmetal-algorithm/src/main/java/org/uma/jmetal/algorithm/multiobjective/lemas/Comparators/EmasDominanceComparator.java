@@ -30,4 +30,8 @@ public class EmasDominanceComparator<Agent extends JMetal5Agent<?>> implements C
     public int compare(Agent a1, Agent a2) {
         return DOMINANCE_COMPARATOR.compare(a1.genotype, a2.genotype);
     }
+
+    public int compare(Solution a1, Solution a2) {
+        return DOMINANCE_COMPARATOR.compare(a1, a2);
+    }
 }
