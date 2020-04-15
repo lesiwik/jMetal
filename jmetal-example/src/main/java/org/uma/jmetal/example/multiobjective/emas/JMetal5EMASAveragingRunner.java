@@ -36,7 +36,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
     private List<List<Double>> referenceIndicators;
     private List<Integer> evaluations;
 
-    private static final int NUMBER_OF_RUNS = 30;
+    private static final int NUMBER_OF_RUNS = 100;
     private List<Map<GenericIndicator<?>, Double>> evaluatedIndicators;
     private List<Algorithm<List<Solution<?>>>> algorithmsToRun;
 
@@ -210,10 +210,10 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
                  .addEMAS("BaseEMAS")
-                 .addNotWorseEMAS("NotWorseEMAS")
-                 .addAreaEMAS("AreaEMAS")
-                 .addRadiusBaseEMAS("RadiusEMAS")
-                 .addRadiusAreaEMAS("RadiusAreaEMAS")
+//                 .addNotWorseEMAS("NotWorseEMAS")
+//                 .addAreaEMAS("AreaEMAS")
+//                 .addRadiusBaseEMAS("RadiusEMAS")
+//                 .addRadiusAreaEMAS("RadiusAreaEMAS")
 //                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
 //                 .addAreaCountingEMAS("AreaCountingEMAS")
 //                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")

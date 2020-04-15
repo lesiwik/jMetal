@@ -107,6 +107,8 @@ public class Constants {
     public static final ZDT2 PROBLEM_ZDT2 = new ZDT2();
     public static final ZDT3 PROBLEM_ZDT3 = new ZDT3();
     public static final ZDT4 PROBLEM_ZDT4 = new ZDT4();
+    public static final ZDT5 PROBLEM_ZDT5 = new ZDT5();
+    public static final ZDT6 PROBLEM_ZDT6 = new ZDT6();
     public static String REF_FRONT_DIR = "./referenceFronts/";
     public static String REF_FRONT_DIR_UNIX = "../jMetal/jmetal-problem/src/test/resources/pareto_fronts/";
 
