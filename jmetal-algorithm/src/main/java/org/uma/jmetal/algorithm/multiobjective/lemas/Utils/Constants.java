@@ -31,7 +31,7 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 1000;
+    public static int MAX_ITERATIONS = 2000;
     public static int MAX_EVALUATIONS = 50000;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;
@@ -71,6 +71,7 @@ public class Constants {
     public final static String PROGRESSIVE_AGENT  = "JMetal5ProgressiveAgent";
     public final static String PARALLEL_AGENT  = "JMetal5ParallelAgent";
     public final static String RADIUS_AGENT  = "JMetal5RadiusAgent";
+    public final static String RADIUS_PARALLEL_AGENT  = "JMetal5RadiusParallelAgent";
     public final static String QUALITY_AGENT  = "JMetal5QualityAgent";
     public final static String MEETING_AGENT  = "JMetal5MeetingAgent";
 

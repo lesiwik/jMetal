@@ -54,9 +54,11 @@ public class AlgorithmFactory<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
-//                 .addParallelBaseEMASEval("ParallelBaseEMAS", 500)
-//                 .addParallelAreaEMASEval("ParellelAreaEMAS", 300)
-                 .addAreaEMAS("AreaEMAS")
+                 .addParallelBaseEMASEval("ParallelBaseEMAS", 400)
+//                 .addParallelAreaEMASEval("ParallelAreaEMAS", 300)
+//                 .addParallelBaseRadiusEMASEval("ParallelBaseRadiusEMAS", 400)
+//                 .addParallelAreaRadiusEMASEval("ParallelAreaRadiusEMAS", 300)
+//                 .addAreaEMAS("AreaEMAS")
 //                 .addEMAS("BaseEMAS")
 //                 .addNotWorseEMAS("NotWorseEMAS")
 //                 .addAreaEMAS("AreaEMAS")
@@ -77,7 +79,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
     }
 
 
-    public Algorithm<List<S>> getAlgorithm(int index) { return algorithms.get(index); }
+    public static Algorithm<List<Solution<?>>> getAlgorithm(int index) { return getAlgorithms().get(index); }
 
     public AlgorithmFactory<S> addEMAS(String name) {
         algorithms.add(
@@ -109,6 +111,34 @@ public class AlgorithmFactory<S extends Solution<?>> {
                         .agentType(PARALLEL_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
+                        .envEnergy(envEnergy)
+                        .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addParallelBaseRadiusEMASEval(String name, int envEnergy) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(RADIUS_PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .envEnergy(envEnergy)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addParallelAreaRadiusEMASEval(String name, int envEnergy) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(RADIUS_PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
                         .envEnergy(envEnergy)
                         .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
                         .stoppingCondition(StoppingConditions.EVALUATIONS)

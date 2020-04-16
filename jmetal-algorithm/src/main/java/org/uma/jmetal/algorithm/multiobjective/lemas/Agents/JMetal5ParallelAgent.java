@@ -29,11 +29,9 @@ public class JMetal5ParallelAgent<S extends Solution<?>> extends JMetal5Agent<S>
     private boolean picked;
     private boolean picked2;
     private Integer id;
-
     static AtomicInteger staticId = new AtomicInteger(0);
 
     protected @Getter String agentType = "JMetal5ParallelAgent";
-
     /**
      * Registers itself in the population injected via {@link JMetal5ParallelAgent#setPopulation}
      *

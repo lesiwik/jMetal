@@ -165,6 +165,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.RADIUS_AGENT:
                 agent = new JMetal5RadiusAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
                 break;
+            case Constants.RADIUS_PARALLEL_AGENT:
+                agent = new JMetal5RadiusParallelAgent<>(EMAS.getRadiusToCheckMetAgentsIn());
+                break;
         }
         agent.setReproCondition(reproCondition);
         agent.setGenotype(genotype);
