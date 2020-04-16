@@ -7,7 +7,6 @@ import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
-import org.uma.jmetal.operator.selection.SelectionOperator;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
@@ -17,7 +16,6 @@ import org.uma.jmetal.util.observer.impl.EvaluationObserver;
 import org.uma.jmetal.util.observer.impl.RunTimeChartObserver;
 
 import java.io.FileNotFoundException;
-import java.util.List;
 
 /**
  * Class to configure and run the NSGA-II algorithm. A chart showing the front at the end of each
@@ -33,7 +31,7 @@ public class NSGAIIWithRealTimeChartExample extends AbstractAlgorithmRunner {
     MutationOperator<DoubleSolution> mutation;
 
     String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
-    String referenceParetoFront = "referenceFronts/ZDT1.pf";
+    String referenceParetoFront = "resources/referenceFrontsCSV/ZDT1.pf";
 
     problem = ProblemUtils.<DoubleSolution>loadProblem(problemName);
 

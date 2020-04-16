@@ -9,7 +9,7 @@ import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.config.MeetingType;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.imp.ArrayFront;
+import org.uma.jmetal.util.front.impl.ArrayFront;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;

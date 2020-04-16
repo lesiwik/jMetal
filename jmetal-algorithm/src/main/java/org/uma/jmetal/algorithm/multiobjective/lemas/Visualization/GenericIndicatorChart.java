@@ -3,10 +3,10 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Visualization;
 import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.qualityindicator.impl.*;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.imp.ArrayFront;
+import org.uma.jmetal.util.front.impl.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontNormalizer;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.PointSolution;
@@ -15,9 +15,9 @@ import java.util.List;
 
 public class GenericIndicatorChart<S extends Solution<?>> extends ProgressBaseChart<Double, S>{
 
-    private GenericIndicator<S> currentMetric;
-    private Front referenceFront;
-    private String indicatorType;
+    private final GenericIndicator<S> currentMetric;
+    private final Front referenceFront;
+    private final String indicatorType;
 
 
     private GenericIndicator<PointSolution> normalizedMetric;

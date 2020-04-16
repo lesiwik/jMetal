@@ -14,24 +14,24 @@
 package org.uma.jmetal.algorithm.multiobjective.smpso;
 
 import org.uma.jmetal.algorithm.impl.AbstractParticleSwarmOptimization;
+import org.uma.jmetal.component.evaluation.Evaluation;
+import org.uma.jmetal.component.termination.Termination;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.problem.doubleproblem.DoubleProblem;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.archive.BoundedArchive;
 import org.uma.jmetal.util.archivewithreferencepoint.ArchiveWithReferencePoint;
 import org.uma.jmetal.util.comparator.DominanceComparator;
-import org.uma.jmetal.util.evaluator.SolutionListEvaluator;
-import org.uma.jmetal.util.measure.Measurable;
-import org.uma.jmetal.util.measure.MeasureManager;
 import org.uma.jmetal.util.measure.impl.BasicMeasure;
 import org.uma.jmetal.util.measure.impl.CountingMeasure;
 import org.uma.jmetal.util.measure.impl.SimpleMeasureManager;
+import org.uma.jmetal.util.observable.Observable;
+import org.uma.jmetal.util.observable.ObservableEntity;
+import org.uma.jmetal.util.observable.impl.DefaultObservable;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
 import org.uma.jmetal.util.solutionattribute.impl.GenericSolutionAttribute;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * This class implements the SMPSORP algorithm described in:
@@ -46,40 +46,40 @@ import java.util.List;
 @SuppressWarnings("serial")
 public class SMPSORP
         extends AbstractParticleSwarmOptimization<DoubleSolution, List<DoubleSolution>>
-        implements Measurable {
-  private DoubleProblem problem;
+        implements ObservableEntity {
+  protected DoubleProblem problem;
 
-  private double c1Max;
-  private double c1Min;
-  private double c2Max;
-  private double c2Min;
-  private double r1Max;
-  private double r1Min;
-  private double r2Max;
-  private double r2Min;
-  private double weightMax;
-  private double weightMin;
-  private double changeVelocity1;
-  private double changeVelocity2;
+  protected double c1Max;
+  protected double c1Min;
+  protected double c2Max;
+  protected double c2Min;
+  protected double r1Max;
+  protected double r1Min;
+  protected double r2Max;
+  protected double r2Min;
+  protected double weightMax;
+  protected double weightMin;
+  protected double changeVelocity1;
+  protected double changeVelocity2;
 
   protected int swarmSize;
-  protected int maxIterations;
-  protected int iterations;
+  protected int evaluations;
 
-  private GenericSolutionAttribute<DoubleSolution, DoubleSolution> localBest;
-  private double[][] speed;
+  protected GenericSolutionAttribute<DoubleSolution, DoubleSolution> localBest;
+  protected double[][] speed;
 
-  private JMetalRandom randomGenerator;
+  protected JMetalRandom randomGenerator;
 
-  public List<ArchiveWithReferencePoint<DoubleSolution>> leaders;
+  protected List<ArchiveWithReferencePoint<DoubleSolution>> leaders;
   private Comparator<DoubleSolution> dominanceComparator;
 
-  private MutationOperator<DoubleSolution> mutation;
+  protected MutationOperator<DoubleSolution> mutation;
 
-  protected double deltaMax[];
-  protected double deltaMin[];
+  protected double[] deltaMax;
+  protected double[] deltaMin;
 
-  protected SolutionListEvaluator<DoubleSolution> evaluator;
+  protected Evaluation<DoubleSolution> evaluation;
+  protected Termination termination;
 
   protected List<List<Double>> referencePoints ;
   protected CountingMeasure currentIteration ;
@@ -88,21 +88,26 @@ public class SMPSORP
 
   private List<DoubleSolution> referencePointSolutions ;
 
+  protected long startTime;
+  protected long totalComputingTime;
+
+  protected Map<String, Object> algorithmStatusData;
+  protected Observable<Map<String, Object>> observable;
+
   /**
    * Constructor
    */
   public SMPSORP(DoubleProblem problem, int swarmSize,
                  List<ArchiveWithReferencePoint<DoubleSolution>> leaders,
                  List<List<Double>> referencePoints,
-                 MutationOperator<DoubleSolution> mutationOperator, int maxIterations, double r1Min, double r1Max,
+                 MutationOperator<DoubleSolution> mutationOperator, double r1Min, double r1Max,
                  double r2Min, double r2Max, double c1Min, double c1Max, double c2Min, double c2Max,
                  double weightMin, double weightMax, double changeVelocity1, double changeVelocity2,
-                 SolutionListEvaluator<DoubleSolution> evaluator) {
+                 Evaluation<DoubleSolution> evaluation, Termination termination) {
     this.problem = problem;
     this.swarmSize = swarmSize;
     this.leaders = leaders;
     this.mutation = mutationOperator;
-    this.maxIterations = maxIterations;
     this.referencePoints = referencePoints ;
 
     this.r1Max = r1Max;
@@ -119,7 +124,8 @@ public class SMPSORP
     this.changeVelocity2 = changeVelocity2;
 
     randomGenerator = JMetalRandom.getInstance();
-    this.evaluator = evaluator;
+    this.evaluation = evaluation;
+    this.termination = termination ;
 
     dominanceComparator = new DominanceComparator<DoubleSolution>();
     localBest = new GenericSolutionAttribute<DoubleSolution, DoubleSolution>();
@@ -149,6 +155,16 @@ public class SMPSORP
 
       referencePointSolutions.add(refPoint) ;
     }
+
+    algorithmStatusData = new HashMap<>();
+    observable = new DefaultObservable<>("SMPSORP observable");
+  }
+
+  @Override
+  public void run() {
+    startTime = System.currentTimeMillis();
+    super.run();
+    totalComputingTime = System.currentTimeMillis() - startTime;
   }
 
   protected void updateLeadersDensityEstimator() {
@@ -157,22 +173,39 @@ public class SMPSORP
     }
   }
 
-  @Override protected void initProgress() {
-    iterations = 1;
-    currentIteration.reset(1);
-    updateLeadersDensityEstimator();
-  }
-
-  @Override protected void updateProgress() {
-    iterations += 1;
-    currentIteration.increment(1); ;
+  @Override
+  protected void initProgress() {
+    evaluations = swarmSize;
     updateLeadersDensityEstimator();
 
-    solutionListMeasure.push(getResult()) ;
+    algorithmStatusData.put("EVALUATIONS", evaluations);
+    algorithmStatusData.put("SWARM", getSwarm());
+    algorithmStatusData.put("POPULATION", this.getResult());
+    algorithmStatusData.put("LEADERS_ARCHIVE", leaders);
+    algorithmStatusData.put("COMPUTING_TIME", System.currentTimeMillis() - startTime);
+
+    observable.setChanged();
+    observable.notifyObservers(algorithmStatusData);
   }
 
-  @Override protected boolean isStoppingConditionReached() {
-    return iterations >= maxIterations;
+  @Override
+  protected void updateProgress() {
+    evaluations += swarmSize;
+    updateLeadersDensityEstimator();
+
+    algorithmStatusData.put("EVALUATIONS", evaluations);
+    algorithmStatusData.put("SWARM", getSwarm());
+    algorithmStatusData.put("POPULATION", this.getResult());
+    algorithmStatusData.put("LEADERS_ARCHIVE", leaders);
+    algorithmStatusData.put("COMPUTING_TIME", System.currentTimeMillis() - startTime);
+
+    observable.setChanged();
+    observable.notifyObservers(algorithmStatusData);
+  }
+
+  @Override
+  protected boolean isStoppingConditionReached() {
+    return termination.isMet(algorithmStatusData);
   }
 
   @Override protected List<DoubleSolution> createInitialSwarm() {
@@ -187,10 +220,9 @@ public class SMPSORP
     return swarm;
   }
 
-  @Override protected List<DoubleSolution> evaluateSwarm(List<DoubleSolution> swarm) {
-    swarm = evaluator.evaluate(swarm, problem);
-
-    return swarm;
+  @Override
+  protected List<DoubleSolution> evaluateSwarm(List<DoubleSolution> swarm) {
+    return evaluation.evaluate(swarm);
   }
 
   @Override protected void initializeLeader(List<DoubleSolution> swarm) {
@@ -234,11 +266,15 @@ public class SMPSORP
       wmin = weightMin;
 
       for (int var = 0; var < particle.getNumberOfVariables(); var++) {
-        speed[i][var] = velocityConstriction(constrictionCoefficient(c1, c2) * (
-                inertiaWeight(iterations, maxIterations, wmax, wmin) * speed[i][var] +
-                    c1 * r1 * (bestParticle.getVariable(var) - particle.getVariable(var)) +
-                    c2 * r2 * (bestGlobal.getVariable(var) - particle.getVariable(var))),
-            deltaMax, deltaMin, var);
+        speed[i][var] =
+                velocityConstriction(
+                        constrictionCoefficient(c1, c2)
+                                * (weightMax * speed[i][var]
+                                + c1 * r1 * (bestParticle.getVariable(var) - particle.getVariable(var))
+                                + c2 * r2 * (bestGlobal.getVariable(var) - particle.getVariable(var))),
+                        deltaMax,
+                        deltaMin,
+                        var);
       }
     }
   }
@@ -351,21 +387,12 @@ public class SMPSORP
     }
   }
 
-  private double inertiaWeight(int iter, int miter, double wma, double wmin) {
-    return wma;
-  }
-
   @Override public String getName() {
-    return "SMPSO/RP" ;
+    return "SMPSORP" ;
   }
 
   @Override public String getDescription() {
     return "Speed contrained Multiobjective PSO" ;
-  }
-
-  @Override
-  public MeasureManager getMeasureManager() {
-    return measureManager;
   }
 
   public void removeDominatedSolutionsInArchives() {
@@ -400,5 +427,22 @@ public class SMPSORP
 
   public void setReferencePointSolutions(List<DoubleSolution> referencePointSolutions) {
     this.referencePointSolutions = referencePointSolutions;
+  }
+
+  public Observable<Map<String, Object>> getObservable() {
+    return observable;
+  }
+
+  public long getTotalComputingTime() {
+    return totalComputingTime;
+  }
+
+  /* Getters */
+  public int getSwarmSize() {
+    return swarmSize;
+  }
+
+  public int getEvaluations() {
+    return evaluations;
   }
 }

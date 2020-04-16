@@ -15,41 +15,29 @@ import java.util.List;
  *
  * @author Antonio J. Nebro <antonio@lcc.uma.es>
  */
-public class ExperimentAlgorithm<S extends Solution<?>, Result extends List<S>>  {
+public class ExperimentAlgorithm<S extends Solution<?>, Result extends List<S>> {
   private Algorithm<Result> algorithm;
   private String algorithmTag;
   private String problemTag;
-  private int runId ;
+  private int runId;
 
-  /**
-   * Constructor
-   */
+  /** Constructor */
   public ExperimentAlgorithm(
-          Algorithm<Result> algorithm,
-          String algorithmTag,
-          ExperimentProblem<S> problem,
-          int runId) {
+      Algorithm<Result> algorithm, String algorithmTag, ExperimentProblem<S> problem, int runId) {
     this.algorithm = algorithm;
     this.algorithmTag = algorithmTag;
     this.problemTag = problem.getTag();
-    this.runId = runId ;
+    this.runId = runId;
   }
 
-  public ExperimentAlgorithm(
-          Algorithm<Result> algorithm,
-          ExperimentProblem<S> problem,
-          int runId) {
+  public ExperimentAlgorithm(Algorithm<Result> algorithm, ExperimentProblem<S> problem, int runId) {
 
-    this(algorithm,algorithm.getName(),problem,runId);
-
+    this(algorithm, algorithm.getName(), problem, runId);
   }
 
   public void runAlgorithm(Experiment<?, ?> experimentData) {
-    String outputDirectoryName = experimentData.getExperimentBaseDirectory()
-            + "/data/"
-            + algorithmTag
-            + "/"
-            + problemTag;
+    String outputDirectoryName =
+        experimentData.getExperimentBaseDirectory() + "/data/" + algorithmTag + "/" + problemTag;
 
     File outputDirectory = new File(outputDirectoryName);
     if (!outputDirectory.exists()) {
@@ -61,22 +49,31 @@ public class ExperimentAlgorithm<S extends Solution<?>, Result extends List<S>> 
       }
     }
 
-    String funFile = outputDirectoryName + "/FUN" + runId + ".tsv";
-    String varFile = outputDirectoryName + "/VAR" + runId + ".tsv";
+    String funFile =
+        outputDirectoryName + "/" + experimentData.getOutputParetoFrontFileName() + runId + ".dat";
+    String varFile =
+        outputDirectoryName + "/" + experimentData.getOutputParetoSetFileName() + runId + ".dat";
     JMetalLogger.logger.info(
-            " Running algorithm: " + algorithmTag +
-                    ", problem: " + problemTag +
-                    ", run: " + runId +
-                    ", funFile: " + funFile);
+        " Running algorithm: "
+            + algorithmTag
+            + ", problem: "
+            + problemTag
+            + ", run: "
+            + runId
+            + ", funFile: "
+            + funFile);
 
+    try {
+      algorithm.run();
+      Result population = algorithm.getResult();
 
-    algorithm.run();
-    Result population = algorithm.getResult();
-
-    new SolutionListOutput(population)
-            .setVarFileOutputContext(new DefaultFileOutputContext(varFile))
-            .setFunFileOutputContext(new DefaultFileOutputContext(funFile))
-            .print();
+      new SolutionListOutput(population)
+          .setVarFileOutputContext(new DefaultFileOutputContext(varFile, ","))
+          .setFunFileOutputContext(new DefaultFileOutputContext(funFile, ","))
+          .print();
+    } catch (Exception exception) {
+      JMetalLogger.logger.warning("Execution failed: " + funFile + " has not been created.");
+    }
   }
 
   public Algorithm<Result> getAlgorithm() {
@@ -91,5 +88,7 @@ public class ExperimentAlgorithm<S extends Solution<?>, Result extends List<S>> 
     return problemTag;
   }
 
-  public int getRunId() { return this.runId;}
+  public int getRunId() {
+    return this.runId;
+  }
 }

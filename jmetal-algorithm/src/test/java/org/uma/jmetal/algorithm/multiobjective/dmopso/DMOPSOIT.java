@@ -5,7 +5,7 @@ import org.uma.jmetal.algorithm.Algorithm;
 import org.uma.jmetal.problem.doubleproblem.DoubleProblem;
 import org.uma.jmetal.problem.multiobjective.zdt.ZDT1;
 import org.uma.jmetal.qualityindicator.QualityIndicator;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 
 import java.util.List;
@@ -21,11 +21,30 @@ public class DMOPSOIT {
   Algorithm<List<DoubleSolution>> algorithm;
 
   @Test
-  public void shouldTheAlgorithmReturnANumberOfSolutionsWhenSolvingASimpleProblem() throws Exception {
-    DoubleProblem problem = new ZDT1() ;
+  public void shouldTheAlgorithmReturnANumberOfSolutionsWhenSolvingASimpleProblem()
+      throws Exception {
+    DoubleProblem problem = new ZDT1();
 
-    algorithm = new DMOPSO(problem, 100, 250, 0.0, 0.1, 0.0, 1.0, 1.5, 2.5, 1.5, 2.5, 0.1, 0.4, -1.0, -1.0,
-        DMOPSO.FunctionType.TCHE, "", 2) ;
+    algorithm =
+        new DMOPSO(
+            problem,
+            100,
+            250,
+            0.0,
+            0.1,
+            0.0,
+            1.0,
+            1.5,
+            2.5,
+            1.5,
+            2.5,
+            0.1,
+            0.4,
+            -1.0,
+            -1.0,
+            DMOPSO.FunctionType.TCHE,
+            "",
+            2);
 
     algorithm.run();
 
@@ -35,27 +54,46 @@ public class DMOPSOIT {
     Rationale: the default problem is ZDT1, and dMOPSO, configured with standard settings, should
     return 100 solutions
     */
-    assertTrue(population.size() >= 98) ;
+    assertTrue(population.size() >= 98);
   }
 
   @Test
   public void shouldTheHypervolumeHaveAMininumValue() throws Exception {
-    DoubleProblem problem = new ZDT1() ;
+    DoubleProblem problem = new ZDT1();
 
-    algorithm = new DMOPSO(problem, 100, 250, 0.0, 0.1, 0.0, 1.0, 1.5, 2.5, 1.5, 2.5, 0.1, 0.4, -1.0, -1.0,
-            DMOPSO.FunctionType.TCHE, "", 2) ;
+    algorithm =
+        new DMOPSO(
+            problem,
+            100,
+            250,
+            0.0,
+            0.1,
+            0.0,
+            1.0,
+            1.5,
+            2.5,
+            1.5,
+            2.5,
+            0.1,
+            0.4,
+            -1.0,
+            -1.0,
+            DMOPSO.FunctionType.TCHE,
+            "",
+            2);
 
     algorithm.run();
 
     List<DoubleSolution> population = algorithm.getResult();
 
-    QualityIndicator<List<DoubleSolution>, Double> hypervolume = new PISAHypervolume<>("../referenceFronts/ZDT4.pf") ;
+    QualityIndicator<List<DoubleSolution>, Double> hypervolume =
+        new PISAHypervolume<>("../resources/referenceFrontsCSV/ZDT4.pf");
 
     // Rationale: the default problem is ZDT1, and OMOPSO, configured with standard settings, should
     // return find a front with a hypervolume value higher than 0.64
 
-    double hv = (Double)hypervolume.evaluate(population) ;
+    double hv = (Double) hypervolume.evaluate(population);
 
-    assertTrue(hv > 0.64) ;
+    assertTrue(hv > 0.64);
   }
 }

@@ -7,7 +7,7 @@ import org.uma.jmetal.operator.selection.impl.SpatialSpreadDeviationSelection;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.problem.multiobjective.zdt.ZDT1;
 import org.uma.jmetal.qualityindicator.QualityIndicator;
-import org.uma.jmetal.qualityindicator.impl.hypervolume.PISAHypervolume;
+import org.uma.jmetal.qualityindicator.impl.hypervolume.impl.PISAHypervolume;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.evaluator.impl.SequentialSolutionListEvaluator;
 import org.uma.jmetal.util.pseudorandom.JMetalRandom;
@@ -24,19 +24,21 @@ public class FAMEIT {
     Algorithm<List<DoubleSolution>> algorithm;
     SelectionOperator<List<DoubleSolution>, DoubleSolution> selection;
 
-    problem = new ZDT1() ;
+    problem = new ZDT1();
     selection = new SpatialSpreadDeviationSelection<DoubleSolution>(5);
 
-    int populationSize=25 ;
-    int archiveSize=100 ;
-    int maxEvaluations=25000;
+    int populationSize = 25;
+    int archiveSize = 100;
+    int maxEvaluations = 25000;
 
-    algorithm = new FAME<>(problem,
+    algorithm =
+        new FAME<>(
+            problem,
             populationSize,
             archiveSize,
             maxEvaluations,
             selection,
-            new SequentialSolutionListEvaluator<>()) ;
+            new SequentialSolutionListEvaluator<>());
 
     algorithm.run();
 
@@ -44,7 +46,7 @@ public class FAMEIT {
     Rationale: the default problem is ZDT1, and FAME, configured with standard settings, should
     return 100 solutions
     */
-    assertTrue(algorithm.getResult().size() >= 99) ;
+    assertTrue(algorithm.getResult().size() >= 99);
     JMetalRandom.getInstance().setSeed(System.currentTimeMillis());
   }
 
@@ -73,7 +75,7 @@ public class FAMEIT {
     algorithm.run();
 
     QualityIndicator<List<DoubleSolution>, Double> hypervolume =
-        new PISAHypervolume<>("../referenceFronts/ZDT1.pf");
+        new PISAHypervolume<>("../resources/referenceFrontsCSV/ZDT1.pf");
 
     // Rationale: the default problem is ZDT1, and GDE3, configured with standard settings, should
     // return find a front with a hypervolume value higher than 0.66

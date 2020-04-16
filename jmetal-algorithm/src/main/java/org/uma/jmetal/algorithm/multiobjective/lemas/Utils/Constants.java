@@ -113,8 +113,7 @@ public class Constants {
     public static final ZDT4 PROBLEM_ZDT4 = new ZDT4();
     public static final ZDT5 PROBLEM_ZDT5 = new ZDT5();
     public static final ZDT6 PROBLEM_ZDT6 = new ZDT6();
-    public static String REF_FRONT_DIR = "./referenceFronts/";
-    public static String REF_FRONT_DIR_UNIX = "../jMetal/jmetal-problem/src/test/resources/pareto_fronts/";
+    public static String REF_FRONT_DIR = "./resources/referenceFrontsCSV/";
 
     /* Operators */
     public static final CrossoverOperator<DoubleSolution> XOP = new SBXCrossover(1.0, 1.0);

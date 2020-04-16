@@ -53,6 +53,10 @@ public class RunTimeChartObserver<S extends Solution<?>> implements Observer<Map
     chart.initChart();
   }
 
+  public void setReferencePoins(List<List<Double>> referencePoins) {
+    chart.setReferencePoint(referencePoins);
+  }
+
   /**
    * This method is used to set a list of reference points; it is used by reference-point based
    * algorithms.
@@ -80,7 +84,7 @@ public class RunTimeChartObserver<S extends Solution<?>> implements Observer<Map
     } else {
       JMetalLogger.logger.warning(getClass().getName()+
         " : insufficient for generating real time information." +
-        " Either EVALUATIONS or POPOULATION keys have not been registered yet by the algorithm");
+        " Either EVALUATIONS or POPULATION keys have not been registered yet by the algorithm");
     }
   }
 

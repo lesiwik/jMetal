@@ -9,7 +9,6 @@ import org.uma.jmetal.operator.crossover.CrossoverOperator;
 import org.uma.jmetal.operator.crossover.impl.SBXCrossover;
 import org.uma.jmetal.operator.mutation.MutationOperator;
 import org.uma.jmetal.operator.mutation.impl.PolynomialMutation;
-import org.uma.jmetal.operator.selection.SelectionOperator;
 import org.uma.jmetal.problem.Problem;
 import org.uma.jmetal.solution.doublesolution.DoubleSolution;
 import org.uma.jmetal.util.AbstractAlgorithmRunner;
@@ -38,7 +37,7 @@ public class GNSGAIIExample extends AbstractAlgorithmRunner {
     MutationOperator<DoubleSolution> mutation;
 
     String problemName = "org.uma.jmetal.problem.multiobjective.zdt.ZDT1";
-    String referenceParetoFront = "referenceFronts/ZDT1.pf";
+    String referenceParetoFront = "resources/referenceFrontsCSV/ZDT1.pf";
 
     problem = ProblemUtils.<DoubleSolution>loadProblem(problemName);
 
@@ -73,7 +72,7 @@ public class GNSGAIIExample extends AbstractAlgorithmRunner {
         new RunTimeChartObserver<>("NSGA-II", 80, referenceParetoFront);
     algorithm.getObservable().register(runTimeChartObserver);
 
-    runTimeChartObserver.setReferencePointList(Arrays.asList(referencePoint));
+    runTimeChartObserver.setReferencePointList(List.of(referencePoint));
 
     algorithm.run();
 

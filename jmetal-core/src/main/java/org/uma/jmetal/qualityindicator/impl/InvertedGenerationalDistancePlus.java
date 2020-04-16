@@ -2,8 +2,9 @@ package org.uma.jmetal.qualityindicator.impl;
 
 import org.uma.jmetal.solution.Solution;
 import org.uma.jmetal.util.JMetalException;
+import org.uma.jmetal.util.checking.Check;
 import org.uma.jmetal.util.front.Front;
-import org.uma.jmetal.util.front.imp.ArrayFront;
+import org.uma.jmetal.util.front.impl.ArrayFront;
 import org.uma.jmetal.util.front.util.FrontUtils;
 import org.uma.jmetal.util.point.util.distance.DominanceDistance;
 
@@ -51,9 +52,7 @@ public class InvertedGenerationalDistancePlus<S extends Solution<?>> extends Gen
    * @return
    */
   @Override public Double evaluate(List<S> solutionList) {
-    if (solutionList == null) {
-      throw new JMetalException("The pareto front approximation is null") ;
-    }
+    Check.isNotNull(solutionList);
 
     return invertedGenerationalDistancePlus(new ArrayFront(solutionList), referenceParetoFront);
   }
