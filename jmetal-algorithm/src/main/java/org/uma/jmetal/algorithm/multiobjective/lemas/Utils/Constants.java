@@ -31,13 +31,14 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 50;
-    public static int MAX_EVALUATIONS = 2500;
+    public static int MAX_ITERATIONS = 1000;
+    public static int MAX_EVALUATIONS = 50000;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
     public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
+    public enum StoppingConditions { EVALUATIONS, ITERATIONS }
     public static final double DIFFERENCE_CONSTANT = 10; //TODO: Nie mam pojecia.
     public static final double ABOVE_THRESHOLD = 0.2; //TODO: Nie mam pojecia v2.
     public static final int MATING_DIFFERENCE_THRESHOLD = 1; //TODO: Parametr wedlug ktorego dobierani sa MATING partnerzy
@@ -90,12 +91,10 @@ public class Constants {
     /* Charts */
     public static final int HV_FREQUENCY = 10;
     public static final int POP_FREQUENCY = 1;
-    public static final int MEETINGS_FREQUENCY = 10;
-    public static final int POPULATION_SIZE_FREQUENCY = 10;
-
+    public static final int MEETINGS_FREQUENCY = 50;
+    public static final int POPULATION_SIZE_FREQUENCY = 50;
     public static final int INDICATOR_FREQUENCY = 50;
     public static final int EVALUATION_FREQUENCY = 50;
-
     public static final int NUMBER_OF_DECISION_VARIABLES_TO_SHOW = 3;
     public static final Styler.ChartTheme CHART_THEME = Styler.ChartTheme.XChart;
 

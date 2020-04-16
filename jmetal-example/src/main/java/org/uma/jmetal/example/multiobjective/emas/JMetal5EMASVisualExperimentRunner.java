@@ -20,39 +20,7 @@ public class JMetal5EMASVisualExperimentRunner extends AbstractAlgorithmRunner {
 
      public static void main(String[] args) throws JMetalException {
 
-         List<Algorithm<List<Solution<?>>>> algorithmsToRun = new AlgorithmFactory<>()
-//                 .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
-//                 .addProgressiveEMAS("Progressive_BETTER", Constants.IF_BETTER)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_ALWAYS", Constants.ALWAYS)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER", Constants.IF_BETTER)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_ALWAYS", Constants.ALWAYS)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
-//                 .addEMAS("BaseEMAS")
-                 .addParallelEMAS("ParallelEMAS")
-                 .addAreaEMAS("AreaEMAS")
-//                 .addEMAS("BaseEMAS")
-//                 .addNotWorseEMAS("NotWorseEMAS")
-//                 .addAreaEMAS("AreaEMAS")
-//                 .addRadiusBaseEMAS("RadiusEMAS")
-//                 .addRadiusAreaEMAS("RadiusAreaEMAS")
-//                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
-//                 .addAreaCountingEMAS("AreaCountingEMAS")
-//                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")
-//                 .addQualityAverageAreaEMAS("QualityAverageAreaEMAS")
-//                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
-//                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
-//                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
-//                 .addReproductiveEMAS("ReproductiveEMAS")
-//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
-//                 .addMeetingBaseEMAS("MeetingBaseEMAS")
-//                 .addMeetingAreaEMAS("MeetingAreaEMAS")
-                 .getAlgorithms();
+         List<Algorithm<List<Solution<?>>>> algorithmsToRun = AlgorithmFactory.getAlgorithms();
 
          PausableChartWrapper<Solution<?>> chartWrapper = new PausableChartWrapper<Solution<?>>(algorithmsToRun, Constants.NUMBER_OF_DECISION_VARIABLES_TO_SHOW);
          algorithmsToRun.forEach(algorithm -> ((Measurable) algorithm).getMeasureManager()

@@ -26,14 +26,56 @@ import static org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants.*;
 @Data
 public class AlgorithmFactory<S extends Solution<?>> {
 
-    @Setter(AccessLevel.NONE)
-    private final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
 
+    private @Setter(AccessLevel.NONE) final EMASBuilder<S> EMAS_BUILDER = new EMASBuilder<>();
     private List<Algorithm<List<S>>> algorithms;
+    private @Setter(AccessLevel.NONE) static AlgorithmFactory<Solution<?>> algorithmFactory = new AlgorithmFactory<>();
 
     public AlgorithmFactory() {
         algorithms = new ArrayList<>();
     }
+
+    private List<Algorithm<List<S>>> getListOfAlgorithms() { return algorithms; }
+
+
+    public static List<Algorithm<List<Solution<?>>>> getAlgorithms()
+    {
+        return algorithmFactory
+        //         .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
+//                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
+//                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
+//                 .addProgressiveEMAS("Progressive_BETTER", Constants.IF_BETTER)
+//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
+//                 .addProgressiveAreaEMAS("ProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
+//                 .addProgressiveAreaEMAS("ProgressiveArea_ALWAYS", Constants.ALWAYS)
+//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER", Constants.IF_BETTER)
+//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
+//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_ALWAYS", Constants.ALWAYS)
+//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
+//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
+//                 .addEMAS("BaseEMAS")
+                 .addParallelBaseEMASEval("ParallelBaseEMAS", 500)
+//                 .addParallelAreaEMASEval("ParellelAreaEMAS", 300)
+//                 .addAreaEMAS("AreaEMAS")
+//                 .addEMAS("BaseEMAS")
+//                 .addNotWorseEMAS("NotWorseEMAS")
+//                 .addAreaEMAS("AreaEMAS")
+//                 .addRadiusBaseEMAS("RadiusEMAS")
+//                 .addRadiusAreaEMAS("RadiusAreaEMAS")
+//                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
+//                 .addAreaCountingEMAS("AreaCountingEMAS")
+//                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")
+//                 .addQualityAverageAreaEMAS("QualityAverageAreaEMAS")
+//                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
+//                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
+//                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
+//                 .addReproductiveEMAS("ReproductiveEMAS")
+//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
+//                 .addMeetingBaseEMAS("MeetingBaseEMAS")
+//                 .addMeetingAreaEMAS("MeetingAreaEMAS")
+            .getListOfAlgorithms();
+    }
+
 
     public Algorithm<List<S>> getAlgorithm(int index) { return algorithms.get(index); }
 
@@ -48,14 +90,28 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory addParallelEMAS(String name) {
+    public AlgorithmFactory<S> addParallelBaseEMASEval(String name, int envEnergy) {
         algorithms.add(
                 EMAS_BUILDER.emasType(PARALLEL_EMAS)
                         .agentType(PARALLEL_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
-//                        .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
+                        .envEnergy(envEnergy)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addParallelAreaEMASEval(String name, int envEnergy) {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .envEnergy(envEnergy)
+                        .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
                         .build());
         return this;
     }

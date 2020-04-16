@@ -1,7 +1,5 @@
 package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 
-
-import com.sun.jmx.remote.internal.ArrayQueue;
 import lombok.*;
 import org.uma.jmetal.algorithm.impl.AbstractEMASAlgorithm;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
@@ -237,6 +235,11 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
      * */
     private double radiusToCheckMetAgentsIn;
 
+    /**
+     * Determines whether you use {@link JMetal5BaseEMAS#run()} thats based on evaluations or {@link AbstractEMASAlgorithm#run()} thats based on iterations.
+     * By default it goes to iteration method.
+     * */
+    private Constants.StoppingConditions stoppingConditions = Constants.StoppingConditions.ITERATIONS;
 
     /**
      * Used to specify what kind of quality type checking is going to be done on agents.
@@ -765,6 +768,13 @@ public class JMetal5BaseEMAS<S extends Solution<?>> extends AbstractEMASAlgorith
 
     @Override
     public void run() {
+
+        if(stoppingConditions.equals(Constants.StoppingConditions.ITERATIONS))
+        {
+            super.run();
+            return;
+        }
+
         int progressUpdateStep = 100;
         createInitialPopulation();
         initProgress();

@@ -44,6 +44,7 @@ public class EMASBuilder<S extends Solution<?>> {
     private ReproCondition reproCondition;
     private double radiusToCheckMetAgentsIn;
     private Constants.QualityTypes currentQualityType;
+    private Constants.StoppingConditions stoppingConditions;
     private double differenceConstant;
     private double qualityThreshold;
     private int matingDifferenceThreshold;
@@ -113,6 +114,7 @@ public class EMASBuilder<S extends Solution<?>> {
         emas.setQualityThreshold(qualityThreshold);
         emas.setDifferenceConstant(differenceConstant);
         emas.setCurrentQualityType(currentQualityType);
+        emas.setStoppingConditions(Optional.ofNullable(stoppingConditions).orElse(Constants.StoppingConditions.ITERATIONS));
     }
 
     public EMASBuilder<S> matingDifferenceThreshold(int matingDifferenceThreshold)
@@ -239,6 +241,12 @@ public class EMASBuilder<S extends Solution<?>> {
     public EMASBuilder<S> allowKnowledgeExchange(boolean allowKnowledgeExchange)
     {
         this.allowKnowledgeExchange = allowKnowledgeExchange;
+        return this;
+    }
+
+    public EMASBuilder<S> stoppingCondition(Constants.StoppingConditions stoppingConditions)
+    {
+        this.stoppingConditions = stoppingConditions;
         return this;
     }
 

@@ -78,8 +78,6 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
             csvFormatData.append('\n');
         }
 
-//        System.out.println("\n\n\n\nCSV File:\n"+ csvFormatData.toString());
-
         File csvFolders = new File(System.getProperty("user.dir") + "/emas_results/average/");
         boolean isPathValid = csvFolders.mkdirs();
         TimeZone tz = TimeZone.getTimeZone("UTC");
@@ -196,34 +194,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
 
     private void initializeAlgorithms()
     {
-        algorithmsToRun = new AlgorithmFactory<>()
-//                 .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
-//                 .addProgressiveEMAS("Progressive_BETTER", Constants.IF_BETTER)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_ALWAYS", Constants.ALWAYS)
-//                 .addProgressiveAreaEMAS("ProgressiveArea_BETTER", Constants.IF_BETTER)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_ALWAYS", Constants.ALWAYS)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
-//                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
-                 .addEMAS("BaseEMAS")
-//                 .addNotWorseEMAS("NotWorseEMAS")
-//                 .addAreaEMAS("AreaEMAS")
-//                 .addRadiusBaseEMAS("RadiusEMAS")
-//                 .addRadiusAreaEMAS("RadiusAreaEMAS")
-//                 .addProgressiveAreaNotWorseEMAS("ProgressiveAreaNotWorseEMAS", Constants.IF_NOT_WORSE)
-//                 .addAreaCountingEMAS("AreaCountingEMAS")
-//                 .addAreaCountingRadiusEMAS("AreaCountingRadiusEMAS")
-//                 .addQualityAverageAreaEMAS("QualityAverageAreaEMAS")
-//                 .addQualityConstantAreaEMAS("QualityConstantAreaEMAS")
-//                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
-//                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
-//                 .addReproductiveEMAS("ReproductiveEMAS")
-//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
-                .getAlgorithms();
+        algorithmsToRun = AlgorithmFactory.getAlgorithms();
 
         for(int i = 0; i < algorithmsToRun.size() ; i++)
         {

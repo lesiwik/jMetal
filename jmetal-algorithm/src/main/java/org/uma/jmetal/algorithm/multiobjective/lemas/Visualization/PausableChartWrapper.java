@@ -72,6 +72,14 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
                 }
             });
         }
+        /*
+        * I know, please don't crucify me for it. It is here because graphs are not updating fast enough for the algorithm. The slower you go the smoother they will be.
+        * */
+        try {
+            Thread.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 //        } else {
 //            javax.swing.SwingUtilities.invokeLater(() -> {
 //                for (int i = 0; i < charts.size(); i++) {

@@ -3,6 +3,7 @@ package org.uma.jmetal.algorithm.multiobjective.lemas.Algorithms;
 import lombok.Getter;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5Agent;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Agents.JMetal5ParallelAgent;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.solution.Solution;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
 
     private int meetingQueuesNumber = 8;
     private int matingQueuesNumber = 2;
-    private final int maxEvaluations = 5000;
+    private final int maxEvaluations = Constants.MAX_EVALUATIONS;
     private final int statsUpdateStep = 100;
     private List<List<JMetal5ParallelAgent<S>>> matingQueues = new ArrayList<>();
     private List<List<JMetal5ParallelAgent<S>>> meetingQueues = new ArrayList<>();
@@ -88,7 +89,7 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
 
     private void iterationUpdate(int evals) {
         synchronized (population) {
-            System.out.println(evals);
+            System.out.println("[ Population size: " + population.size() + " || Evaluations: " + evals + " || Name: " + getName() + " ]");
             updateProgress();
             results.add(getNonDominatedSolutions(getPopulation()));
         }
@@ -100,5 +101,13 @@ public class JMetal5ParallelEMAS2<S extends Solution<?>> extends JMetal5BaseEMAS
         {
             return population.stream().map(JMetal5Agent::getGenotype).collect(Collectors.toList());
         }
+    }
+
+    @Override
+    public void resetState() {
+        super.resetState();
+        meetingQueues.clear();
+        matingQueues.clear();
+        results.clear();
     }
 }

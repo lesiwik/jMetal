@@ -155,6 +155,7 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
                 break;
             case Constants.PARALLEL_AGENT:
                 agent = new JMetal5ParallelAgent<>();
+                break;
             case Constants.MEETING_AGENT:
                 agent = new JMetal5MeetingAgent<>();
                 break;
