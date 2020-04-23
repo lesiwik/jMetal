@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 import org.uma.jmetal.algorithm.Algorithm;
+import org.uma.jmetal.algorithm.multiobjective.lemas.Comparators.NSGAIINoisyCrowdingAndDistanceComparator;
 import org.uma.jmetal.algorithm.multiobjective.lemas.Utils.Constants;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAII;
 import org.uma.jmetal.algorithm.multiobjective.nsgaii.jmetal5version.NSGAIIBuilder;
@@ -41,7 +42,7 @@ public class AlgorithmFactory<S extends Solution<?>> {
     public static List<Algorithm<List<Solution<?>>>> getAlgorithms()
     {
         return algorithmFactory
-        //         .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
+//                 .addProgressiveEMAS("Progressive_BETTER_AND_COULD", Constants.IF_BETTER_AND_COULD_NOT_KNOW)
 //                 .addProgressiveEMAS("Progressive_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addProgressiveEMAS("Progressive_ALWAYS", Constants.ALWAYS)
 //                 .addProgressiveEMAS("Progressive_BETTER", Constants.IF_BETTER)
@@ -54,10 +55,14 @@ public class AlgorithmFactory<S extends Solution<?>> {
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_NOT_WORSE", Constants.IF_NOT_WORSE)
 //                 .addReproductiveProgressiveAreaEMAS("ReproductiveProgressiveArea_BETTER", Constants.IF_BETTER)
 //                 .addEMAS("BaseEMAS")
-                 .addParallelBaseEMASEval("ParallelBaseEMAS", 400)
-//                 .addParallelAreaEMASEval("ParallelAreaEMAS", 300)
-//                 .addParallelBaseRadiusEMASEval("ParallelBaseRadiusEMAS", 400)
-//                 .addParallelAreaRadiusEMASEval("ParallelAreaRadiusEMAS", 300)
+                .addNoisyEMAS("BaseNoisyEMAS")
+//                .addNoisyParallelBaseEMASEval("ParallelNoisyBaseEMAS", 400, RADIUS_TO_CHECK_MET_AGENTS_IN)
+//                .addNoisyParallelBaseRadiusEMAS("ParallelNoisyRadiusBaseEMAS", 400, RADIUS_TO_CHECK_MET_AGENTS_IN)
+//                 .addParallelBaseEMASEval("ParallelBaseEMAS", 400)
+//                 .addParallelAreaEMASEval("ParallelAreaEMAS", 400)
+//                 .addParallelBaseRadiusEMASEval("ParallelBaseRadiusEMAS", 400, RADIUS_TO_CHECK_MET_AGENTS_IN)
+//                 .addParallelBaseRadiusEMASEval("ParallelBaseRadiusEMAS", 400, RADIUS_TO_CHECK_MET_AGENTS_IN_2)
+//                 .addParallelBaseRadiusEMASEval("ParallelBaseRadiusEMAS", 400, RADIUS_TO_CHECK_MET_AGENTS_IN_3)
 //                 .addAreaEMAS("AreaEMAS")
 //                 .addEMAS("BaseEMAS")
 //                 .addNotWorseEMAS("NotWorseEMAS")
@@ -72,7 +77,6 @@ public class AlgorithmFactory<S extends Solution<?>> {
 //                 .addQualityDifferenceAreaEMAS("QualityDifferenceAreaEMAS")
 //                 .addReproductiveAreaEMAS("ReproductiveAreaEMAS")
 //                 .addReproductiveEMAS("ReproductiveEMAS")
-//                 .addBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS)
 //                 .addMeetingBaseEMAS("MeetingBaseEMAS")
 //                 .addMeetingAreaEMAS("MeetingAreaEMAS")
             .getListOfAlgorithms();
@@ -80,6 +84,49 @@ public class AlgorithmFactory<S extends Solution<?>> {
 
 
     public static Algorithm<List<Solution<?>>> getAlgorithm(int index) { return getAlgorithms().get(index); }
+
+
+    public AlgorithmFactory<S> addNoisyEMAS(String name)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(BASE_EMAS)
+                        .agentType(BASE_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .comparator(NOISY_EMAS_DOMINANCE_COMPARATOR)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addNoisyParallelBaseEMASEval(String name, int envEnergy, double radius)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .envEnergy(envEnergy)
+                        .radiusToCheckMetAgentsIn(radius)
+                        .comparator(EMAS_DOMINANCE_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
+                        .build());
+        return this;
+    }
+
+    public AlgorithmFactory<S> addNoisyParallelBaseRadiusEMAS(String name, int envEnergy, double radius)
+    {
+        algorithms.add(
+                EMAS_BUILDER.emasType(PARALLEL_EMAS)
+                        .agentType(RADIUS_PARALLEL_AGENT)
+                        .algorithmName(name)
+                        .allowKnowledgeExchange(false)
+                        .envEnergy(envEnergy)
+                        .radiusToCheckMetAgentsIn(radius)
+                        .comparator(NOISY_EMAS_DOMINANCE_COMPARATOR)
+                        .stoppingCondition(StoppingConditions.EVALUATIONS)
+                        .build());
+        return this;
+    }
 
     public AlgorithmFactory<S> addEMAS(String name) {
         algorithms.add(
@@ -118,13 +165,13 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory<S> addParallelBaseRadiusEMASEval(String name, int envEnergy) {
+    public AlgorithmFactory<S> addParallelBaseRadiusEMASEval(String name, int envEnergy, double radius) {
         algorithms.add(
                 EMAS_BUILDER.emasType(PARALLEL_EMAS)
                         .agentType(RADIUS_PARALLEL_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
-                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .radiusToCheckMetAgentsIn(radius)
                         .envEnergy(envEnergy)
                         .comparator(EMAS_DOMINANCE_COMPARATOR)
                         .stoppingCondition(StoppingConditions.EVALUATIONS)
@@ -132,13 +179,13 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public AlgorithmFactory<S> addParallelAreaRadiusEMASEval(String name, int envEnergy) {
+    public AlgorithmFactory<S> addParallelAreaRadiusEMASEval(String name, int envEnergy, double radius) {
         algorithms.add(
                 EMAS_BUILDER.emasType(PARALLEL_EMAS)
                         .agentType(RADIUS_PARALLEL_AGENT)
                         .algorithmName(name)
                         .allowKnowledgeExchange(false)
-                        .radiusToCheckMetAgentsIn(RADIUS_TO_CHECK_MET_AGENTS_IN)
+                        .radiusToCheckMetAgentsIn(radius)
                         .envEnergy(envEnergy)
                         .comparator(THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR)
                         .stoppingCondition(StoppingConditions.EVALUATIONS)
@@ -394,7 +441,20 @@ public class AlgorithmFactory<S extends Solution<?>> {
         return this;
     }
 
-    public NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
+
+    public static NSGAII<DoubleSolution> createNoisyNSGAII(int initialPopulationSize, int maxEvaluations)
+    {
+        return new NSGAIIBuilder<>(Constants.PROBLEM,
+                Constants.XOP, Constants.MOP, initialPopulationSize)
+                .setSelectionOperator(
+                        new BinaryTournamentSelection<>(
+                                new NSGAIINoisyCrowdingAndDistanceComparator<>()))
+                .setMaxEvaluations(maxEvaluations)
+                .setVariant(NSGAIIBuilder.NSGAIIVariant.Measures)
+                .build();
+    }
+
+    public static NSGAII<DoubleSolution> createBaseNSGAII(int initialPopulationSize, int maxEvaluations)
     {
         return new NSGAIIBuilder<>(Constants.PROBLEM,
                 Constants.XOP, Constants.MOP, initialPopulationSize)

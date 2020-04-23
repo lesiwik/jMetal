@@ -218,6 +218,9 @@ public final class JMetal5AgentBuilder<S extends Solution<?>> {
             case Constants.THREAD_SAFE_AREA_UNDER_CONTROL_COMPARATOR:
                 comparator = new ThreadSafeAreaUnderControlComparator<>();
                 break;
+            case Constants.NOISY_EMAS_DOMINANCE_COMPARATOR:
+                comparator = new NoisyEmasDominanceComparator<>();
+                break;
             default:
             case Constants.EMAS_DOMINANCE_COMPARATOR:
                 comparator = new EmasDominanceComparator<>();

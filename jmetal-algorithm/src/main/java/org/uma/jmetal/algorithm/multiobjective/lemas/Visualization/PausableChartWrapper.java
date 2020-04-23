@@ -66,9 +66,12 @@ public class PausableChartWrapper<S extends Solution<?>> extends ChartWrapper<S>
                     }
                     wrapper.repaintChart(i);
                 }
-                for (int j = 0; j < algorithmStatistics.size() ; j++)
+                if(emas instanceof JMetal5BaseEMAS)
                 {
-                    algorithmStatistics.get(j).updateStats((JMetal5BaseEMAS<S>) emas);
+                    for (int j = 0; j < algorithmStatistics.size() ; j++)
+                    {
+                        algorithmStatistics.get(j).updateStats((JMetal5BaseEMAS<S>) emas);
+                    }
                 }
             });
         }

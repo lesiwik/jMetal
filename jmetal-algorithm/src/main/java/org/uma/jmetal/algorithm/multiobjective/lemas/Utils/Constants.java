@@ -31,12 +31,13 @@ public class Constants {
     public static final double DEATH_LEVEL_VALUE = 0;
     public static final double TRANSFER_RESOURCE_VALUE = 1.0;
     public static final int ENV_ENERGY = 170;
-    public static int MAX_ITERATIONS = 2000;
+    public static int MAX_ITERATIONS = 1000;
     public static int MAX_EVALUATIONS = 50000;
     public static int NUMBER_OF_ISLANDS = 1;
     public static int MAX_KNOWLEDGE_CAPACITY = 100;
     public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.005;
-    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.0005;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_2 = 0.5;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN_3 = 0.00005;
     public enum QualityTypes { ABOVE_CONSTANT, DIFFERENCE, AVERAGE }
     public enum StoppingConditions { EVALUATIONS, ITERATIONS }
     public static final double DIFFERENCE_CONSTANT = 10; //TODO: Nie mam pojecia.
@@ -64,6 +65,7 @@ public class Constants {
     public final static String AREA_UNDER_CONTROL_COUNTER_COMPARATOR = "AreaUnderControlCounterComparator";
     public final static String AREA_UNDER_CONTROL_EXTENDED_COMPARATOR = "AreaUnderControlExtendedComparator";
     public final static String NOT_WORSE_COMPARATOR = "NotWorseComparator";
+    public final static String NOISY_EMAS_DOMINANCE_COMPARATOR = "NoisyEmasDominaceComparator";
 
     /* Agent types */
     public final static String BASE_AGENT = "JMetal5BaseAgent";
@@ -129,7 +131,7 @@ public class Constants {
     static final SelectionOperator SEL_OP = new BinaryTournamentSelection<>(new RankingAndCrowdingDistanceComparator<DoubleSolution>());
 
     /* Comparators ? */
-    public static double NOISE_LEVEL = 0.0;
+    public static double NOISE_LEVEL = 0.3;
     public static double[][] ALPHA_VALUES = {{0.0, 0,1},{0.1, 0.0}};
 
     /* Colors */
