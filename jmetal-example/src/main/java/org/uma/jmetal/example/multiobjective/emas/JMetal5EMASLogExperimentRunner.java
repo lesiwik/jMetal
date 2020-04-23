@@ -18,12 +18,12 @@ public class JMetal5EMASLogExperimentRunner {
 
     public static void main(String[] args) throws JMetalException, FileNotFoundException {
 
+        //Algorithm algorithm = AlgorithmFactory.createBaseNSGAII(Constants.NSGAII_INITIAL_POPULATION_SIZE, Constants.NSGAII_MAX_EVALUATIONS );
         Algorithm<List<Solution<?>>> algorithm = AlgorithmFactory.getAlgorithm(0);
-
         AlgorithmRunner algorithmRunner = new AlgorithmRunner.Executor(algorithm)
                 .execute();
 
-        List<Solution<?>> population = algorithm.getResult();
+        List<Solution<?>> population = (List<Solution<?>>) algorithm.getResult();
         long computingTime = algorithmRunner.getComputingTime();
         JMetalLogger.logger.info("Total execution time: " + computingTime + "ms");
         printFinalSolutionSet(population);
