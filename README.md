@@ -4,10 +4,46 @@ Repozytorium zawiera rozszerzenie biblioteki JMetal w postaci algorytmu EMAS - a
 Jeżeli uzyskałeś dostęp do tego repozytorium, załóż własnego brancha i upewnij się, że wprowadzone przez Ciebie zmiany są tylko na tym branchu.
 W celu commitowania do mastera wystaw pullrequesta. 
 
-# Additional Dependencies
-Wykorzystano [Lomboka](https://projectlombok.org/) w celu poprawy jakości kodu, jest dodany w pliku pom.xml modułu który go wykorzystuje.
-Jeżeli IDE w którym pracujesz pokazuję Ci błędy przy getterach/setterach mimo poprawnej kompilacji kodu zainstaluj wtyczkę do lomboka.
-Dla IntelliJ taką wtyczkę można znaleźć [tutaj](https://plugins.jetbrains.com/plugin/6317-lombok).
+# How to run
+
+### Requirements
+* Java 11 albo wyższa.
+* Ponad dependencje z JMetala (pliki pom.xml) dodano również:
+    * [Lomboka](https://projectlombok.org/) - do generacji boilerplate kodu. W przypadku błędu w Twoim IDE poszukaj wtyczki np. [taką](https://plugins.jetbrains.com/plugin/6317-lombok).
+    * [JUnita](https://junit.org/) - do paru testów.
+    * [XChart](https://knowm.org/open-source/xchart/) - do generowania wykresów. (Z lekką nutą [Swinga.](https://docs.oracle.com/javase/tutorial/uiswing/index.html)
+### Video tutorial
+
+![](https://www.youtube.com/watch?v=8qqtNbU7L7M&feature=youtu.be).
+
+## Runnery
+
+Celem każdego z tych runnerów jest uruchomienie ich jako punktu wejściowego programu.
+Przykład komendy do odpalenia:
+```
+F:\Java\jdk-14\bin\java.exe -Dfile.encoding=UTF-8 
+-classpath {TWOJ_CLASS_PATH} org.uma.jmetal.example.multiobjective.emas.JMetal5EMASVisualExperimentRunner
+```
+Gdzie {TWOJ_CLASS_PATH} powinien zawierać ścieżki do odpowiednich jarów (dependencji) oraz do skompilowanych plików (z innych modułów również).
+Najprościej jednak z konsoli tego nie odpalać i pozwolić żeby IDE wygenerowało to za nas. (zwyczajnie dając run)
+
+* [Visual Runner](jmetal-example/src/main/java/org/uma/jmetal/example/multiobjective/emas/JMetal5EMASVisualExperimentRunner.java) - z wizualizacją algorytmów na wykresach. Można tutaj 
+uruchomić kilka algorytmów naraz. Domyślnie zbierze i uruchomi on WSZYSTKIE algorytmy załączone do listy algorytmów w [AlgorithmFactory](jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/lemas/Algorithms/AlgorithmFactory.java).
+* [Log Runner](jmetal-example/src/main/java/org/uma/jmetal/example/multiobjective/emas/JMetal5EMASLogExperimentRunner.java) - Runner bez wizualizacji który wypiszę metryki JMetala na standardowe wyjście. Uruchomi RAZ tylko PIERWSZY algorytm z listy algorytmów w [AlgorithmFactory](jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/lemas/Algorithms/AlgorithmFactory.java).
+* [Averaging Runner](jmetal-example/src/main/java/org/uma/jmetal/example/multiobjective/emas/JMetal5EMASAveragingRunner.java) - Runner bez wizualizacji który wypisze:
+    - HV oraz HVR
+    - IDG oraz IDG+ (razem z ratio i znormalizowanymi).
+    - Ilość ewaluacji
+    
+    Dodatkowo zapiszę on również wszystkie wyniki do pliku .csv w utworzonym folderze "emas_results".
+    Uruchomi on X razy każdy z podanych algorytmów z listy algorytmów z [AlgorithmFactory](jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/lemas/Algorithms/AlgorithmFactory.java) 
+    gdzie X to zmienna konfiguracyjna znajdująca się w środku runnera. Na koniec wszystkie wyniki zostaną zebrane i uśrednione (średnia arytmetyczna przez X).
+    
+    
+### Porównanie z NSGAII
+Żeby dodać do powyższych runnerów NSGAII trzeba korzystać z brancha origin/MKasprzyk. Niestety takie uruchomienie wymagało wprowadzenia tony warningów do runnerów stąd zostało to na branchu developowym.
+Dodatkowo porównać można jedynie za pomocą: Visual Runnera i Log Runnera. Averaging Runner obecnie NIE jest wspierany.
+Możliwe konfiguracje NSGAII znajdują się również w [AlgorithmFactory](jmetal-algorithm/src/main/java/org/uma/jmetal/algorithm/multiobjective/lemas/Algorithms/AlgorithmFactory.java).
 
 
 # Importowanie projektu
