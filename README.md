@@ -13,7 +13,8 @@ W celu commitowania do mastera wystaw pullrequesta.
     * [JUnita](https://junit.org/) - do paru testów.
     * [XChart](https://knowm.org/open-source/xchart/) - do generowania wykresów. (Z lekką nutą [Swinga.](https://docs.oracle.com/javase/tutorial/uiswing/index.html)
     
-![Video tutorial](https://www.youtube.com/watch?v=8qqtNbU7L7M&feature=youtu.be).
+### Video tutorial
+[![Video Tutorial](https://img.youtube.com/vi/8qqtNbU7L7M/0.jpg)](https://www.youtube.com/watch?v=8qqtNbU7L7M)
 
 ## Runnery
 
