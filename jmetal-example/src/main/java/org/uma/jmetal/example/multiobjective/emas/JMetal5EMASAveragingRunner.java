@@ -36,7 +36,7 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
     private List<List<Double>> referenceIndicators;
     private List<Integer> evaluations;
 
-    private static final int NUMBER_OF_RUNS = 100;
+    private static final int NUMBER_OF_RUNS = 30;
     private List<Map<GenericIndicator<?>, Double>> evaluatedIndicators;
     private List<Algorithm<List<Solution<?>>>> algorithmsToRun;
 
@@ -83,10 +83,11 @@ public class JMetal5EMASAveragingRunner<S extends Solution<?>> {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         DateFormat df = new SimpleDateFormat("MM-dd - HH;mm");
         df.setTimeZone(tz);
-        String fileName = "/" + df.format(new Date()) + ".csv";
-        try (FileWriter fileWriter = new FileWriter(csvFolders + fileName)) {
+        String fileName = df.format(new Date()) + ".csv";
+        String absolutePath = csvFolders + "\\" + fileName;
+        try (FileWriter fileWriter = new FileWriter(absolutePath)) {
             fileWriter.write(csvFormatData.toString());
-            System.out.println("\n\nCSV File created at: " + csvFolders + fileName);
+            System.out.println("\n\nCSV File created at: " + absolutePath);
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
