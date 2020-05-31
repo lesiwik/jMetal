@@ -24,18 +24,18 @@ public class Constants {
     /* EMAS Constants */
     public static int MATURITY_AGE = 2;
     public static int LOG_LEVEL = 0;
-    public static final double REPRODUCTION_LEVEL_VALUE = 2;
+    public static final double REPRODUCTION_LEVEL_VALUE = 60;
     public static final double PROGRESSIVE_REPRODUCTION_LEVEL_VALUE = 1;
-    public static final double INITIAL_RESOURCE_VALUE = 1;
-    public static final double OFFSPRING_INITIAL_RESOURCE_VALUE = 0;
+    public static final double INITIAL_RESOURCE_VALUE = 30;
+    public static final double OFFSPRING_INITIAL_RESOURCE_VALUE = 30;
     public static final double DEATH_LEVEL_VALUE = 0;
-    public static final double TRANSFER_RESOURCE_VALUE = 1.0;
-    public static final int ENV_ENERGY = 170;
-    public static final int MAX_ITERATIONS = 1000;
+    public static final double TRANSFER_RESOURCE_VALUE = 10;
+    public static final int ENV_ENERGY = 500*60;
+    public static final int MAX_ITERATIONS = 2000;
     public static final int MAX_EVALUATIONS = 2500;
     public static final int NUMBER_OF_ISLANDS = 1;
     public static final int MAX_KNOWLEDGE_CAPACITY = 100;
-    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.1;
+    public static final double RADIUS_TO_CHECK_MET_AGENTS_IN = 0.2;
 
     /* Offspring allowed to EMAS */
     public final static int ALWAYS = 0;

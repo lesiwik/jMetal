@@ -37,6 +37,7 @@ public class ChartWrapper<S extends Solution<?>> {
         charts = new ArrayList<>();
         charts.add(new PopulationChart<S>(algorithmToShow));
         charts.add(new PopulationChart<S>(algorithmToShow, true));
+        charts.add(new HVRChart(algorithmToShow));
 
         charts.add(new GenericIndicatorChart<S>(algorithmToShow, referenceFront,
                 Constants.HYPERVOLUME_INDICATOR_TYPE));

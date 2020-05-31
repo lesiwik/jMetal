@@ -26,15 +26,18 @@ public class JMetal5FactorsAgent<S extends Solution<?>> extends JMetal5RadiusAge
 
         if (comparatorResult == Constants.FIRST_IS_BETTER) {
             meetingPartner.dominations++;
-            transferResourcesFrom(meetingPartner, transferResourceValue);
         } else if (comparatorResult == Constants.SECOND_IS_BETTER) {
             this.dominations++;
-            transferResourcesTo(meetingPartner, transferResourceValue);
         }
 
-        if (comparatorResult == Constants.NEITHER_IS_BETTER)
-        {
+        if (comparatorResult == Constants.NEITHER_IS_BETTER) {
             comparatorResult = secondaryCompare(meetingPartner);
+        }
+
+        if (comparatorResult == Constants.FIRST_IS_BETTER) {
+            transferResourcesFrom(meetingPartner, transferResourceValue);
+        } else if (comparatorResult == Constants.SECOND_IS_BETTER) {
+            transferResourcesTo(meetingPartner, transferResourceValue);
         }
 
         updateMetAgents(meetingPartner);
@@ -51,13 +54,24 @@ public class JMetal5FactorsAgent<S extends Solution<?>> extends JMetal5RadiusAge
         JMetal5FactorsAgent partner = (JMetal5FactorsAgent) meetingPartner;
 
         if (this.getFactor() < partner.getFactor()) {
+            //System.out.println(this.getFactor() + "  " + partner.getFactor());
             return Constants.FIRST_IS_BETTER;
         }
         if (this.getFactor() > partner.getFactor()) {
+            //System.out.println(this.getFactor() + "  " + partner.getFactor());
             return Constants.SECOND_IS_BETTER;
         }
 
-        return super.secondaryCompare(meetingPartner);
+        if (this.getMeetingFactor() < partner.getMeetingFactor()) {
+            //System.out.println(this.getFactor() + "  " + partner.getFactor());
+            //return Constants.FIRST_IS_BETTER;
+        }
+        if (this.getMeetingFactor() > partner.getMeetingFactor()) {
+            //System.out.println(this.getFactor() + "  " + partner.getFactor());
+            //return Constants.SECOND_IS_BETTER;
+        }
+
+        return 0;//Double.compare(getMeetingFactor(),partner.getMeetingFactor());
     }
 
     public double getFactor() {
@@ -65,6 +79,13 @@ public class JMetal5FactorsAgent<S extends Solution<?>> extends JMetal5RadiusAge
             return 1;
         }
         return dominations / (double) metAgents;
+    }
+
+    public double getMeetingFactor() {
+        if ( metAgents == 0 ) {
+            return 1;
+        }
+        return getMetAgentsInRadius() / (double) metAgents;
     }
 
     @Override
